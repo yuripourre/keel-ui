@@ -53,6 +53,10 @@ public class PipelineLink {
 		toItem = PipelineComponent.INVALID_ITEM;
 	}
 
+	public void unlink() {
+		from.unlink(to, position());
+	}
+	
 	public void link() {
 		from.link(to, position());
 	}

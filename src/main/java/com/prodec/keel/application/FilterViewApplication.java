@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.prodec.keel.model.PipelineLink;
 import com.prodec.keel.ui.PipelineComponent;
+import com.prodec.keel.ui.PipelineComponentItem;
 import com.prodec.keel.ui.PipelineLinkView;
 import com.prodec.keel.ui.filter.ColorFilterView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
@@ -95,6 +96,10 @@ public class FilterViewApplication extends Application {
 			if (component.isMoving()) {
 				mode = Mode.SELECTION;
 				return;
+			} else if(component.isRemoveLink()) {
+				removeLink(component);
+				component.linkRemoved();
+				return;
 			}
 			
 			if (component.getSelectedItem() != PipelineComponent.INVALID_ITEM) {
@@ -113,6 +118,23 @@ public class FilterViewApplication extends Application {
 		}
 	}
 	
+	private void removeLink(PipelineComponent component) {
+		PipelineComponentItem item = component.getMouseOnItem();
+		
+		for (int i = links.size()-1; i >= 0 ; i--) {
+			PipelineLinkView view = links.get(i);
+			PipelineLink link = view.getLink();
+			if (link.getFrom() == component && link.getFromItem().equals(item) ||
+				link.getTo() == component && link.getToItem().equals(item)) {
+				link.unlink();
+				links.remove(i);
+				
+				resetFilter();
+				break;
+			}
+		}		
+	}
+
 	private void resetLink() {
 		currentLink.reset();
 		mode = Mode.NORMAL;

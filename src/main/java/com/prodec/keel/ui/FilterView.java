@@ -34,8 +34,18 @@ public abstract class FilterView extends PipelineComponent {
 	public void link(PipelineComponent view, LinkPosition position) {
 		if (view.type == ComponentType.VALIDATION) {
 			validationView = (ValidationView) view;
+			validationView.filterView = this;
 			filter.clearValidations();
 			addValidation(validationView);
+		}
+	}
+	
+	@Override
+	public void unlink(PipelineComponent view, LinkPosition position) {
+		if (view.type == ComponentType.VALIDATION) {
+			validationView = (ValidationView) view;
+			validationView.filterView = null;
+			filter.clearValidations();
 		}
 	}
 	

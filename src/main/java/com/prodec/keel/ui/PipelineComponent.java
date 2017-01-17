@@ -48,6 +48,8 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	private int dragY = 0;
 	private boolean move = false;
 	protected boolean dragged = false;
+	
+	private boolean removeLink = false;
 
 	protected List<String> inItems = new ArrayList<String>();
 	protected List<String> outItems = new ArrayList<String>();
@@ -185,6 +187,10 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 			move = false;
 			selectedItem = INVALID_ITEM;
 		}
+		
+		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_RIGHT) && mouseOnItem != INVALID_ITEM) {
+			removeLink = true;
+		}
 
 		if (move) {
 			x = lastX + event.getX() - dragX;
@@ -259,6 +265,11 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 		}
 	}
 
+	public void unlink(PipelineComponent to, LinkPosition position) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void link(PipelineComponent from, LinkPosition position) {
 		// TODO Auto-generated method stub
 	}
@@ -276,6 +287,14 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	
 	public boolean isMoving() {
 		return move;
+	}
+	
+	public boolean isRemoveLink() {
+		return removeLink;
+	}
+	
+	public void linkRemoved() {
+		removeLink = false;
 	}
 	
 }
