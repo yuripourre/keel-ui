@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.prodec.keel.model.LinkPosition;
 import com.prodec.keel.ui.filter.ColorFilterView;
 
 import br.com.etyllica.motion.filter.ColorFilter;
@@ -22,7 +23,7 @@ public class ValidationViewTest {
 		view = new ValidationView(0, 0, 100, 70);
 
 		filterView = new ColorFilterView(0, 0, filter);
-		view.link(filterView);
+		view.link(filterView, LinkPosition.TO);
 	}
 
 	@Test
@@ -37,7 +38,7 @@ public class ValidationViewTest {
 		Assert.assertEquals(1, filterView.filter.getSearchStrategy().getValidations().size());
 		
 		ValidationView anotherView = new ValidationView(0, 0, 100, 70);
-		view.link(anotherView);
+		view.link(anotherView, LinkPosition.TO);
 		Assert.assertEquals(2, filterView.filter.getSearchStrategy().getValidations().size());
 
 		Assert.assertEquals(anotherView, view.next);

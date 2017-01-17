@@ -63,7 +63,7 @@ public class ValidationView extends PipelineComponent {
 
 	private ValidationView root() {
 		if (previous != null) {
-			return previous.root();	
+			return previous.root();
 		} else {
 			return this;
 		}
@@ -79,7 +79,9 @@ public class ValidationView extends PipelineComponent {
 			boolean fromNext = fromItem.inItem && fromItem.index == 0 
 					&& !toItem.inItem && toItem.index == 0;
 
-			return toNext || fromNext;
+			boolean validRoot = next != to && previous != to;
+						
+			return validRoot && (toNext || fromNext);
 
 		} else if (to.type == ComponentType.FILTER) {
 			return to.isValidLink(toItem, this, fromItem);

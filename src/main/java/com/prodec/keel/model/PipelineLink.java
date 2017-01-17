@@ -54,10 +54,14 @@ public class PipelineLink {
 	}
 
 	public void link() {
+		from.link(to, position());
+	}
+	
+	private LinkPosition position() {
 		if (!fromItem.getInItem() && toItem.getInItem()) {
-			from.link(to, LinkPosition.TO);
+			return LinkPosition.TO;
 		} else {
-			from.link(to, LinkPosition.FROM);
+			return LinkPosition.FROM;
 		}
 	}
 	
