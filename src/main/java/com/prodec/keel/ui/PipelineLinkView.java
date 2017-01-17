@@ -55,5 +55,9 @@ public class PipelineLinkView {
 		g.fillCircle(px + RADIUS_SOCKET, py + RADIUS_SOCKET, RADIUS_JOINT);
 		g.fillCircle(qx + RADIUS_SOCKET, qy + RADIUS_SOCKET, RADIUS_JOINT);
 	}
-	
+
+	public PipelineLink getLink() {
+		return link;
+	}
+		
 }

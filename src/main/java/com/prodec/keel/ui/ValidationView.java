@@ -26,6 +26,7 @@ public class ValidationView extends PipelineComponent {
 	@Override
 	protected void drawBrackground(Graphics g) {
 		Color background = COLOR_VALIDATION;
+		
 		g.setColor(background);
 		g.fillRect(this);
 	}
@@ -46,26 +47,59 @@ public class ValidationView extends PipelineComponent {
 				previous.next = this;
 			}
 
-			ValidationView root = root();
+			updateFilter(root());
 			
-			if (root.filterView != null) {
-				root.filterView.link(root, LinkPosition.TO);
-			}
 			break;
 		case FILTER:
-			filterView = ((FilterView) view); 
-			filterView.link(this, LinkPosition.TO);
+			ValidationView rootView = root();
+			rootView.filterView = ((FilterView) view);
+			rootView.filterView.link(rootView, LinkPosition.TO);
 			break;
 		default:
 			break;
 		}
 	}
 
+	@Override
+	public void unlink(PipelineComponent view, LinkPosition position) {
+		switch (view.type) {
+		case VALIDATION:
+			ValidationView it = (ValidationView)view;
+			
+			ValidationView root = root();
+			
+			if (previous == it) {
+				previous = null;
+				it.next = null;
+			} else if (next == it) {
+				next = null;
+				it.previous = null;
+			}
+			
+			updateFilter(root);
+			
+			break;
+		case FILTER:
+			ValidationView rootView = root();
+			rootView.filterView = ((FilterView) view);
+			rootView.filterView.unlink(rootView, LinkPosition.TO);
+			break;
+		default:
+			break;
+		}
+	}
+	
 	private ValidationView root() {
 		if (previous != null) {
 			return previous.root();
 		} else {
 			return this;
+		}
+	}
+	
+	private void updateFilter(ValidationView root) {
+		if (root.filterView != null) {
+			root.filterView.link(root, LinkPosition.TO);
 		}
 	}
 
