@@ -67,6 +67,11 @@ public class FilterViewApplication extends Application {
 	public void draw(Graphics g) {
 		
 		g.drawImage(source, 0, 0);
+		
+		g.setColor(Color.BLACK);
+		for (PipelineLinkView link: links) {
+			link.drawLine(g);
+		}
 
 		for (Component component : results) {
 			g.setColor(Color.BLACK);
@@ -76,10 +81,9 @@ public class FilterViewApplication extends Application {
 		for (PipelineComponent component : components) {
 			component.draw(g);
 		}
-
-		g.setColor(Color.BLACK);
+		
 		for (PipelineLinkView link: links) {
-			link.draw(g);
+			link.drawJoints(g);
 		}
 	}
 

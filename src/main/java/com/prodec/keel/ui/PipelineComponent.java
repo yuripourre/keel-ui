@@ -38,8 +38,8 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	protected static final int TITLE_BAR = 30;
 
 	protected static final Color COLOR_TITLE = new Color(0xff, 0xff, 0xff, 0x44);
-	protected static final Color COLOR_FILTER = new Color(0x45, 0x96, 0xe8);
-	protected static final Color COLOR_VALIDATION = new Color(0xe8, 0x45, 0x96);
+	protected static final Color COLOR_FILTER = new Color(0x45, 0x96, 0xe8, 0xe5);
+	protected static final Color COLOR_VALIDATION = new Color(0xe8, 0x45, 0x96, 0xe5);
 	
 	//Drag Event
 	private int lastX = 0;
