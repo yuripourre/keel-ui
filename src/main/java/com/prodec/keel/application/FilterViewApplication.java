@@ -5,10 +5,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.Mode;
 import com.prodec.keel.model.PipelineLink;
+import com.prodec.keel.ui.DrawerView;
 import com.prodec.keel.ui.PipelineComponent;
 import com.prodec.keel.ui.PipelineComponentItem;
 import com.prodec.keel.ui.PipelineLinkView;
+import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
 import com.prodec.keel.ui.validation.MinDimensionValidationView;
@@ -31,6 +35,7 @@ public class FilterViewApplication extends Application {
 	private BufferedImage source;
 	
 	private ColorFilter colorFiler;
+	private ColorFilterView filterView;
 
 	PipelineLink currentLink = new PipelineLink();
 
@@ -50,8 +55,9 @@ public class FilterViewApplication extends Application {
 		screen = new Component(0, 0, source.getWidth(), source.getHeight());
 		
 		colorFiler = new ColorFilter(w, h, Color.YELLOW, 100);
-
-		ColorFilterView filterView = new ColorFilterView(20, 310, colorFiler);
+		filterView = new ColorFilterView(20, 310, colorFiler);
+		
+		RectDrawerView rectangleView = new RectDrawerView(20, 450);
 
 		MaxDimensionValidationView maxDimensionView = new MaxDimensionValidationView(275, 310);
 		MinDimensionValidationView minDimensionView = new MinDimensionValidationView(275, 410);
@@ -59,6 +65,7 @@ public class FilterViewApplication extends Application {
 		components.add(filterView);
 		components.add(maxDimensionView);
 		components.add(minDimensionView);
+		components.add(rectangleView);
 		
 		//Force First Filter
 		resetFilter();
@@ -74,11 +81,12 @@ public class FilterViewApplication extends Application {
 			link.drawLine(g);
 		}
 
-		for (Component component : results) {
-			g.setColor(Color.BLACK);
-			g.drawRect(component.getRectangle());
+		for (PipelineComponent component : components) {
+			if (ComponentType.DRAWER == component.getType()) {
+				((DrawerView)component).drawResults(g);
+			}
 		}
-		
+				
 		for (PipelineComponent component : components) {
 			component.draw(g);
 		}
@@ -158,6 +166,12 @@ public class FilterViewApplication extends Application {
 		System.out.println("Reset Filter");
 		results = colorFiler.filter(new BufferedImageSource(source), screen);
 		System.out.println(results.size());
+		
+		//TODO Get filterView by source
+		DrawerView drawer = filterView.getDrawer();
+		if (drawer != null) {
+			drawer.setResults(results);
+		}
 	}
 	
 	@Override

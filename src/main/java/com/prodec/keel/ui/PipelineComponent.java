@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.prodec.keel.application.FilterViewApplication;
-import com.prodec.keel.application.Mode;
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.LinkPosition;
+import com.prodec.keel.model.Mode;
 
 import br.com.etyllica.awt.SVGColor;
 import br.com.etyllica.core.Drawable;
@@ -40,6 +40,7 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	protected static final Color COLOR_TITLE = new Color(0xff, 0xff, 0xff, 0x44);
 	protected static final Color COLOR_FILTER = new Color(0x45, 0x96, 0xe8, 0xe5);
 	protected static final Color COLOR_VALIDATION = new Color(0xe8, 0x45, 0x96, 0xe5);
+	protected static final Color COLOR_DRAWER = new Color(0x45, 0x45, 0x45, 0xe5);
 	
 	//Drag Event
 	private int lastX = 0;
@@ -295,6 +296,10 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	
 	public void linkRemoved() {
 		removeLink = false;
+	}
+
+	public ComponentType getType() {
+		return type;
 	}
 	
 }

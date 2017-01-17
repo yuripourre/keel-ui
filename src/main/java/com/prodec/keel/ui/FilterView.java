@@ -10,6 +10,7 @@ import com.prodec.keel.model.LinkPosition;
 
 public abstract class FilterView extends PipelineComponent {
  	
+	private DrawerView drawerView;
 	private ValidationView validationView;
 	protected TrackingFilter filter;
 	
@@ -37,6 +38,9 @@ public abstract class FilterView extends PipelineComponent {
 			validationView.filterView = this;
 			filter.clearValidations();
 			addValidation(validationView);
+		} else if (view.type == ComponentType.DRAWER) {
+			drawerView = (DrawerView) view;
+			drawerView.filterView = this;
 		}
 	}
 	
@@ -64,7 +68,15 @@ public abstract class FilterView extends PipelineComponent {
 			return to.type == ComponentType.VALIDATION && toItem.getInItem() && toItem.getIndex() == 0;
 		}
 		
+		if (fromItem.getInItem() && fromItem.getIndex() == 2) {
+			return to.type == ComponentType.DRAWER && toItem.getInItem() && toItem.getIndex() == 0;
+		}
+		
 		return false;
 	}
-	
+
+
+	public DrawerView getDrawer() {
+		return drawerView;
+	}
 }

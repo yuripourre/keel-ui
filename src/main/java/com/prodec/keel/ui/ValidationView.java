@@ -81,8 +81,8 @@ public class ValidationView extends PipelineComponent {
 			break;
 		case FILTER:
 			ValidationView rootView = root();
-			rootView.filterView = ((FilterView) view);
-			rootView.filterView.unlink(rootView, LinkPosition.TO);
+			FilterView filterView = ((FilterView) view);
+			filterView.unlink(rootView, position);
 			break;
 		default:
 			break;
