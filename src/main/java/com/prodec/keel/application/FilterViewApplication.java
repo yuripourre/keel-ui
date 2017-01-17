@@ -53,7 +53,6 @@ public class FilterViewApplication extends Application {
 		ColorFilterView filterView = new ColorFilterView(20, 310, colorFiler);
 
 		MaxDimensionValidationView maxDimensionView = new MaxDimensionValidationView(275, 310);
-		
 		MinDimensionValidationView minDimensionView = new MinDimensionValidationView(275, 410);
 
 		components.add(filterView);
@@ -130,6 +129,7 @@ public class FilterViewApplication extends Application {
 	}
 
 	private void resetFilter() {
+		System.out.println("Reset Filter");
 		results = colorFiler.filter(new BufferedImageSource(source), screen);
 		System.out.println(results.size());
 	}

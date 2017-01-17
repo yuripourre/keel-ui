@@ -7,6 +7,7 @@ import java.util.List;
 import com.prodec.keel.application.FilterViewApplication;
 import com.prodec.keel.application.Mode;
 import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.LinkPosition;
 
 import br.com.etyllica.awt.SVGColor;
 import br.com.etyllica.core.Drawable;
@@ -258,7 +259,7 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 		}
 	}
 
-	public void link(PipelineComponent from) {
+	public void link(PipelineComponent from, LinkPosition position) {
 		// TODO Auto-generated method stub
 	}
 

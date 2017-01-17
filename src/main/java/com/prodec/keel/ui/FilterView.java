@@ -6,6 +6,7 @@ import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.filter.TrackingFilter;
 
 import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.LinkPosition;
 
 public abstract class FilterView extends PipelineComponent {
  	
@@ -30,7 +31,7 @@ public abstract class FilterView extends PipelineComponent {
 	}
 	
 	@Override
-	public void link(PipelineComponent view) {
+	public void link(PipelineComponent view, LinkPosition position) {
 		if (view.type == ComponentType.VALIDATION) {
 			validationView = (ValidationView) view;
 			filter.clearValidations();
@@ -40,7 +41,7 @@ public abstract class FilterView extends PipelineComponent {
 	
 	private void addValidation(ValidationView validationView) {
 		filter.addValidation(validationView.getValidation());
-		if (validationView.getNext()!=null) {
+		if (validationView.getNext() != null) {
 			addValidation(validationView.getNext());
 		}
 	}

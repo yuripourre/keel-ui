@@ -1,0 +1,24 @@
+# Pre-Compiled Files #
+*.class
+*/bin
+
+# SDK Projects
+/sdk
+
+# IntelliJ Files
+*.iml
+*/.idea
+*/.settings
+
+# Eclipse Files
+*/.project
+*/.classpath
+
+# Automatic Generated Files #
+*.applet
+*.attach
+
+# Package Files #
+*.war
+*.ear
+

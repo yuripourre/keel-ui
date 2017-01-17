@@ -1,10 +1,10 @@
 
-import br.com.etyllica.EtyllicaApplet;
+import br.com.etyllica.Etyllica;
 import br.com.etyllica.core.context.Application;
 
 import com.prodec.keel.application.FilterViewApplication;
 
-public class FilterPipeline extends EtyllicaApplet {
+public class FilterPipeline extends Etyllica {
 
 	private static final long serialVersionUID = 1L;
 
@@ -13,6 +13,12 @@ public class FilterPipeline extends EtyllicaApplet {
 		super(600, 1024);
 	}
 
+	public static void main(String[] args) {
+		FilterPipeline app = new FilterPipeline();
+		app.setTitle("Keel");
+		app.init();
+	}
+	
 	@Override
 	public Application startApplication() {
 		initialSetup("../");
