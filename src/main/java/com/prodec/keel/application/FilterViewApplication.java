@@ -8,10 +8,12 @@ import java.util.List;
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.Mode;
 import com.prodec.keel.model.PipelineLink;
+import com.prodec.keel.ui.ClassifierView;
 import com.prodec.keel.ui.DrawerView;
 import com.prodec.keel.ui.PipelineComponent;
 import com.prodec.keel.ui.PipelineComponentItem;
 import com.prodec.keel.ui.PipelineLinkView;
+import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
@@ -62,11 +64,15 @@ public class FilterViewApplication extends Application {
 
 		MaxDimensionValidationView maxDimensionView = new MaxDimensionValidationView(275, 310);
 		MinDimensionValidationView minDimensionView = new MinDimensionValidationView(275, 410);
+		
+		SquareClassifierView classifierView = new SquareClassifierView(20, 610);
+		
 
 		components.add(filterView);
 		components.add(maxDimensionView);
 		components.add(minDimensionView);
 		components.add(rectangleView);
+		components.add(classifierView);
 		
 		//Force First Filter
 		resetFilter();
@@ -179,6 +185,11 @@ public class FilterViewApplication extends Application {
 		DrawerView drawer = filterView.getDrawer();
 		if (drawer != null) {
 			drawer.setResults(results);
+		}
+		ClassifierView classifier = filterView.getClassifier();
+		if (classifier != null) {
+			classifier.setResults(results);
+			classifier.classify(results);
 		}
 	}
 	

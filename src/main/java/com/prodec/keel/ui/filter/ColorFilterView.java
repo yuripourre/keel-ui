@@ -32,4 +32,5 @@ public class ColorFilterView  extends FilterView {
 		
 		// TODO Auto-generated method stub
 	}
+	
 }

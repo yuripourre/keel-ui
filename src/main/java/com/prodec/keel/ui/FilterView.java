@@ -9,6 +9,7 @@ import com.prodec.keel.model.LinkPosition;
 
 public abstract class FilterView extends PipelineComponent {
  	
+	private ClassifierView classifierView;
 	private DrawerView drawerView;
 	private ValidationView validationView;
 	protected TrackingFilter filter;
@@ -38,6 +39,9 @@ public abstract class FilterView extends PipelineComponent {
 		} else if (view.type == ComponentType.DRAWER) {
 			drawerView = (DrawerView) view;
 			drawerView.filterView = this;
+		} else if (view.type == ComponentType.CLASSIFIER) {
+			classifierView = (ClassifierView) view;
+			classifierView.filterView = this;
 		}
 	}
 	
@@ -47,6 +51,10 @@ public abstract class FilterView extends PipelineComponent {
 			validationView = (ValidationView) view;
 			validationView.filterView = null;
 			filter.clearValidations();
+		}else if (view.type == ComponentType.DRAWER) {
+			drawerView.filterView = null;
+		} else if (view.type == ComponentType.CLASSIFIER) {
+			classifierView.filterView = null;
 		}
 	}
 	
@@ -60,6 +68,10 @@ public abstract class FilterView extends PipelineComponent {
 	@Override
 	public boolean isValidLink(PipelineComponentItem fromItem,
 			PipelineComponent to, PipelineComponentItem toItem) {
+		
+		if (!fromItem.getInItem() && fromItem.getIndex() == 0) {
+			return to.type == ComponentType.CLASSIFIER && toItem.getInItem() && toItem.getIndex() == 0;
+		}
 		
 		if (fromItem.getInItem() && fromItem.getIndex() == 1) {
 			return to.type == ComponentType.VALIDATION && toItem.getInItem() && toItem.getIndex() == 0;
@@ -75,5 +87,9 @@ public abstract class FilterView extends PipelineComponent {
 
 	public DrawerView getDrawer() {
 		return drawerView;
+	}
+
+	public ClassifierView getClassifier() {
+		return classifierView;
 	}
 }

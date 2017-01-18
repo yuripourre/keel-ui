@@ -2,29 +2,31 @@ package com.prodec.keel.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.feature.Component;
 
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.LinkPosition;
 
-public abstract class DrawerView extends PipelineComponent {
+public abstract class ClassifierView extends PipelineComponent {
 
 	protected FilterView filterView = null;
+	
 	protected List<Component> results = new ArrayList<Component>();
-
-	public DrawerView(int x, int y, int w, int h) {
+	protected Map<Component, String> classifications = new HashMap<Component, String>();
+	
+	public ClassifierView(int x, int y, int w, int h) {
 		super(x, y, w, h);
-		type = ComponentType.DRAWER;
+		type = ComponentType.CLASSIFIER;
 		inItems.add("Input");
-		outItems.add("Next");
 	}
-
+	
 	@Override
 	protected Color buildBackgroundColor() {
-		return COLOR_DRAWER;
+		return COLOR_CLASSIFIER;
 	}
 
 	@Override
@@ -66,6 +68,5 @@ public abstract class DrawerView extends PipelineComponent {
 		this.results.addAll(results);
 	}
 
-	public abstract void drawResults(Graphics g);
-
+	public abstract void classify(List<Component> results);
 }

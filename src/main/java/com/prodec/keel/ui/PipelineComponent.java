@@ -42,6 +42,7 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	protected static final Color COLOR_FILTER = new Color(0x45, 0x96, 0xe8, 0xe5);
 	protected static final Color COLOR_VALIDATION = new Color(0xe8, 0x45, 0x96, 0xe5);
 	protected static final Color COLOR_DRAWER = new Color(0x45, 0x45, 0x45, 0xe5);
+	protected static final Color COLOR_CLASSIFIER = new Color(0xe8, 0xe8, 0x45, 0xe5);
 	
 	//Drag Event
 	private int lastX = 0;
@@ -114,19 +115,20 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 			int iy = itemSocketY(count, true);
 			
 			g.setColor(buildItemColor(count, true));
-			drawSocket(g, ty, count, item, ix, iy);
+			drawSocket(g, ty, item, ix, iy);
 			g.setColor(fontColor());
 			drawInItemText(g, ty, count, item, ix);
 			
 			count++;
 		}
+		
 		count = 0;
 		for (String item : outItems) {
 			int ix = itemSocketX(count, false);
 			int iy = itemSocketY(count, false);
 			
 			g.setColor(buildItemColor(count, false));
-			drawSocket(g, ty, count, item, ix, iy);
+			drawSocket(g, ty, item, ix, iy);
 			g.setColor(fontColor());
 			drawOutItemText(g, ty, count, item, ix);
 			
@@ -145,11 +147,10 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 		g.drawString(item, ix - width - 2, ty + ITEM_SPACING * count);
 	}
 
-	private void drawSocket(Graphics g, int ty, int count, String item, int ix,
-			int iy) {
+	private void drawSocket(Graphics g, int ty, String item, int ix, int iy) {
 		g.fillOval(ix, iy, SOCKET_SIZE, SOCKET_SIZE);
 		g.setColor(SVGColor.GRAY);
-		g.drawOval(ix, iy + ITEM_SPACING * count, SOCKET_SIZE, SOCKET_SIZE);
+		g.drawOval(ix, iy, SOCKET_SIZE, SOCKET_SIZE);
 	}
 	
 	private Color buildItemColor(int count, boolean inItem) {
@@ -266,7 +267,11 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	}
 
 	protected int commonAttributesEnd() {
-		return y + TITLE_BAR + inItems.size() * 20;
+		int size = inItems.size();
+		if (outItems.size() > inItems.size()) {
+			size = outItems.size(); 
+		}
+		return y + TITLE_BAR + size * 20;
 	}
 
 	public PipelineComponentItem getMouseOnItem() {
