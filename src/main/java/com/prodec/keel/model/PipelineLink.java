@@ -54,19 +54,19 @@ public class PipelineLink {
 	}
 
 	public void unlink() {
-		from.unlink(to, position());
+		from.unlink(to, fromItem, toItem);
 	}
 	
 	public void link() {
-		from.link(to, position());
+		from.link(to, fromItem, toItem);
 	}
 	
-	private LinkPosition position() {
+	/*private LinkPosition position() {
 		if (!fromItem.getInItem() && toItem.getInItem()) {
 			return LinkPosition.TO;
 		} else {
 			return LinkPosition.FROM;
 		}
-	}
+	}*/
 	
 }

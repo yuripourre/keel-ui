@@ -4,11 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.prodec.keel.application.FilterViewApplication;
-import com.prodec.keel.model.ComponentType;
-import com.prodec.keel.model.LinkPosition;
-import com.prodec.keel.model.Mode;
-
 import br.com.etyllica.awt.SVGColor;
 import br.com.etyllica.core.Drawable;
 import br.com.etyllica.core.collision.CollisionDetector;
@@ -17,7 +12,12 @@ import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.layer.Layer;
+import br.com.etyllica.motion.feature.Component;
 import br.com.etyllica.theme.ThemeManager;
+
+import com.prodec.keel.application.FilterViewApplication;
+import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.Mode;
 
 public abstract class PipelineComponent extends Layer implements Drawable {
 
@@ -40,7 +40,8 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 
 	protected static final Color COLOR_TITLE = new Color(0xff, 0xff, 0xff, 0x44);
 	protected static final Color COLOR_FILTER = new Color(0x45, 0x96, 0xe8, 0xe5);
-	protected static final Color COLOR_VALIDATION = new Color(0xe8, 0x45, 0x96, 0xe5);
+	protected static final Color COLOR_VALIDATION = new Color(0x45, 0xe8, 0x96, 0xe5);
+	protected static final Color COLOR_MODIFIER = new Color(0xe8, 0x45, 0x45, 0xe5);
 	protected static final Color COLOR_DRAWER = new Color(0x45, 0x45, 0x45, 0xe5);
 	protected static final Color COLOR_CLASSIFIER = new Color(0xe8, 0xe8, 0x45, 0xe5);
 	
@@ -288,12 +289,12 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 		}
 	}
 
-	public void unlink(PipelineComponent to, LinkPosition position) {
+	public void unlink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	public void link(PipelineComponent from, LinkPosition position) {
+	public void link(PipelineComponent from, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 		// TODO Auto-generated method stub
 	}
 

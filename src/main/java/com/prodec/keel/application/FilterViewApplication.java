@@ -5,20 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.prodec.keel.model.ComponentType;
-import com.prodec.keel.model.Mode;
-import com.prodec.keel.model.PipelineLink;
-import com.prodec.keel.ui.ClassifierView;
-import com.prodec.keel.ui.DrawerView;
-import com.prodec.keel.ui.PipelineComponent;
-import com.prodec.keel.ui.PipelineComponentItem;
-import com.prodec.keel.ui.PipelineLinkView;
-import com.prodec.keel.ui.classifier.SquareClassifierView;
-import com.prodec.keel.ui.drawer.RectDrawerView;
-import com.prodec.keel.ui.filter.ColorFilterView;
-import com.prodec.keel.ui.validation.MaxDimensionValidationView;
-import com.prodec.keel.ui.validation.MinDimensionValidationView;
-
 import br.com.etyllica.core.context.Application;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
@@ -29,6 +15,21 @@ import br.com.etyllica.motion.core.source.BufferedImageSource;
 import br.com.etyllica.motion.feature.Component;
 import br.com.etyllica.motion.filter.ColorFilter;
 import br.com.etyllica.theme.ThemeManager;
+
+import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.Mode;
+import com.prodec.keel.model.PipelineLink;
+import com.prodec.keel.ui.DrawerView;
+import com.prodec.keel.ui.PipelineComponent;
+import com.prodec.keel.ui.PipelineComponentItem;
+import com.prodec.keel.ui.PipelineLinkView;
+import com.prodec.keel.ui.classifier.SquareClassifierView;
+import com.prodec.keel.ui.drawer.CenterDrawerView;
+import com.prodec.keel.ui.drawer.RectDrawerView;
+import com.prodec.keel.ui.filter.ColorFilterView;
+import com.prodec.keel.ui.modifier.DummyModifierView;
+import com.prodec.keel.ui.validation.MaxDimensionValidationView;
+import com.prodec.keel.ui.validation.MinDimensionValidationView;
 
 public class FilterViewApplication extends Application {
 
@@ -59,20 +60,14 @@ public class FilterViewApplication extends Application {
 		
 		colorFiler = new ColorFilter(w, h, Color.YELLOW, 100);
 		filterView = new ColorFilterView(20, 310, colorFiler);
-		
-		RectDrawerView rectangleView = new RectDrawerView(20, 450);
-
-		MaxDimensionValidationView maxDimensionView = new MaxDimensionValidationView(275, 310);
-		MinDimensionValidationView minDimensionView = new MinDimensionValidationView(275, 410);
-		
-		SquareClassifierView classifierView = new SquareClassifierView(20, 610);
-		
 
 		components.add(filterView);
-		components.add(maxDimensionView);
-		components.add(minDimensionView);
-		components.add(rectangleView);
-		components.add(classifierView);
+		components.add(new MaxDimensionValidationView(275, 310));
+		components.add(new MinDimensionValidationView(275, 410));
+		components.add(new RectDrawerView(20, 450));
+		components.add(new SquareClassifierView(20, 540));
+		components.add(new DummyModifierView(20, 650));
+        components.add(new CenterDrawerView(275, 650));
 		
 		//Force First Filter
 		resetFilter();
@@ -177,20 +172,10 @@ public class FilterViewApplication extends Application {
 	}
 
 	private void resetFilter() {
-		System.out.println("Reset Filter");
-		results = colorFiler.filter(new BufferedImageSource(source), screen);
-		System.out.println(results.size());
-		
-		//TODO Get filterView by source
-		DrawerView drawer = filterView.getDrawer();
-		if (drawer != null) {
-			drawer.setResults(results);
-		}
-		ClassifierView classifier = filterView.getClassifier();
-		if (classifier != null) {
-			classifier.setResults(results);
-			classifier.classify(results);
-		}
+		//Reset filter
+		filterView.source = new BufferedImageSource(source);
+		filterView.component = screen;
+		filterView.resetFilter();
 	}
 	
 	@Override

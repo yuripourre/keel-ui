@@ -21,7 +21,7 @@ public class FilterPipeline extends Etyllica {
 	
 	@Override
 	public Application startApplication() {
-		initialSetup("../");
+		initialSetup("");
 		return new FilterViewApplication(w,h);
 	}	
 

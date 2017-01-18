@@ -1,19 +1,19 @@
 package com.prodec.keel.ui.drawer;
 
-import java.awt.Color;
-
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.feature.Component;
-
 import com.prodec.keel.ui.DrawerView;
 
-public class RectDrawerView extends DrawerView {
+import java.awt.*;
 
-	Color color;
-	
-	public RectDrawerView(int x, int y) {
-		super(x, y, VIEW_WIDTH, 80);
-		title = "Rectangular Drawer";
+public class CenterDrawerView extends DrawerView {
+
+	Color color = Color.BLACK;
+	int radius = 5;
+
+	public CenterDrawerView(int x, int y) {
+		super(x, y, VIEW_WIDTH, 90);
+		title = "Center Drawer";
 	}
 
 	@Override
@@ -22,12 +22,16 @@ public class RectDrawerView extends DrawerView {
 				
 		//Draw Attributes
 		drawColorPickerAttribute(g, "Color", 0, color);
+		drawSliderAttribute(g, "Radius", 1, radius);
 	}
 	
 	public void drawResults(Graphics g) {
 		g.setColor(color);
 		for (Component component : results) {
-			g.drawRect(component.getRectangle());
+			int cx = component.getX() + component.getW()/2;
+			int cy = component.getY() + component.getH()/2;
+
+			g.fillCircle(cx, cy, radius);
 		}
 	}
 	

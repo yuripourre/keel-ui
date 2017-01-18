@@ -15,19 +15,21 @@ public class SquareClassifierView extends ClassifierView {
 		super(x, y, VIEW_WIDTH, 80);
 		
 		title = "Square Classifier";
-		
-		outItems.add(CLASS_SQUARE);
-		outItems.add(CLASS_NON_SQUARE);
+
+		addCategory(CLASS_SQUARE);
+		addCategory(CLASS_NON_SQUARE);
 	}
 
 	@Override
 	public void classify(List<Component> results) {
 		for (Component component : results) {
+			String category = CLASS_NON_SQUARE;
 			if (component.getW() == component.getH()) {
-				classifications.put(component, CLASS_SQUARE);
-			} else {
-				classifications.put(component, CLASS_NON_SQUARE);
+				category = CLASS_SQUARE;
 			}
+
+			List<Component> components = classifications.get(category);
+			components.add(component);
 		}
 	}
 

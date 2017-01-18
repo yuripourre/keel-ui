@@ -5,7 +5,6 @@ import java.awt.Color;
 import br.com.etyllica.motion.core.strategy.ComponentValidationStrategy;
 
 import com.prodec.keel.model.ComponentType;
-import com.prodec.keel.model.LinkPosition;
 
 public class ValidationView extends PipelineComponent {
 
@@ -32,82 +31,110 @@ public class ValidationView extends PipelineComponent {
 	}
 
 	@Override
-	public void link(PipelineComponent view, LinkPosition position) {
+	public void link(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
+		
+		ValidationView root;
 		switch (view.type) {
 		case VALIDATION:
-			if (LinkPosition.TO == position) {
-				next = ((ValidationView) view);
-				next.previous = this;
-			} else {
+
+			if (fromNext(fromItem, toItem)) {
 				previous = ((ValidationView) view);
 				previous.next = this;
+			} else if (toNext(fromItem, toItem)) {
+				next = ((ValidationView) view);
+				next.previous = this;
 			}
 
-			updateFilter(root());
+			link(fromItem, toItem);
 			
 			break;
 		case FILTER:
-			ValidationView rootView = root();
-			rootView.filterView = ((FilterView) view);
-			rootView.filterView.link(rootView, LinkPosition.TO);
-			break;
-		default:
-			break;
-		}
-	}
-
-	@Override
-	public void unlink(PipelineComponent view, LinkPosition position) {
-		switch (view.type) {
-		case VALIDATION:
-			ValidationView it = (ValidationView)view;
+			root = root();
+			root.filterView = ((FilterView) view);
+			link(fromItem, toItem);
 			
-			ValidationView root = root();
-			
-			if (previous == it) {
-				previous = null;
-				it.next = null;
-			} else if (next == it) {
-				next = null;
-				it.previous = null;
-			}
-			
-			updateFilter(root);
-			
-			break;
-		case FILTER:
-			ValidationView rootView = root();
-			FilterView filterView = ((FilterView) view);
-			filterView.unlink(rootView, position);
 			break;
 		default:
 			break;
 		}
 	}
 	
-	private ValidationView root() {
+	private boolean fromNext(PipelineComponentItem fromItem, PipelineComponentItem toItem) {
+		return (fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0);
+	}
+	
+	private boolean toNext(PipelineComponentItem fromItem, PipelineComponentItem toItem) {
+		return (!fromItem.inItem && fromItem.index == 0 && toItem.inItem && toItem.index == 0);
+	}
+
+	@Override
+	public void unlink(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
+		
+		ValidationView root;
+		
+		switch (view.type) {
+		case VALIDATION:
+			ValidationView it = (ValidationView)view;
+
+			root = root();
+
+			if (previous == it) {
+				previous = null;
+				it.next = null;
+				root = it;
+			} else if (next == it) {
+				next = null;
+				it.previous = null;
+				root = this;
+			}
+			
+			if (root.filterView != null) {
+				root.filterView.link(root, fromItem, toItem);
+				root.filterView.resetFilter();
+			}
+			
+			break;
+		case FILTER:
+			view.unlink(root(), fromItem, toItem);
+			unlink(fromItem, toItem);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void link(PipelineComponentItem fromItem, PipelineComponentItem toItem) {
+		ValidationView root = root();
+		if (root.filterView != null) {
+			root.filterView.link(root, fromItem, toItem);
+			root.filterView.resetFilter();
+		}
+	}
+	
+	private void unlink(PipelineComponentItem fromItem, PipelineComponentItem toItem) {
+		ValidationView root = root();
+		if (root.filterView != null) {
+			root.filterView.unlink(root, fromItem, toItem);
+			root.filterView.resetFilter();
+		}
+	}
+	
+	protected ValidationView root() {
 		if (previous != null) {
 			return previous.root();
 		} else {
 			return this;
 		}
 	}
-	
-	private void updateFilter(ValidationView root) {
-		if (root.filterView != null) {
-			root.filterView.link(root, LinkPosition.TO);
-		}
-	}
+
 
 	@Override
 	public boolean isValidLink(PipelineComponentItem fromItem,
 			PipelineComponent to, PipelineComponentItem toItem) {
 
 		if (to.type == ComponentType.VALIDATION) {
-			boolean toNext = !fromItem.inItem && fromItem.index == 0 
-					&& toItem.inItem && toItem.index == 0;
-			boolean fromNext = fromItem.inItem && fromItem.index == 0 
-					&& !toItem.inItem && toItem.index == 0;
+			boolean toNext = toNext(fromItem, toItem);
+			boolean fromNext = fromNext(fromItem, toItem);
 
 			boolean validRoot = next != to && previous != to;
 						
