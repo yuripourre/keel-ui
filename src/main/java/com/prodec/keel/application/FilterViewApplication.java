@@ -26,6 +26,7 @@ import br.com.etyllica.loader.image.ImageLoader;
 import br.com.etyllica.motion.core.source.BufferedImageSource;
 import br.com.etyllica.motion.feature.Component;
 import br.com.etyllica.motion.filter.ColorFilter;
+import br.com.etyllica.theme.ThemeManager;
 
 public class FilterViewApplication extends Application {
 
@@ -69,6 +70,13 @@ public class FilterViewApplication extends Application {
 		
 		//Force First Filter
 		resetFilter();
+		
+		setupUI();
+	}
+	
+	private void setupUI() {
+		//ThemeManager.getInstance().getTheme().setTextColor(Color.WHITE);
+		ThemeManager.getInstance().getTheme().setTextColor(Color.BLACK);
 	}
 
 	@Override

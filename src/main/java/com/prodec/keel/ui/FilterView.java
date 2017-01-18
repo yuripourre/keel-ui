@@ -2,7 +2,6 @@ package com.prodec.keel.ui;
 
 import java.awt.Color;
 
-import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.filter.TrackingFilter;
 
 import com.prodec.keel.model.ComponentType;
@@ -25,10 +24,8 @@ public abstract class FilterView extends PipelineComponent {
 	}
 	
 	@Override
-	protected void drawBrackground(Graphics g) {
-		Color background = COLOR_FILTER;
-		g.setColor(background);
-		g.fillRect(this);
+	protected Color buildBackgroundColor() {
+		return COLOR_FILTER;
 	}
 	
 	@Override

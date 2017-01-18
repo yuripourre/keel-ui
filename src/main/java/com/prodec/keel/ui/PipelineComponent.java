@@ -30,12 +30,13 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 
 	protected String title = "";
 
-	protected static final int VIEW_WIDTH = 200;
+	protected static final int VIEW_WIDTH = 240;
 
 	public static final int SOCKET_SIZE = 10;
 	protected static final int ITEM_SPACING = 16;	
 	protected static final int PADDING_TITLE_BAR = 6;
 	protected static final int TITLE_BAR = 30;
+	protected static final int BORDER_ROUNDNESS = 18;
 
 	protected static final Color COLOR_TITLE = new Color(0xff, 0xff, 0xff, 0x44);
 	protected static final Color COLOR_FILTER = new Color(0x45, 0x96, 0xe8, 0xe5);
@@ -64,26 +65,42 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 		drawBrackground(g);
 		drawTitleBar(g);
 		//Draw Border
-		g.drawRect(this);
+		drawBorder(g);
 
 		//Draw Sockets
 		drawCommonAttributes(g);
 	}
 
 	protected void drawBrackground(Graphics g) {
-		Color background = ThemeManager.getInstance().getTheme().getPanelColor();
+		Color background = buildBackgroundColor();
 		g.setColor(background);
-		g.fillRect(this);
+		
+		g.fillRoundRect(x, y, w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
+	}
+	
+	protected void drawBorder(Graphics g) {
+		Color background = Color.BLACK;
+		g.setColor(background);
+		
+		g.drawRoundRect(x, y, w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
+	}
+
+	protected Color buildBackgroundColor() {
+		return ThemeManager.getInstance().getTheme().getPanelColor();
 	}
 
 	protected void drawTitleBar(Graphics g) {
 		//Draw Title Bar
 		g.setColor(COLOR_TITLE);
-		g.fillRect(x, y, w, TITLE_BAR);
+		int halfBorder = BORDER_ROUNDNESS/2;
+		g.fillArc(x, y, BORDER_ROUNDNESS, BORDER_ROUNDNESS, 180, -90);
+		g.fillArc(x + w - BORDER_ROUNDNESS, y, BORDER_ROUNDNESS, BORDER_ROUNDNESS, 0, 90);
+		g.fillRect(x + halfBorder, y, w - BORDER_ROUNDNESS, halfBorder);
+		g.fillRect(x, y + halfBorder, w + 1, TITLE_BAR - halfBorder);
 
 		//Draw Title
-		g.setColor(Color.BLACK);
-		g.drawLine(x, y + TITLE_BAR, x + w, y + TITLE_BAR);
+		g.setColor(fontColor());
+		g.drawLine(x, y + TITLE_BAR, x + w - 1, y + TITLE_BAR);
 		g.drawString(title, x + PADDING_TITLE_BAR, y + PADDING_TITLE_BAR + TITLE_BAR/2);
 	}
 
@@ -98,7 +115,7 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 			
 			g.setColor(buildItemColor(count, true));
 			drawSocket(g, ty, count, item, ix, iy);
-			g.setColor(SVGColor.BLACK);
+			g.setColor(fontColor());
 			drawInItemText(g, ty, count, item, ix);
 			
 			count++;
@@ -110,13 +127,13 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 			
 			g.setColor(buildItemColor(count, false));
 			drawSocket(g, ty, count, item, ix, iy);
-			g.setColor(SVGColor.BLACK);
+			g.setColor(fontColor());
 			drawOutItemText(g, ty, count, item, ix);
 			
 			count++;
 		}
 
-		g.drawLine(x, sepY, x + w, sepY);
+		g.drawLine(x, sepY, x + w - 1, sepY);
 	}
 
 	private void drawInItemText(Graphics g, int ty, int count, String item, int ix) {
@@ -301,5 +318,33 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	public ComponentType getType() {
 		return type;
 	}
+
+	//Draw Attributes Method
+	protected void drawColorPickerAttribute(Graphics g, String label, int order, int color) {
+		int sepY = commonAttributesEnd();
+		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+		g.setColor(color);
+		g.fillRect(x + w - 14, sepY + 6, 12, 12);
+		
+		g.setColor(fontColor());
+	}
 	
+	protected void drawColorPickerAttribute(Graphics g, String label, int order, Color color) {
+		int sepY = commonAttributesEnd();
+		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+		g.setColor(color);
+		g.fillRect(x + w - 14, sepY + 6, 12, 12);
+		
+		g.setColor(fontColor());
+	}
+	
+	protected void drawSliderAttribute(Graphics g, String label, int order, int value) {
+		int sepY = commonAttributesEnd();
+		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(Integer.toString(value), x + 154, sepY + ITEM_SPACING * (order + 1));
+	}
+	
+	private Color fontColor() {
+		return ThemeManager.getInstance().getTheme().getTextColor();
+	}
 }

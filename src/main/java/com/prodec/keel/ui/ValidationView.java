@@ -2,7 +2,6 @@ package com.prodec.keel.ui;
 
 import java.awt.Color;
 
-import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.core.strategy.ComponentValidationStrategy;
 
 import com.prodec.keel.model.ComponentType;
@@ -22,13 +21,10 @@ public class ValidationView extends PipelineComponent {
 		inItems.add("Filter");
 		outItems.add("Next");
 	}
-
+	
 	@Override
-	protected void drawBrackground(Graphics g) {
-		Color background = COLOR_VALIDATION;
-		
-		g.setColor(background);
-		g.fillRect(this);
+	protected Color buildBackgroundColor() {
+		return COLOR_VALIDATION;
 	}
 
 	public ComponentValidationStrategy getValidation() {

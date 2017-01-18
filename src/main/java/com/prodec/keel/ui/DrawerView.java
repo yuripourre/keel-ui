@@ -12,7 +12,7 @@ import com.prodec.keel.model.LinkPosition;
 
 public class DrawerView extends PipelineComponent {
 
-	private List<Component> results = new ArrayList<Component>();
+	protected List<Component> results = new ArrayList<Component>();
 	protected FilterView filterView = null;
 
 	public DrawerView(int x, int y, int w, int h) {
@@ -23,11 +23,8 @@ public class DrawerView extends PipelineComponent {
 	}
 
 	@Override
-	protected void drawBrackground(Graphics g) {
-		Color background = COLOR_DRAWER;
-		
-		g.setColor(background);
-		g.fillRect(this);
+	protected Color buildBackgroundColor() {
+		return COLOR_DRAWER;
 	}
 
 	@Override
