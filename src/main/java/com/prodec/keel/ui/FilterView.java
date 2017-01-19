@@ -53,6 +53,7 @@ public abstract class FilterView extends PipelineComponent {
         } else if (view.type == ComponentType.MODIFIER) {
             ModifierView modifierView = (ModifierView) view;
             listener = modifierView;
+            resetFilter();
         }
     }
 
@@ -65,11 +66,11 @@ public abstract class FilterView extends PipelineComponent {
         } else if (view.type == ComponentType.DRAWER) {
             drawerView.clear();
             drawerView = null;
-        } else if (view.type == ComponentType.CLASSIFIER ) {
+        } else if (view.type == ComponentType.CLASSIFIER) {
             ClassifierView classifierView = (ClassifierView) view;
             classifierView.filterInputView = null;
             listener = null;
-        } else if (view.type == ComponentType.MODIFIER ) {
+        } else if (view.type == ComponentType.MODIFIER) {
             listener = null;
         }
     }

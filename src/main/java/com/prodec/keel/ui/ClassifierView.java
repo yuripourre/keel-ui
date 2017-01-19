@@ -13,12 +13,11 @@ import java.util.Map;
 public abstract class ClassifierView extends PipelineComponent implements FilterListener {
 
     protected FilterView filterInputView = null;
-    protected FilterView filterOutputView = null;
 
     protected List<String> categories = new ArrayList<>();
     protected List<Component> results = new ArrayList<>();
     protected Map<String, List<Component>> classifications = new HashMap<>();
-    protected Map<String, FilterView> outFilters = new HashMap<>();
+    protected Map<String, ModifierView> outputs = new HashMap<>();
 
     public ClassifierView(int x, int y, int w, int h) {
         super(x, y, w, h);
@@ -35,18 +34,12 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
     public void link(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
         switch (view.type) {
             case FILTER:
-                if (fromItem.inItem) {
-                    filterInputView = ((FilterView) view);
-                    filterInputView.link(this, toItem, fromItem);
-                } else {
-                    String classification = categories.get(toItem.index);
-                    outFilters.put(classification, filterInputView);
-                }
-
+                clear();
+                view.link(this, toItem, fromItem);
                 break;
             case MODIFIER:
-                view.link(this, toItem, fromItem);
-                resetFilter();
+                ModifierView modifierView = (ModifierView) view;
+                linkModifier(modifierView, fromItem.index);
                 break;
             default:
                 break;
@@ -57,16 +50,37 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
     public void unlink(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
         switch (view.type) {
             case FILTER:
-                if (fromItem.inItem) {
-                    filterInputView.unlink(this, fromItem, toItem);
-                }
+                filterInputView.unlink(this, fromItem, toItem);
+                clear();
                 break;
             case MODIFIER:
+                //Remove modifier from filters
+                ModifierView modifierView = (ModifierView) view;
+                unlinkModifier(modifierView, fromItem.index);
+                break;
+            case CLASSIFIER:
                 view.unlink(this, toItem, fromItem);
                 break;
             default:
                 break;
         }
+    }
+
+    public void linkModifier(ModifierView modifierView, int indexClass) {
+        String classification = categories.get(indexClass);
+        System.out.println("Class: "+classification);
+        outputs.put(classification, modifierView);
+
+        List<Component> classifyResults = classifications.get(classification);
+        modifierView.setResults(classifyResults);
+    }
+
+    public void unlinkModifier(ModifierView modifierView, int indexClass) {
+        String classification = categories.get(indexClass);
+        System.out.println("Class: "+classification);
+        outputs.remove(classification);
+
+        modifierView.clearResults();
     }
 
     @Override
@@ -88,7 +102,7 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
 
     protected void addCategory(String category) {
         outItems.add(category);
-        classifications.put(category, new ArrayList<>());
+        classifications.put(category, new ArrayList<Component>());
         categories.add(category);
     }
 
@@ -98,25 +112,28 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
         this.results.addAll(results);
 
         classify(this.results);
-        propagate(this.results);
+        propagate();
     }
 
     public abstract void classify(List<Component> results);
 
-    public void propagate(List<Component> results) {
-
-    }
-
-    public List<Component> getResultsByIndex(int index) {
-        String category = categories.get(index);
-        List<Component> results = classifications.get(category);
-
-        return results;
-    }
-
-    public void resetFilter() {
-        if (filterInputView != null) {
-            filterInputView.resetFilter();
+    public void propagate() {
+        for (String category : categories) {
+            if (outputs.containsKey(category)) {
+                ModifierView outFilter = outputs.get(category);
+                outFilter.setResults(classifications.get(category));
+            }
         }
     }
+
+    public void clear() {
+        results.clear();
+
+        for (String category : categories) {
+            classifications.put(category, new ArrayList<Component>());
+        }
+
+        propagate();
+    }
+
 }

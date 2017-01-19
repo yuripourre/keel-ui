@@ -11,9 +11,9 @@ import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
+import br.com.etyllica.gui.theme.ThemeManager;
 import br.com.etyllica.layer.Layer;
 import br.com.etyllica.motion.feature.Component;
-import br.com.etyllica.theme.ThemeManager;
 
 import com.prodec.keel.application.FilterViewApplication;
 import com.prodec.keel.model.ComponentType;

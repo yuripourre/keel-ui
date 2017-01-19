@@ -34,13 +34,7 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
         switch (view.type) {
             case CLASSIFIER:
                 ClassifierView classifierView = (ClassifierView) view;
-                List<Component> classifyResults = classifierView.getResultsByIndex(toItem.index);
-                setResults(classifyResults);
-
-                if (drawerView != null) {
-                    drawerView.setResults(results);
-                }
-                classifierView.resetFilter();
+                classifierView.linkModifier(this, toItem.index);
                 break;
             case DRAWER:
                 drawerView = (DrawerView) view;
@@ -60,7 +54,9 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
 
         switch (view.type) {
             case CLASSIFIER:
-                results.clear();
+                ClassifierView classifierView = (ClassifierView) view;
+                classifierView.unlinkModifier(this, toItem.index);
+                break;
             case DRAWER:
                 if (drawerView != null) {
                     drawerView.clear();
@@ -104,7 +100,14 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
     public abstract void modify(List<Component> results);
 
     public void propagate(List<Component> results) {
-
+        if (drawerView != null) {
+            drawerView.setResults(results);
+        }
+        //TODO If next != null
     }
 
+    public void clearResults() {
+        results.clear();
+        propagate(results);
+    }
 }

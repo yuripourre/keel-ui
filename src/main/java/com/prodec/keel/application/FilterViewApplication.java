@@ -10,11 +10,11 @@ import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
+import br.com.etyllica.gui.theme.ThemeManager;
 import br.com.etyllica.loader.image.ImageLoader;
 import br.com.etyllica.motion.core.source.BufferedImageSource;
 import br.com.etyllica.motion.feature.Component;
 import br.com.etyllica.motion.filter.ColorFilter;
-import br.com.etyllica.theme.ThemeManager;
 
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.Mode;
