@@ -58,15 +58,14 @@ public abstract class DrawerView extends PipelineComponent implements FilterList
     }
 
     @Override
-    public boolean isValidLink(PipelineComponentItem fromItem,
-                               PipelineComponent to, PipelineComponentItem toItem) {
+    public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 
         if (to.type == ComponentType.FILTER) {
-            return to.isValidLink(toItem, this, fromItem);
+            return to.isValidLink(this, toItem, fromItem);
         } else if (to.type == ComponentType.CLASSIFIER) {
-            return to.isValidLink(toItem, this, fromItem);
+            return to.isValidLink(this, toItem, fromItem);
         } else if (to.type == ComponentType.MODIFIER) {
-            return to.isValidLink(toItem, this, fromItem);
+            return to.isValidLink(this, toItem, fromItem);
         }
 
         return false;

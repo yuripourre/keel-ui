@@ -1,34 +1,37 @@
 package com.prodec.keel.ui;
 
-import br.com.etyllica.motion.core.source.BufferedImageSource;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.etyllica.motion.core.source.ImageSource;
 import br.com.etyllica.motion.feature.Component;
 import br.com.etyllica.motion.filter.TrackingFilter;
+
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.FilterListener;
 
-import java.awt.*;
-import java.util.List;
-
 public abstract class FilterView extends PipelineComponent {
 
-    //TODO REMOVE, USE SOURCE_VIEW INSTEAD
-    public BufferedImageSource source;
-    public Component component;
+    public ImageSource source;
+    public Component region;
 
     private FilterListener listener;
 
     private DrawerView drawerView;
     private ValidationView validationView;
     protected TrackingFilter filter;
-
+    
+    protected List<Component> results = new ArrayList<Component>();
+    
     public FilterView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.FILTER;
-        inItems.add("Feature");
+        inItems.add("Source");
         inItems.add("Validation");
         inItems.add("Drawer");
 
-        outItems.add("Result");
+        outItems.add("Output");
     }
 
     @Override
@@ -38,18 +41,22 @@ public abstract class FilterView extends PipelineComponent {
 
     @Override
     public void link(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
-        if (view.type == ComponentType.VALIDATION) {
+        if (view.type == ComponentType.SOURCE) {
+            view.link(this, toItem, fromItem);
+        } else if (view.type == ComponentType.VALIDATION) {
             validationView = (ValidationView) view;
             validationView.filterView = this;
             filter.clearValidations();
             addValidation(validationView);
+            resetFilter();
         } else if (view.type == ComponentType.DRAWER) {
             drawerView = (DrawerView) view;
+            propagate(results);
         } else if (view.type == ComponentType.CLASSIFIER) {
             ClassifierView classifierView = (ClassifierView) view;
             listener = classifierView;
             classifierView.filterInputView = this;
-            resetFilter();
+            propagate(results);
         } else if (view.type == ComponentType.MODIFIER) {
             ModifierView modifierView = (ModifierView) view;
             listener = modifierView;
@@ -59,16 +66,20 @@ public abstract class FilterView extends PipelineComponent {
 
     @Override
     public void unlink(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
-        if (view.type == ComponentType.VALIDATION) {
+        if (view.type == ComponentType.SOURCE) {
+            view.unlink(this, toItem, fromItem);
+        } else if (view.type == ComponentType.VALIDATION) {
             validationView = (ValidationView) view;
             validationView.filterView = null;
             filter.clearValidations();
+            resetFilter();
         } else if (view.type == ComponentType.DRAWER) {
             drawerView.clear();
             drawerView = null;
         } else if (view.type == ComponentType.CLASSIFIER) {
             ClassifierView classifierView = (ClassifierView) view;
             classifierView.filterInputView = null;
+            classifierView.clear();
             listener = null;
         } else if (view.type == ComponentType.MODIFIER) {
             listener = null;
@@ -83,8 +94,11 @@ public abstract class FilterView extends PipelineComponent {
     }
 
     @Override
-    public boolean isValidLink(PipelineComponentItem fromItem,
-                               PipelineComponent to, PipelineComponentItem toItem) {
+    public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
+
+        if (to.type == ComponentType.SOURCE) {
+            return to.isValidLink(this, toItem, fromItem);
+        }
 
         if (!fromItem.getInItem() && fromItem.getIndex() == 0) {
             return to.type == ComponentType.CLASSIFIER && toItem.getInItem() && toItem.getIndex() == 0;
@@ -103,11 +117,24 @@ public abstract class FilterView extends PipelineComponent {
 
     public void resetFilter() {
         System.out.println("Reset Filter");
-        List<Component> results = filter.filter(source, component);
-        System.out.println(results.size());
 
-        //TODO Get filterView by source
-        if (drawerView != null) {
+        if (source != null) {
+        	results.clear();
+            results.addAll(filter.filter(source, region));
+            propagate(results);
+        } else {
+            if (drawerView != null) {
+                drawerView.clear();
+            }
+
+            if (listener != null) {
+                listener.clear();
+            }
+        }
+    }
+    
+    private void propagate(List<Component> results) {
+    	if (drawerView != null) {
             drawerView.setResults(results);
         }
 

@@ -45,7 +45,7 @@ public class PipelineLink {
 			return false;
 		}
 		
-		return from.isValidLink(fromItem, to, toItem);
+		return from.isValidLink(to, fromItem, toItem);
 	}
 	
 	public void reset() {

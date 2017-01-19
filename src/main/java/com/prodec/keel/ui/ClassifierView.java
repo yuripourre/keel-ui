@@ -68,7 +68,6 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
 
     public void linkModifier(ModifierView modifierView, int indexClass) {
         String classification = categories.get(indexClass);
-        System.out.println("Class: "+classification);
         outputs.put(classification, modifierView);
 
         List<Component> classifyResults = classifications.get(classification);
@@ -77,24 +76,22 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
 
     public void unlinkModifier(ModifierView modifierView, int indexClass) {
         String classification = categories.get(indexClass);
-        System.out.println("Class: "+classification);
         outputs.remove(classification);
 
-        modifierView.clearResults();
+        modifierView.clear();
     }
 
     @Override
-    public boolean isValidLink(PipelineComponentItem fromItem,
-                               PipelineComponent to, PipelineComponentItem toItem) {
+    public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 
         if (to.type == ComponentType.FILTER) {
             if (!fromItem.inItem && toItem.inItem && toItem.index == 0) {
                 return true;
             }
 
-            return to.isValidLink(toItem, this, fromItem);
+            return to.isValidLink(this, toItem, fromItem);
         } else if (to.type == ComponentType.MODIFIER) {
-            return to.isValidLink(toItem, this, fromItem);
+            return to.isValidLink(this, toItem, fromItem);
         }
 
         return false;

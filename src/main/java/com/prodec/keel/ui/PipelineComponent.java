@@ -12,6 +12,7 @@ import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.gui.theme.ThemeManager;
+import br.com.etyllica.layer.GeometricLayer;
 import br.com.etyllica.layer.Layer;
 import br.com.etyllica.motion.feature.Component;
 
@@ -44,6 +45,7 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	protected static final Color COLOR_MODIFIER = new Color(0xe8, 0x45, 0x45, 0xe5);
 	protected static final Color COLOR_DRAWER = new Color(0x45, 0x45, 0x45, 0xe5);
 	protected static final Color COLOR_CLASSIFIER = new Color(0xe8, 0xe8, 0x45, 0xe5);
+	protected static final Color COLOR_SOURCE = new Color(0x45, 0x08, 0x96, 0xe5);
 	
 	//Drag Event
 	private int lastX = 0;
@@ -298,8 +300,7 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 		// TODO Auto-generated method stub
 	}
 
-	public boolean isValidLink(PipelineComponentItem fromItem,
-			PipelineComponent to, PipelineComponentItem toItem) {
+	public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -348,6 +349,20 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 		int sepY = commonAttributesEnd();
 		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
 		g.drawString(Integer.toString(value), x + 154, sepY + ITEM_SPACING * (order + 1));
+	}
+
+	protected void drawRegionAttribute(Graphics g, String label, int order, Component region) {
+		int sepY = commonAttributesEnd();
+		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+
+		String regionText = region.getX()+", "+region.getY()+", "+region.getW()+", "+region.getH();
+		g.drawString(regionText, x + 154, sepY + ITEM_SPACING * (order + 1));
+	}
+
+	protected void drawFileDialogAttribute(Graphics g, String label, int order, String path) {
+		int sepY = commonAttributesEnd();
+		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(path, x + 154, sepY + ITEM_SPACING * (order + 1));
 	}
 	
 	private Color fontColor() {

@@ -129,8 +129,7 @@ public class ValidationView extends PipelineComponent {
 
 
 	@Override
-	public boolean isValidLink(PipelineComponentItem fromItem,
-			PipelineComponent to, PipelineComponentItem toItem) {
+	public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 
 		if (to.type == ComponentType.VALIDATION) {
 			boolean toNext = toNext(fromItem, toItem);
@@ -141,7 +140,7 @@ public class ValidationView extends PipelineComponent {
 			return validRoot && (toNext || fromNext);
 
 		} else if (to.type == ComponentType.FILTER) {
-			return to.isValidLink(toItem, this, fromItem);
+			return to.isValidLink(this, toItem, fromItem);
 		}
 
 		return false;

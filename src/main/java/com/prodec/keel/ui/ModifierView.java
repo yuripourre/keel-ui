@@ -74,8 +74,7 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
 
 
     @Override
-    public boolean isValidLink(PipelineComponentItem fromItem,
-                               PipelineComponent to, PipelineComponentItem toItem) {
+    public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
         if (to.type == ComponentType.DRAWER) {
             if (fromItem.inItem && fromItem.index == 1 && toItem.inItem && toItem.index == 0) {
                 return true;
@@ -106,7 +105,7 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
         //TODO If next != null
     }
 
-    public void clearResults() {
+    public void clear() {
         results.clear();
         propagate(results);
     }
