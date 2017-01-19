@@ -15,6 +15,7 @@ import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
 import com.prodec.keel.ui.modifier.DummyModifierView;
+import com.prodec.keel.ui.source.CameraSourceView;
 import com.prodec.keel.ui.source.ImageSourceView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
 import com.prodec.keel.ui.validation.MinDimensionValidationView;
@@ -39,10 +40,13 @@ public class FilterViewApplication extends Application {
     @Override
     public void load() {
 
-        ImageSourceView sourceView = new ImageSourceView(575, 650);
+        ImageSourceView sourceView = new ImageSourceView(575, 310);
         sourceView.setPath("test1.jpg");
 
+        CameraSourceView cameraView = new CameraSourceView(575, 410);
+
         components.add(sourceView);
+        components.add(cameraView);
         components.add(new ColorFilterView(20, 310));
         components.add(new MaxDimensionValidationView(275, 310));
         components.add(new MinDimensionValidationView(275, 410));

@@ -11,6 +11,7 @@ import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
+import br.com.etyllica.core.ui.UIComponent;
 import br.com.etyllica.gui.theme.ThemeManager;
 import br.com.etyllica.layer.GeometricLayer;
 import br.com.etyllica.layer.Layer;
@@ -20,7 +21,7 @@ import com.prodec.keel.application.FilterViewApplication;
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.Mode;
 
-public abstract class PipelineComponent extends Layer implements Drawable {
+public abstract class PipelineComponent extends Layer implements UIComponent {
 
 	protected ComponentType type = ComponentType.UNKNOWN;
 	public static final int NONE = -1;
@@ -185,6 +186,10 @@ public abstract class PipelineComponent extends Layer implements Drawable {
 	
 	public int itemSocketY(PipelineComponentItem item) {
 		return itemSocketY(item.index, item.inItem);
+	}
+
+	public void update(long now) {
+
 	}
 
 	public void updateKeyboard(KeyEvent event) {

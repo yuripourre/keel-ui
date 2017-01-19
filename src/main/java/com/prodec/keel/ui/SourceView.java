@@ -10,6 +10,7 @@ import java.awt.*;
 
 public abstract class SourceView extends PipelineComponent {
 
+    protected FilterView filterView;
     protected Component region;
     protected ImageSource source;
 
@@ -30,7 +31,7 @@ public abstract class SourceView extends PipelineComponent {
     public void link(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
         switch (view.type) {
             case FILTER:
-                FilterView filterView = ((FilterView) view);
+                filterView = ((FilterView) view);
                 filterView.source = source;
                 filterView.region = region;
                 filterView.resetFilter();
