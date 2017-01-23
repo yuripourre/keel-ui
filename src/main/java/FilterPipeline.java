@@ -10,7 +10,7 @@ public class FilterPipeline extends Etyllica {
 
 	public FilterPipeline() {
 		//super(1820, 1024);
-		super(600, 1024);
+		super(900, 900);
 	}
 
 	public static void main(String[] args) {
@@ -21,7 +21,7 @@ public class FilterPipeline extends Etyllica {
 	
 	@Override
 	public Application startApplication() {
-		initialSetup("");
+		initialSetup("../");
 		return new FilterViewApplication(w,h);
 	}	
 
