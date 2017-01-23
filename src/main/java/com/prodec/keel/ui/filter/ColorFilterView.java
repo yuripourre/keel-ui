@@ -3,6 +3,10 @@ package com.prodec.keel.ui.filter;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.filter.ColorFilter;
+import com.prodec.keel.model.attribute.Attribute;
+import com.prodec.keel.model.attribute.AttributeListener;
+import com.prodec.keel.model.attribute.ColorPickerAttribute;
+import com.prodec.keel.model.attribute.SliderAttribute;
 import com.prodec.keel.ui.FilterView;
 
 import java.awt.*;
@@ -16,15 +20,12 @@ public class ColorFilterView extends FilterView {
         this.title = "Color Filter";
         this.colorFilter = new ColorFilter(w, h, Color.YELLOW, 100);
         this.filter = colorFilter;
-    }
 
-    @Override
-    public void draw(Graphics g) {
-        super.draw(g);
+        ColorPickerAttribute colorPickerAttribute = new ColorPickerAttribute("Color");
+        colorPickerAttribute.setColor(colorFilter.getColor());
 
-        //Draw Attributes
-        drawColorPickerAttribute(g, "Color", 0, colorFilter.getColor());
-        drawSliderAttribute(g, "Tolerance", 1, colorFilter.getTolerance());
+        addAttribute(colorPickerAttribute);
+        addAttribute(new SliderAttribute("Tolerance", 0, 100, 255));
     }
 
     @Override
@@ -32,6 +33,14 @@ public class ColorFilterView extends FilterView {
         super.updateMouse(event);
 
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onValueChange(int attributeId) {
+        Attribute attribute = getAttribute(attributeId);
+        if (attribute.getId() == 0) {
+            colorFilter.setColor(colorFilter.getColor());
+        }
     }
 
 }

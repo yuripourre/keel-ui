@@ -7,11 +7,14 @@ import br.com.etyllica.motion.camera.CameraSarxosWebcam;
 import br.com.etyllica.motion.camera.CameraV4L4J;
 import br.com.etyllica.motion.core.source.BufferedImageSource;
 import br.com.etyllica.motion.feature.Component;
+import com.prodec.keel.model.attribute.PathAttribute;
 import com.prodec.keel.ui.SourceView;
 
 import java.awt.image.BufferedImage;
 
 public class CameraSourceView extends SourceView {
+
+    PathAttribute pathAttribute;
 
     private Camera cam;
     private BufferedImage image;
@@ -26,12 +29,15 @@ public class CameraSourceView extends SourceView {
         try {
             cam = new CameraSarxosWebcam();
             source = new BufferedImageSource();
-            region.setBounds(0, 0, cam.getBufferedImage().getWidth(), cam.getBufferedImage().getHeight());
+            regionAttribute.getRegion().setBounds(0, 0, cam.getBufferedImage().getWidth(), cam.getBufferedImage().getHeight());
         } catch (NullPointerException e) {
             title = "No Camera";
             cameraFound = false;
-            region.setBounds(0, 0, 0, 0);
+            regionAttribute.getRegion().setBounds(0, 0, 0, 0);
         }
+
+        pathAttribute = new PathAttribute("Path");
+        addAttribute(pathAttribute);
     }
 
     public void update(long now) {
@@ -48,10 +54,6 @@ public class CameraSourceView extends SourceView {
 
         super.draw(g);
 
-        //Draw Attributes
-        drawRegionAttribute(g, "Region", 0, region);
-        drawFileDialogAttribute(g, "Path", 1, path);
-
         if (!cameraFound) {
             g.resetAlpha();
         }
@@ -67,15 +69,15 @@ public class CameraSourceView extends SourceView {
         image = ImageLoader.getInstance().getImage("test1.jpg");
         source = new BufferedImageSource(image);
 
-        region.setBounds(0, 0, image.getWidth(), image.getHeight());
+        regionAttribute.getRegion().setBounds(0, 0, image.getWidth(), image.getHeight());
     }
 
     public Component getRegion() {
-        return region;
+        return regionAttribute.getRegion();
     }
 
     public void setRegion(Component region) {
-        this.region = region;
+        regionAttribute.setRegion(region);
     }
 
     @Override

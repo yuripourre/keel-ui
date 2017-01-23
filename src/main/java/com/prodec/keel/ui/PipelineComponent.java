@@ -2,7 +2,9 @@ package com.prodec.keel.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.etyllica.awt.SVGColor;
 import br.com.etyllica.core.Drawable;
@@ -12,6 +14,7 @@ import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.core.ui.UIComponent;
+import br.com.etyllica.gui.spinner.IntegerSpinner;
 import br.com.etyllica.gui.theme.ThemeManager;
 import br.com.etyllica.layer.GeometricLayer;
 import br.com.etyllica.layer.Layer;
@@ -20,8 +23,11 @@ import br.com.etyllica.motion.feature.Component;
 import com.prodec.keel.application.FilterViewApplication;
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.Mode;
+import com.prodec.keel.model.attribute.*;
 
-public abstract class PipelineComponent extends Layer implements UIComponent {
+import javax.swing.plaf.synth.Region;
+
+public abstract class PipelineComponent extends Layer implements UIComponent, AttributeListener {
 
 	protected ComponentType type = ComponentType.UNKNOWN;
 	public static final int NONE = -1;
@@ -61,6 +67,8 @@ public abstract class PipelineComponent extends Layer implements UIComponent {
 	protected List<String> inItems = new ArrayList<String>();
 	protected List<String> outItems = new ArrayList<String>();
 
+    private Map<Integer, Attribute> attributes = new HashMap<>();
+
 	public PipelineComponent(int x, int y, int w, int h) {
 		super(x, y, w, h);
 	}
@@ -74,9 +82,36 @@ public abstract class PipelineComponent extends Layer implements UIComponent {
 
 		//Draw Sockets
 		drawCommonAttributes(g);
+        drawParameters(g);
 	}
 
-	protected void drawBrackground(Graphics g) {
+    private void drawParameters(Graphics g) {
+        int count = 0;
+        for (Attribute attribute : attributes.values()) {
+            switch (attribute.getType()) {
+                case COLOR_PICKER:
+                    ColorPickerAttribute colorPicker = (ColorPickerAttribute) attribute;
+                    drawColorPickerAttribute(g, colorPicker.getLabel(), count, colorPicker.getColor());
+                    break;
+                case SLIDER:
+                    SliderAttribute slider = (SliderAttribute) attribute;
+                    drawSliderAttribute(g, slider.getLabel(), count, slider.getCurrentValue());
+                    break;
+                case PATH:
+                    PathAttribute path = (PathAttribute) attribute;
+                    drawFileDialogAttribute(g, path.getLabel(), count, path.getPath());
+                    break;
+                case REGION:
+                    RegionAttribute region = (RegionAttribute) attribute;
+                    drawRegionAttribute(g, region.getLabel(), count, region.getRegion());
+                    break;
+
+            }
+            count++;
+        }
+    }
+
+    protected void drawBrackground(Graphics g) {
 		Color background = buildBackgroundColor();
 		g.setColor(background);
 		
@@ -373,4 +408,21 @@ public abstract class PipelineComponent extends Layer implements UIComponent {
 	private Color fontColor() {
 		return ThemeManager.getInstance().getTheme().getTextColor();
 	}
+
+    protected void addAttribute(Attribute attribute) {
+        attribute.setListener(this);
+
+        int attributeId = attributes.size();
+        attribute.setId(attributeId);
+        attributes.put(attributeId, attribute);
+    }
+
+    protected Attribute getAttribute(int attributeId) {
+        return attributes.get(attributeId);
+    }
+
+    @Override
+    public void onValueChange(int attributeId) {
+
+    }
 }

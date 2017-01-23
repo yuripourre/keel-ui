@@ -8,6 +8,7 @@ import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.gui.theme.ThemeManager;
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.Mode;
+import com.prodec.keel.model.Pipeline;
 import com.prodec.keel.model.PipelineLink;
 import com.prodec.keel.ui.*;
 import com.prodec.keel.ui.classifier.SquareClassifierView;
@@ -21,8 +22,6 @@ import com.prodec.keel.ui.validation.MaxDimensionValidationView;
 import com.prodec.keel.ui.validation.MinDimensionValidationView;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FilterViewApplication extends Application {
 
@@ -30,8 +29,7 @@ public class FilterViewApplication extends Application {
 
     PipelineLink currentLink = new PipelineLink();
 
-    List<PipelineLinkView> links = new ArrayList<PipelineLinkView>();
-    List<PipelineComponent> components = new ArrayList<PipelineComponent>();
+    Pipeline pipeline;
 
     public FilterViewApplication(int w, int h) {
         super(w, h);
@@ -43,17 +41,18 @@ public class FilterViewApplication extends Application {
         ImageSourceView sourceView = new ImageSourceView(575, 310);
         sourceView.setPath("test1.jpg");
 
-        CameraSourceView cameraView = new CameraSourceView(575, 410);
+        //CameraSourceView cameraView = new CameraSourceView(575, 410);
+        //pipeline.add(cameraView);
+        pipeline = new Pipeline();
 
-        components.add(sourceView);
-        components.add(cameraView);
-        components.add(new ColorFilterView(20, 310));
-        components.add(new MaxDimensionValidationView(275, 310));
-        components.add(new MinDimensionValidationView(275, 410));
-        components.add(new RectDrawerView(20, 450));
-        components.add(new SquareClassifierView(20, 540));
-        components.add(new DummyModifierView(20, 650));
-        components.add(new CenterDrawerView(275, 650));
+        pipeline.add(sourceView);
+        pipeline.add(new ColorFilterView(20, 310));
+        pipeline.add(new MaxDimensionValidationView(275, 310));
+        pipeline.add(new MinDimensionValidationView(275, 410));
+        pipeline.add(new RectDrawerView(20, 450));
+        pipeline.add(new SquareClassifierView(20, 540));
+        pipeline.add(new DummyModifierView(20, 650));
+        pipeline.add(new CenterDrawerView(275, 650));
 
         setupUI();
     }
@@ -67,11 +66,11 @@ public class FilterViewApplication extends Application {
     public void draw(Graphics g) {
 
         g.setColor(Color.BLACK);
-        for (PipelineLinkView link : links) {
+        for (PipelineLinkView link : pipeline.getLinks()) {
             link.drawLine(g);
         }
 
-        for (PipelineComponent component : components) {
+        for (PipelineComponent component : pipeline.getComponents()) {
             if (ComponentType.SOURCE == component.getType()) {
                 ((SourceView) component).drawSource(g);
             }
@@ -80,25 +79,25 @@ public class FilterViewApplication extends Application {
             }
         }
 
-        for (PipelineComponent component : components) {
+        for (PipelineComponent component : pipeline.getComponents()) {
             component.draw(g);
         }
 
-        for (PipelineLinkView link : links) {
+        for (PipelineLinkView link : pipeline.getLinks()) {
             link.drawJoints(g);
         }
     }
 
     @Override
     public void updateMouse(PointerEvent event) {
-        for (PipelineComponent component : components) {
+        for (PipelineComponent component : pipeline.getComponents()) {
             component.updateMouse(event);
 
             if (component.isMoving()) {
                 mode = Mode.SELECTION;
                 return;
             } else if (component.isRemoveLink()) {
-                removeLink(component);
+                pipeline.removeLink(component);
                 component.linkRemoved();
                 return;
             }
@@ -119,22 +118,6 @@ public class FilterViewApplication extends Application {
         }
     }
 
-    private void removeLink(PipelineComponent component) {
-        PipelineComponentItem item = component.getMouseOnItem();
-
-        for (int i = links.size() - 1; i >= 0; i--) {
-            PipelineLinkView view = links.get(i);
-            PipelineLink link = view.getLink();
-            if (link.getFrom() == component && link.getFromItem().equals(item) ||
-                    link.getTo() == component && link.getToItem().equals(item)) {
-                link.unlink();
-                links.remove(i);
-
-                break;
-            }
-        }
-    }
-
     private void resetLink() {
         currentLink.reset();
         mode = Mode.NORMAL;
@@ -147,14 +130,14 @@ public class FilterViewApplication extends Application {
     private void linkComponents() {
         if (currentLink.isValid()) {
             currentLink.link();
-            links.add(new PipelineLinkView(currentLink));
+            pipeline.add(new PipelineLinkView(currentLink));
             currentLink = new PipelineLink();
         }
     }
 
     @Override
     public void updateKeyboard(KeyEvent event) {
-        for (PipelineComponent component : components) {
+        for (PipelineComponent component : pipeline.getComponents()) {
             component.updateKeyboard(event);
         }
     }

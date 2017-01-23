@@ -2,8 +2,8 @@ package com.prodec.keel.ui;
 
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.core.source.ImageSource;
-import br.com.etyllica.motion.feature.Component;
 import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.attribute.RegionAttribute;
 
 import java.awt.*;
 
@@ -11,15 +11,16 @@ import java.awt.*;
 public abstract class SourceView extends PipelineComponent {
 
     protected FilterView filterView;
-    protected Component region;
     protected ImageSource source;
+    protected RegionAttribute regionAttribute;
 
     public SourceView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.SOURCE;
         outItems.add("Output");
 
-        region = new Component();
+        regionAttribute = new RegionAttribute("Region");
+        addAttribute(regionAttribute);
     }
 
     @Override
@@ -33,7 +34,7 @@ public abstract class SourceView extends PipelineComponent {
             case FILTER:
                 filterView = ((FilterView) view);
                 filterView.source = source;
-                filterView.region = region;
+                filterView.region = regionAttribute.getRegion();
                 filterView.resetFilter();
                 break;
             default:
