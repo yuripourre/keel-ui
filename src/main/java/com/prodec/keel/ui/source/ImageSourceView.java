@@ -1,12 +1,13 @@
 package com.prodec.keel.ui.source;
 
+import java.awt.image.BufferedImage;
+
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.loader.image.ImageLoader;
 import br.com.etyllica.motion.core.source.BufferedImageSource;
+
 import com.prodec.keel.model.attribute.PathAttribute;
 import com.prodec.keel.ui.SourceView;
-
-import java.awt.image.BufferedImage;
 
 public class ImageSourceView extends SourceView {
 
@@ -15,8 +16,14 @@ public class ImageSourceView extends SourceView {
     private BufferedImage image;
     private String path = "";
 
+    public ImageSourceView() {
+		this(0, 0);
+	}
+    
     public ImageSourceView(int x, int y) {
         super(x, y, VIEW_WIDTH, 90);
+        this.className = ImageSourceView.class.getName();
+        
         title = "Image Source";
 
         pathAttribute = new PathAttribute("Path");

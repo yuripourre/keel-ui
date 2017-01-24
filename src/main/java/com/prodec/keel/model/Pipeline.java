@@ -23,21 +23,17 @@ public class Pipeline {
 	
     List<PipelineLinkView> links = new ArrayList<PipelineLinkView>();
     List<PipelineComponent> components = new ArrayList<PipelineComponent>();
-
+    
+    int index = 0;
+    
     public void add(PipelineComponent component) {
+    	component.setIndex(index);
         components.add(component);
+        index++;
     }
 
     public void add(PipelineLinkView link) {
         links.add(link);
-    }
-
-    public List<PipelineComponent> getComponents() {
-        return components;
-    }
-
-    public List<PipelineLinkView> getLinks() {
-        return links;
     }
 
     public void removeLink(PipelineComponent component) {
@@ -72,9 +68,11 @@ public class Pipeline {
             if (component.getSelectedItem() != PipelineComponent.INVALID_ITEM) {
                 if (currentLink.getFromItem() == PipelineComponent.INVALID_ITEM) {
                     currentLink.setFrom(component);
+                    currentLink.setFromItem(component.getMouseOnItem());
                     mode = Mode.SELECTION;
                 } else if (component != currentLink.getFrom()) {
                     currentLink.setTo(component);
+                    currentLink.setToItem(component.getMouseOnItem());
                 }
             }
         }
@@ -131,4 +129,30 @@ public class Pipeline {
             link.drawJoints(g);
         }
     }
+
+	public List<PipelineLinkView> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<PipelineLinkView> links) {
+		this.links = links;
+	}
+
+	public List<PipelineComponent> getComponents() {
+		return components;
+	}
+
+	public void setComponents(List<PipelineComponent> components) {
+		this.components = components;
+	}
+
+	public PipelineComponent getComponent(int index) {
+		for (PipelineComponent component : components) {
+			if (component.getIndex() == index) {
+				return component;
+			}
+		}
+		return null;
+	}
+    
 }

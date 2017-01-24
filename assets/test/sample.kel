@@ -1,0 +1,175 @@
+{
+  "version": "1.0",
+  "components": [
+    {
+      "id": 0,
+      "title": "Image Source",
+      "class": "com.prodec.keel.ui.source.ImageSourceView",
+      "x": 575,
+      "y": 310,
+      "params": [
+        {
+          "label": "Region",
+          "type": "REGION",
+          "id": 0,
+          "region": "(0, 0, 400, 300)"
+        },
+        {
+          "label": "Path",
+          "type": "PATH",
+          "id": 1,
+          "path": ""
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "title": "Color Filter",
+      "class": "com.prodec.keel.ui.filter.ColorFilterView",
+      "x": 20,
+      "y": 310,
+      "params": [
+        {
+          "label": "Color",
+          "type": "COLOR_PICKER",
+          "id": 0,
+          "color": "#FFFF00"
+        },
+        {
+          "label": "Tolerance",
+          "type": "SLIDER",
+          "id": 1,
+          "value": 100,
+          "min": 0,
+          "max": 255
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Max Dimension Validation",
+      "class": "com.prodec.keel.ui.validation.MaxDimensionValidationView",
+      "x": 275,
+      "y": 310,
+      "params": [
+        {
+          "label": "Max Dimension",
+          "type": "SLIDER",
+          "id": 0,
+          "value": 80,
+          "min": 1,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Min Dimension Validation",
+      "class": "com.prodec.keel.ui.validation.MinDimensionValidationView",
+      "x": 275,
+      "y": 410,
+      "params": [
+        {
+          "label": "Min Dimension",
+          "type": "SLIDER",
+          "id": 0,
+          "value": 80,
+          "min": 1,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Rectangular Drawer",
+      "class": "com.prodec.keel.ui.drawer.RectDrawerView",
+      "x": 20,
+      "y": 450,
+      "params": [
+        {
+          "label": "Color",
+          "type": "COLOR_PICKER",
+          "id": 0,
+          "color": "#000000"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Square Classifier",
+      "class": "com.prodec.keel.ui.classifier.SquareClassifierView",
+      "x": 20,
+      "y": 540,
+      "params": []
+    },
+    {
+      "id": 6,
+      "title": "Dummy Modifier",
+      "class": "com.prodec.keel.ui.modifier.DummyModifierView",
+      "x": 20,
+      "y": 650,
+      "params": []
+    },
+    {
+      "id": 7,
+      "title": "Center Drawer",
+      "class": "com.prodec.keel.ui.drawer.CenterDrawerView",
+      "x": 275,
+      "y": 650,
+      "params": [
+        {
+          "label": "Color",
+          "type": "COLOR_PICKER",
+          "id": 0,
+          "color": "#000000"
+        },
+        {
+          "label": "Radius",
+          "type": "SLIDER",
+          "id": 1,
+          "value": 1,
+          "min": 1,
+          "max": 100
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "id": 1,
+        "direction": "in",
+        "option": 1
+      },
+      "to": {
+        "id": 2,
+        "direction": "in",
+        "option": 0
+      }
+    },
+    {
+      "from": {
+        "id": 1,
+        "direction": "in",
+        "option": 2
+      },
+      "to": {
+        "id": 4,
+        "direction": "in",
+        "option": 0
+      }
+    },
+    {
+      "from": {
+        "id": 1,
+        "direction": "in",
+        "option": 0
+      },
+      "to": {
+        "id": 0,
+        "direction": "out",
+        "option": 0
+      }
+    }
+  ]
+}

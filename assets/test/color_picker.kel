@@ -1,0 +1,6 @@
+{
+  "label": "Color",
+  "type": "COLOR_PICKER",
+  "id": 0,
+  "color": "#FFFF00"
+}

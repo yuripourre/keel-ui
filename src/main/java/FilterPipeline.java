@@ -3,6 +3,7 @@ import br.com.etyllica.Etyllica;
 import br.com.etyllica.core.context.Application;
 
 import com.prodec.keel.application.FilterViewApplication;
+import com.prodec.keel.application.FilterViewLoaderApplication;
 
 public class FilterPipeline extends Etyllica {
 
@@ -23,6 +24,7 @@ public class FilterPipeline extends Etyllica {
 	public Application startApplication() {
 		initialSetup("../");
 		return new FilterViewApplication(w,h);
-	}	
+		//return new FilterViewLoaderApplication(w,h);
+	}
 
 }

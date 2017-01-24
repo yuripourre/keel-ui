@@ -1,0 +1,9 @@
+{
+  "label": "Max Dimension",
+  "type": "SLIDER",
+  "id": 222,
+  "value": "80",
+  "min": 0,
+  "max": 100,
+  "value": 99
+}

@@ -1,16 +1,16 @@
 package com.prodec.keel.ui.source;
 
+import java.awt.image.BufferedImage;
+
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.loader.image.ImageLoader;
 import br.com.etyllica.motion.camera.Camera;
 import br.com.etyllica.motion.camera.CameraSarxosWebcam;
-import br.com.etyllica.motion.camera.CameraV4L4J;
 import br.com.etyllica.motion.core.source.BufferedImageSource;
 import br.com.etyllica.motion.feature.Component;
+
 import com.prodec.keel.model.attribute.PathAttribute;
 import com.prodec.keel.ui.SourceView;
-
-import java.awt.image.BufferedImage;
 
 public class CameraSourceView extends SourceView {
 
@@ -22,8 +22,14 @@ public class CameraSourceView extends SourceView {
 
     private boolean cameraFound = true;
 
+    public CameraSourceView() {
+		this(0, 0);
+	}
+    
     public CameraSourceView(int x, int y) {
         super(x, y, VIEW_WIDTH, 90);
+        this.className = CameraSourceView.class.getName();
+        
         title = "Camera Source";
 
         try {

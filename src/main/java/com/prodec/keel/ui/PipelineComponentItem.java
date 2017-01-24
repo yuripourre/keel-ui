@@ -3,7 +3,6 @@ package com.prodec.keel.ui;
 public class PipelineComponentItem {
 	
 	int index = PipelineComponent.NONE;
-	
 	boolean inItem = true;
 		
 	public PipelineComponentItem(PipelineComponentItem mOnItem) {

@@ -1,12 +1,17 @@
 package com.prodec.keel.application;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.List;
 
 import br.com.etyllica.core.context.Application;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.gui.theme.ThemeManager;
+import br.com.etyllica.util.PathHelper;
 
 import com.google.gson.Gson;
 import com.prodec.keel.model.Pipeline;
@@ -20,25 +25,17 @@ import com.prodec.keel.ui.source.ImageSourceView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
 import com.prodec.keel.ui.validation.MinDimensionValidationView;
 
-public class FilterViewApplication extends Application {
+public class FilterViewLoaderApplication extends Application {
 
     Pipeline pipeline;
 
-    public FilterViewApplication(int w, int h) {
+    public FilterViewLoaderApplication(int w, int h) {
         super(w, h);
     }
 
     @Override
     public void load() {
-        ImageSourceView sourceView = new ImageSourceView(575, 310);
-        sourceView.setPath("test1.jpg");
-
-        //CameraSourceView cameraView = new CameraSourceView(575, 410);
-        //pipeline.add(cameraView);
         pipeline = new Pipeline();
-
-        pipeline.add(sourceView);
-        buildPipeline(pipeline);
         
         setupUI();
     }
@@ -77,6 +74,26 @@ public class FilterViewApplication extends Application {
     		String json = gson.toJson(pipeline, Pipeline.class);
     		System.out.println(json);
     	}
+    	
     }
+    
+    @Override
+    public void dropFiles(int x, int y, List<File> files) {
+    	
+    	Gson gson = JsonSerializerHelper.create();
+    	
+    	for (File file : files) {
+    		String path = file.getAbsolutePath();
+    		
+			try {
+				FileReader input = new FileReader(new File(path));
+				pipeline = gson.fromJson(input, Pipeline.class);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    }
+    
 
 }

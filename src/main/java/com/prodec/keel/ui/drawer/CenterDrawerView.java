@@ -2,6 +2,7 @@ package com.prodec.keel.ui.drawer;
 
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.feature.Component;
+
 import com.prodec.keel.model.attribute.ColorPickerAttribute;
 import com.prodec.keel.model.attribute.SliderAttribute;
 import com.prodec.keel.ui.DrawerView;
@@ -11,8 +12,14 @@ public class CenterDrawerView extends DrawerView {
     private ColorPickerAttribute colorPickerAttribute;
     private SliderAttribute radiusAttribute;
 
+    public CenterDrawerView() {
+		this(0, 0);
+	}
+    
     public CenterDrawerView(int x, int y) {
         super(x, y, VIEW_WIDTH, 90);
+        this.className = CenterDrawerView.class.getName();
+        
         title = "Center Drawer";
 
         colorPickerAttribute = new ColorPickerAttribute("Color");

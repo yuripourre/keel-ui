@@ -11,8 +11,13 @@ public class SquareClassifierView extends ClassifierView {
 	public static final String CLASS_SQUARE = "Square";
 	public static final String CLASS_NON_SQUARE = "NonSquare";
 	
+	public SquareClassifierView() {
+		this(0, 0);
+	}
+	
 	public SquareClassifierView(int x, int y) {
 		super(x, y, VIEW_WIDTH, 80);
+		this.className = SquareClassifierView.class.getName();
 		
 		title = "Square Classifier";
 

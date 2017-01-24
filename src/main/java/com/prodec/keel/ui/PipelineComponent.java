@@ -69,14 +69,13 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 
     private Map<Integer, Attribute> attributes = new HashMap<>();
     
-    private int id;
-    private static int count = 0;
+    private int index;
     private int attributeCount = 0;
+    
+    protected String className;
 
 	public PipelineComponent(int x, int y, int w, int h) {
 		super(x, y, w, h);
-		id = count;
-		count++;
 	}
 
 	@Override
@@ -436,9 +435,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
     public void onValueChange(int attributeId) {
 
     }
-
-	public int getId() {
-		return id;
+    
+	public String getTitle() {
+		return title;
 	}
 
 	public List<String> getInputs() {
@@ -452,5 +451,17 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	public Map<Integer, Attribute> getAttributes() {
 		return attributes;
 	}
-    
+	
+	public String getClassName() {
+		return className;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+		
 }

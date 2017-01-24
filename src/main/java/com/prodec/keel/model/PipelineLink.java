@@ -17,7 +17,6 @@ public class PipelineLink {
 	
 	public void setFrom(PipelineComponent from) {
 		this.from = from;
-		this.fromItem = from.getMouseOnItem();
 	}
 	
 	public PipelineComponentItem getFromItem() {
@@ -30,7 +29,6 @@ public class PipelineLink {
 	
 	public void setTo(PipelineComponent to) {
 		this.to = to;
-		this.toItem = to.getMouseOnItem();
 	}
 	
 	public PipelineComponentItem getToItem() {
@@ -60,13 +58,13 @@ public class PipelineLink {
 	public void link() {
 		from.link(to, fromItem, toItem);
 	}
-	
-	/*private LinkPosition position() {
-		if (!fromItem.getInItem() && toItem.getInItem()) {
-			return LinkPosition.TO;
-		} else {
-			return LinkPosition.FROM;
-		}
-	}*/
+
+	public void setFromItem(PipelineComponentItem fromItem) {
+		this.fromItem = fromItem;
+	}
+
+	public void setToItem(PipelineComponentItem toItem) {
+		this.toItem = toItem;
+	}
 	
 }

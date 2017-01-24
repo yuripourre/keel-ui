@@ -6,6 +6,10 @@ public class SliderAttribute extends Attribute {
     int maxValue;
     int minValue;
 
+    public SliderAttribute(String label) {
+        super(label, AttributeType.SLIDER);
+    }
+    
     public SliderAttribute(String label, int currentValue, int minValue, int maxValue) {
         super(label, AttributeType.SLIDER);
         this.currentValue = currentValue;

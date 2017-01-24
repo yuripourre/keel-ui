@@ -11,6 +11,7 @@ public class JsonSerializerHelper {
 
 	public static Gson create() {
 		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
 		builder.registerTypeAdapter(Attribute.class, new AttributeSerializer());
 		builder.registerTypeAdapter(Pipeline.class, new PipelineSerializer());
 		builder.registerTypeAdapter(PipelineComponent.class, new PipelineComponentSerializer());
