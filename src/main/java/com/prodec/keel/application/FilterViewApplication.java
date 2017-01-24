@@ -1,33 +1,24 @@
 package com.prodec.keel.application;
 
+import java.awt.Color;
+
 import br.com.etyllica.core.context.Application;
 import br.com.etyllica.core.event.KeyEvent;
-import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.gui.theme.ThemeManager;
-import com.prodec.keel.model.ComponentType;
-import com.prodec.keel.model.Mode;
+
 import com.prodec.keel.model.Pipeline;
-import com.prodec.keel.model.PipelineLink;
-import com.prodec.keel.ui.*;
 import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
 import com.prodec.keel.ui.modifier.DummyModifierView;
-import com.prodec.keel.ui.source.CameraSourceView;
 import com.prodec.keel.ui.source.ImageSourceView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
 import com.prodec.keel.ui.validation.MinDimensionValidationView;
 
-import java.awt.*;
-
 public class FilterViewApplication extends Application {
-
-    private static Mode mode = Mode.NORMAL;
-
-    PipelineLink currentLink = new PipelineLink();
 
     Pipeline pipeline;
 
@@ -64,82 +55,17 @@ public class FilterViewApplication extends Application {
 
     @Override
     public void draw(Graphics g) {
-
-        g.setColor(Color.BLACK);
-        for (PipelineLinkView link : pipeline.getLinks()) {
-            link.drawLine(g);
-        }
-
-        for (PipelineComponent component : pipeline.getComponents()) {
-            if (ComponentType.SOURCE == component.getType()) {
-                ((SourceView) component).drawSource(g);
-            }
-            if (ComponentType.DRAWER == component.getType()) {
-                ((DrawerView) component).drawResults(g);
-            }
-        }
-
-        for (PipelineComponent component : pipeline.getComponents()) {
-            component.draw(g);
-        }
-
-        for (PipelineLinkView link : pipeline.getLinks()) {
-            link.drawJoints(g);
-        }
+    	pipeline.draw(g);
     }
 
     @Override
     public void updateMouse(PointerEvent event) {
-        for (PipelineComponent component : pipeline.getComponents()) {
-            component.updateMouse(event);
-
-            if (component.isMoving()) {
-                mode = Mode.SELECTION;
-                return;
-            } else if (component.isRemoveLink()) {
-                pipeline.removeLink(component);
-                component.linkRemoved();
-                return;
-            }
-
-            if (component.getSelectedItem() != PipelineComponent.INVALID_ITEM) {
-                if (currentLink.getFromItem() == PipelineComponent.INVALID_ITEM) {
-                    currentLink.setFrom(component);
-                    mode = Mode.SELECTION;
-                } else if (component != currentLink.getFrom()) {
-                    currentLink.setTo(component);
-                }
-            }
-        }
-
-        if (event.isButtonUp(MouseEvent.MOUSE_BUTTON_LEFT)) {
-            linkComponents();
-            resetLink();
-        }
-    }
-
-    private void resetLink() {
-        currentLink.reset();
-        mode = Mode.NORMAL;
-    }
-
-    public static Mode getMode() {
-        return mode;
-    }
-
-    private void linkComponents() {
-        if (currentLink.isValid()) {
-            currentLink.link();
-            pipeline.add(new PipelineLinkView(currentLink));
-            currentLink = new PipelineLink();
-        }
+    	pipeline.updateMouse(event);
     }
 
     @Override
     public void updateKeyboard(KeyEvent event) {
-        for (PipelineComponent component : pipeline.getComponents()) {
-            component.updateKeyboard(event);
-        }
+    	pipeline.updateKeyboard(event);
     }
 
 }

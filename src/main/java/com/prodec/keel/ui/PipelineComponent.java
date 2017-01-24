@@ -7,25 +7,25 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.etyllica.awt.SVGColor;
-import br.com.etyllica.core.Drawable;
 import br.com.etyllica.core.collision.CollisionDetector;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.core.ui.UIComponent;
-import br.com.etyllica.gui.spinner.IntegerSpinner;
 import br.com.etyllica.gui.theme.ThemeManager;
-import br.com.etyllica.layer.GeometricLayer;
 import br.com.etyllica.layer.Layer;
 import br.com.etyllica.motion.feature.Component;
 
-import com.prodec.keel.application.FilterViewApplication;
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.Mode;
-import com.prodec.keel.model.attribute.*;
-
-import javax.swing.plaf.synth.Region;
+import com.prodec.keel.model.Pipeline;
+import com.prodec.keel.model.attribute.Attribute;
+import com.prodec.keel.model.attribute.AttributeListener;
+import com.prodec.keel.model.attribute.ColorPickerAttribute;
+import com.prodec.keel.model.attribute.PathAttribute;
+import com.prodec.keel.model.attribute.RegionAttribute;
+import com.prodec.keel.model.attribute.SliderAttribute;
 
 public abstract class PipelineComponent extends Layer implements UIComponent, AttributeListener {
 
@@ -68,9 +68,15 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	protected List<String> outItems = new ArrayList<String>();
 
     private Map<Integer, Attribute> attributes = new HashMap<>();
+    
+    private int id;
+    private static int count = 0;
+    private int attributeCount = 0;
 
 	public PipelineComponent(int x, int y, int w, int h) {
 		super(x, y, w, h);
+		id = count;
+		count++;
 	}
 
 	@Override
@@ -105,6 +111,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
                     RegionAttribute region = (RegionAttribute) attribute;
                     drawRegionAttribute(g, region.getLabel(), count, region.getRegion());
                     break;
+                case UNKNOWN:
+                default:
+                	break;
 
             }
             count++;
@@ -298,7 +307,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 
 	protected boolean mouseOnTitle(PointerEvent event) {
 		//Avoid move while linking components
-		if (FilterViewApplication.getMode() == Mode.SELECTION) {
+		if (Pipeline.getMode() == Mode.SELECTION) {
 			return false;
 		}
 		
@@ -412,9 +421,11 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
     protected void addAttribute(Attribute attribute) {
         attribute.setListener(this);
 
-        int attributeId = attributes.size();
+        int attributeId = attributeCount;
         attribute.setId(attributeId);
         attributes.put(attributeId, attribute);
+        
+        attributeCount++;
     }
 
     protected Attribute getAttribute(int attributeId) {
@@ -425,4 +436,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
     public void onValueChange(int attributeId) {
 
     }
+
+	public int getId() {
+		return id;
+	}
+    
 }
