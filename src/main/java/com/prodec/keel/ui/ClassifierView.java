@@ -17,12 +17,12 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
     protected List<String> categories = new ArrayList<>();
     protected List<Component> results = new ArrayList<>();
     protected Map<String, List<Component>> classifications = new HashMap<>();
-    protected Map<String, ModifierView> outputs = new HashMap<>();
+    protected Map<String, ModifierView> receivers = new HashMap<>();
 
     public ClassifierView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.CLASSIFIER;
-        inItems.add("Input");
+        inputs.add("Input");
     }
 
     @Override
@@ -68,7 +68,7 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
 
     public void linkModifier(ModifierView modifierView, int indexClass) {
         String classification = categories.get(indexClass);
-        outputs.put(classification, modifierView);
+        receivers.put(classification, modifierView);
 
         List<Component> classifyResults = classifications.get(classification);
         modifierView.setResults(classifyResults);
@@ -76,7 +76,7 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
 
     public void unlinkModifier(ModifierView modifierView, int indexClass) {
         String classification = categories.get(indexClass);
-        outputs.remove(classification);
+        receivers.remove(classification);
 
         modifierView.clear();
     }
@@ -98,7 +98,7 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
     }
 
     protected void addCategory(String category) {
-        outItems.add(category);
+        outputs.add(category);
         classifications.put(category, new ArrayList<Component>());
         categories.add(category);
     }
@@ -116,8 +116,8 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
 
     public void propagate() {
         for (String category : categories) {
-            if (outputs.containsKey(category)) {
-                ModifierView outFilter = outputs.get(category);
+            if (receivers.containsKey(category)) {
+                ModifierView outFilter = receivers.get(category);
                 outFilter.setResults(classifications.get(category));
             }
         }

@@ -17,8 +17,8 @@ public class ValidationView extends PipelineComponent {
 	public ValidationView(int x, int y, int w, int h) {
 		super(x, y, w, h);
 		type = ComponentType.VALIDATION;
-		inItems.add("Filter");
-		outItems.add("Next");
+		inputs.add("Filter");
+		outputs.add("Next");
 	}
 	
 	@Override

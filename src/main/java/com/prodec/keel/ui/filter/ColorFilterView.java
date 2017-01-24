@@ -1,15 +1,14 @@
 package com.prodec.keel.ui.filter;
 
+import java.awt.Color;
+
 import br.com.etyllica.core.event.PointerEvent;
-import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.filter.ColorFilter;
+
 import com.prodec.keel.model.attribute.Attribute;
-import com.prodec.keel.model.attribute.AttributeListener;
 import com.prodec.keel.model.attribute.ColorPickerAttribute;
 import com.prodec.keel.model.attribute.SliderAttribute;
 import com.prodec.keel.ui.FilterView;
-
-import java.awt.*;
 
 public class ColorFilterView extends FilterView {
 

@@ -16,8 +16,8 @@ public abstract class DrawerView extends PipelineComponent implements FilterList
     public DrawerView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.DRAWER;
-        inItems.add("Input");
-        outItems.add("Next");
+        inputs.add("Input");
+        outputs.add("Next");
     }
 
     @Override

@@ -17,7 +17,7 @@ public abstract class SourceView extends PipelineComponent {
     public SourceView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.SOURCE;
-        outItems.add("Output");
+        outputs.add("Output");
 
         regionAttribute = new RegionAttribute("Region");
         addAttribute(regionAttribute);

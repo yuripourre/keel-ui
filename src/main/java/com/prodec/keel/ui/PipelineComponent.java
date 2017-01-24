@@ -64,8 +64,8 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	
 	private boolean removeLink = false;
 
-	protected List<String> inItems = new ArrayList<String>();
-	protected List<String> outItems = new ArrayList<String>();
+	protected List<String> inputs = new ArrayList<String>();
+	protected List<String> outputs = new ArrayList<String>();
 
     private Map<Integer, Attribute> attributes = new HashMap<>();
     
@@ -158,7 +158,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		int sepY = commonAttributesEnd();
 
 		int count = 0;
-		for (String item : inItems) {
+		for (String item : inputs) {
 			int ix = itemSocketX(count, true);
 			int iy = itemSocketY(count, true);
 			
@@ -171,7 +171,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		}
 		
 		count = 0;
-		for (String item : outItems) {
+		for (String item : outputs) {
 			int ix = itemSocketX(count, false);
 			int iy = itemSocketY(count, false);
 			
@@ -284,7 +284,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		int my = event.getY();
 
 		mouseOnItem = INVALID_ITEM;
-		for (int i = 0; i < inItems.size(); i++) {
+		for (int i = 0; i < inputs.size(); i++) {
 			int sx = itemSocketX(i, true);
 			int sy = itemSocketY(i, true);
 			
@@ -294,7 +294,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 			}
 		}
 		
-		for (int i = 0; i < outItems.size(); i++) {
+		for (int i = 0; i < outputs.size(); i++) {
 			int sx = itemSocketX(i, false);
 			int sy = itemSocketY(i, false);
 
@@ -319,9 +319,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	}
 
 	protected int commonAttributesEnd() {
-		int size = inItems.size();
-		if (outItems.size() > inItems.size()) {
-			size = outItems.size(); 
+		int size = inputs.size();
+		if (outputs.size() > inputs.size()) {
+			size = outputs.size(); 
 		}
 		return y + TITLE_BAR + size * 20;
 	}
@@ -334,9 +334,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		int index = item.index;
 		
 		if(item.inItem) {
-			return inItems.get(index);	
+			return inputs.get(index);	
 		} else {
-			return outItems.get(index);
+			return outputs.get(index);
 		}
 	}
 
@@ -439,6 +439,18 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 
 	public int getId() {
 		return id;
+	}
+
+	public List<String> getInputs() {
+		return inputs;
+	}
+
+	public List<String> getOutputs() {
+		return outputs;
+	}
+
+	public Map<Integer, Attribute> getAttributes() {
+		return attributes;
 	}
     
 }

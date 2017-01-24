@@ -27,11 +27,11 @@ public abstract class FilterView extends PipelineComponent {
     public FilterView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.FILTER;
-        inItems.add("Source");
-        inItems.add("Validation");
-        inItems.add("Drawer");
+        inputs.add("Source");
+        inputs.add("Validation");
+        inputs.add("Drawer");
 
-        outItems.add("Output");
+        outputs.add("Output");
     }
 
     @Override

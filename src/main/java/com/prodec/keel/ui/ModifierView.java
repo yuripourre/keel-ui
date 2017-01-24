@@ -18,9 +18,9 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
     public ModifierView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.MODIFIER;
-        inItems.add("Input");
-        inItems.add("Drawer");
-        outItems.add("Output");
+        inputs.add("Input");
+        inputs.add("Drawer");
+        outputs.add("Output");
     }
 
     @Override
