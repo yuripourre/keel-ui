@@ -21,6 +21,8 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
 	private static final String JSON_TYPE = "type";
 	private static final String JSON_VALUE = "value";
 
+	private static final String HEX_FORMAT = "%02X";
+	
 	@Override
 	public JsonElement serialize(Attribute attribute, Type type,
 			JsonSerializationContext context) {
@@ -45,11 +47,11 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
 			
 			int rgb = colorPicker.getColor();
 			
-			int r = ColorStrategy.getRed(rgb);
-			int g = ColorStrategy.getGreen(rgb);
-			int b = ColorStrategy.getBlue(rgb);
-			
-			return "#" + Integer.toHexString(r) + Integer.toHexString(g) + Integer.toHexString(b);
+			String r = String.format(HEX_FORMAT, ColorStrategy.getRed(rgb));
+			String g = String.format(HEX_FORMAT, ColorStrategy.getGreen(rgb));
+			String b = String.format(HEX_FORMAT, ColorStrategy.getBlue(rgb));
+						
+			return "#" + r + g + b;
 		case PATH:
 			PathAttribute path = (PathAttribute) attribute;
 			return path.getPath();

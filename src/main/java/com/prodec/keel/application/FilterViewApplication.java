@@ -8,7 +8,9 @@ import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.gui.theme.ThemeManager;
 
+import com.google.gson.Gson;
 import com.prodec.keel.model.Pipeline;
+import com.prodec.keel.serialization.JsonSerializerHelper;
 import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
@@ -37,15 +39,19 @@ public class FilterViewApplication extends Application {
         pipeline = new Pipeline();
 
         pipeline.add(sourceView);
-        pipeline.add(new ColorFilterView(20, 310));
+        buildPipeline(pipeline);
+        
+        setupUI();
+    }
+    
+    public static void buildPipeline(Pipeline pipeline) {
+    	pipeline.add(new ColorFilterView(20, 310));
         pipeline.add(new MaxDimensionValidationView(275, 310));
         pipeline.add(new MinDimensionValidationView(275, 410));
         pipeline.add(new RectDrawerView(20, 450));
         pipeline.add(new SquareClassifierView(20, 540));
         pipeline.add(new DummyModifierView(20, 650));
         pipeline.add(new CenterDrawerView(275, 650));
-
-        setupUI();
     }
 
     private void setupUI() {
@@ -66,6 +72,12 @@ public class FilterViewApplication extends Application {
     @Override
     public void updateKeyboard(KeyEvent event) {
     	pipeline.updateKeyboard(event);
+    	
+    	if(event.isKeyDown(KeyEvent.VK_ENTER)) {
+    		Gson gson = JsonSerializerHelper.create();
+    		String json = gson.toJson(pipeline, Pipeline.class);
+    		System.out.println(json);
+    	}
     }
 
 }

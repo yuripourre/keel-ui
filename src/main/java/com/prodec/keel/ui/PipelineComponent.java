@@ -41,7 +41,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	protected static final int VIEW_WIDTH = 240;
 
 	public static final int SOCKET_SIZE = 10;
-	protected static final int ITEM_SPACING = 16;	
+	protected static final int ITEM_SPACING = 16;
 	protected static final int PADDING_TITLE_BAR = 6;
 	protected static final int TITLE_BAR = 30;
 	protected static final int BORDER_ROUNDNESS = 18;

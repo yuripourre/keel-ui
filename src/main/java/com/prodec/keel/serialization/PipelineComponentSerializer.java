@@ -13,6 +13,7 @@ import com.prodec.keel.ui.PipelineComponent;
 
 public class PipelineComponentSerializer implements JsonSerializer<PipelineComponent> {
 
+	public static final String JSON_ID = "id";
 	private static final String JSON_INPUTS = "inputs";
 	private static final String JSON_OUTPUTS = "outputs";
 	private static final String JSON_PARAMS = "params";
@@ -22,6 +23,7 @@ public class PipelineComponentSerializer implements JsonSerializer<PipelineCompo
 			JsonSerializationContext context) {
 
 		JsonObject element = new JsonObject();
+		element.add(JSON_ID, new JsonPrimitive(component.getId()));
 		
 		serializeInputs(component, element);
 		serializeOutputs(component, element);
