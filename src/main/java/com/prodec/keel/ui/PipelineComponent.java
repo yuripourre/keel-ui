@@ -22,10 +22,6 @@ import com.prodec.keel.model.Mode;
 import com.prodec.keel.model.Pipeline;
 import com.prodec.keel.model.attribute.Attribute;
 import com.prodec.keel.model.attribute.AttributeListener;
-import com.prodec.keel.model.attribute.ColorPickerAttribute;
-import com.prodec.keel.model.attribute.PathAttribute;
-import com.prodec.keel.model.attribute.RegionAttribute;
-import com.prodec.keel.model.attribute.SliderAttribute;
 
 public abstract class PipelineComponent extends Layer implements UIComponent, AttributeListener {
 
@@ -41,7 +37,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	protected static final int VIEW_WIDTH = 240;
 
 	public static final int SOCKET_SIZE = 10;
-	protected static final int ITEM_SPACING = 16;
+	public static final int ITEM_SPACING = 16;
 	protected static final int PADDING_TITLE_BAR = 6;
 	protected static final int TITLE_BAR = 30;
 	protected static final int BORDER_ROUNDNESS = 18;
@@ -91,31 +87,8 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	}
 
     private void drawParameters(Graphics g) {
-        int count = 0;
         for (Attribute attribute : attributes.values()) {
-            switch (attribute.getType()) {
-                case COLOR_PICKER:
-                    ColorPickerAttribute colorPicker = (ColorPickerAttribute) attribute;
-                    drawColorPickerAttribute(g, colorPicker.getLabel(), count, colorPicker.getColor());
-                    break;
-                case SLIDER:
-                    SliderAttribute slider = (SliderAttribute) attribute;
-                    drawSliderAttribute(g, slider.getLabel(), count, slider.getCurrentValue());
-                    break;
-                case PATH:
-                    PathAttribute path = (PathAttribute) attribute;
-                    drawFileDialogAttribute(g, path.getLabel(), count, path.getPath());
-                    break;
-                case REGION:
-                    RegionAttribute region = (RegionAttribute) attribute;
-                    drawRegionAttribute(g, region.getLabel(), count, region.getRegion());
-                    break;
-                case UNKNOWN:
-                default:
-                	break;
-
-            }
-            count++;
+        	attribute.draw(g);
         }
     }
 
@@ -275,7 +248,10 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		if (!dragged) {
 			checkMouseOnItem(event);
 		}
-
+		
+		for (Attribute attribute : attributes.values()) {
+        	attribute.updateMouse(event);
+        }
 	}
 
 	private void checkMouseOnItem(PointerEvent event) {
@@ -317,7 +293,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		return y + 18 + TITLE_BAR;
 	}
 
-	protected int commonAttributesEnd() {
+	public int commonAttributesEnd() {
 		int size = inputs.size();
 		if (outputs.size() > inputs.size()) {
 			size = outputs.size(); 
@@ -413,12 +389,12 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		g.drawString(path, x + 154, sepY + ITEM_SPACING * (order + 1));
 	}
 	
-	private Color fontColor() {
+	public Color fontColor() {
 		return ThemeManager.getInstance().getTheme().getTextColor();
 	}
 
     protected void addAttribute(Attribute attribute) {
-        attribute.setListener(this);
+        attribute.setComponent(this);
 
         int attributeId = attributeCount;
         attribute.setId(attributeId);

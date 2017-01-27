@@ -1,5 +1,9 @@
 package com.prodec.keel.model.attribute;
 
+import com.prodec.keel.ui.PipelineComponent;
+
+import br.com.etyllica.core.graphics.Graphics;
+
 public class SliderAttribute extends Attribute {
 
     int currentValue;
@@ -40,4 +44,11 @@ public class SliderAttribute extends Attribute {
     public void setMinValue(int minValue) {
         this.minValue = minValue;
     }
+
+    @Override
+	public void draw(Graphics g) {
+		int sepY = component.commonAttributesEnd();
+		g.drawString(label, component.getX() + 14, sepY + PipelineComponent.ITEM_SPACING * (index + 1));
+		g.drawString(Integer.toString(currentValue), component.getX() + 154, sepY + PipelineComponent.ITEM_SPACING * (index + 1));
+	}
 }
