@@ -39,5 +39,5 @@ public class ColorFilterView extends FilterView {
             colorFilter.setColor(colorFilter.getColor());
         }
     }
-
+    
 }

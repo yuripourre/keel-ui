@@ -27,11 +27,12 @@ public class MaxDimensionValidationView extends ValidationView {
         addAttribute(sliderAttribute);
     }
 
+    @Override
     public void onValueChange(int attributeId) {
         Attribute attribute = getAttribute(attributeId);
         if (attribute.getId() == sliderAttribute.getId()) {
             maxDimensionValidation.setDimension(sliderAttribute.getCurrentValue());
-            //TODO Reset Filter
+            resetFilter();
         }
     }
 }

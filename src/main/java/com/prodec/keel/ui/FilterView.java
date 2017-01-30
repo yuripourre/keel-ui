@@ -142,5 +142,14 @@ public abstract class FilterView extends PipelineComponent {
             listener.setResults(results);
         }
     }
-
+    
+    public void updateValidations() {
+    	if (validationView == null) {
+    		return;
+    	}
+    	filter.clearValidations();
+        addValidation(validationView);
+        resetFilter();
+    }
+    
 }

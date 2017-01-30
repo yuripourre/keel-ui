@@ -149,4 +149,11 @@ public class ValidationView extends PipelineComponent {
 	public ValidationView getNext() {
 		return next;
 	}
+	
+	protected void resetFilter() {
+		FilterView filter = root().filterView;
+		if (filter != null) {
+			filter.updateValidations();
+		}
+	}
 }
