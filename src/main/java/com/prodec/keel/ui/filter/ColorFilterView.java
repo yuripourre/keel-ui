@@ -37,6 +37,7 @@ public class ColorFilterView extends FilterView {
         Attribute attribute = getAttribute(attributeId);
         if (attribute.getId() == 0) {
             colorFilter.setColor(colorFilter.getColor());
+            resetFilter();
         }
     }
     

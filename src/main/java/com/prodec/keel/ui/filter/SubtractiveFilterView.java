@@ -8,6 +8,7 @@ import br.com.etyllica.motion.filter.SubtractiveFilter;
 
 import com.prodec.keel.model.attribute.Attribute;
 import com.prodec.keel.model.attribute.PathAttribute;
+import com.prodec.keel.model.attribute.SliderAttribute;
 import com.prodec.keel.ui.FilterView;
 
 public class SubtractiveFilterView extends FilterView {
@@ -27,6 +28,7 @@ public class SubtractiveFilterView extends FilterView {
         this.filter = subtractiveFilter;
 
         addAttribute(new PathAttribute("Mask"));
+        addAttribute(new SliderAttribute("Tolerance", subtractiveFilter.getTolerance(), 0, 255));
     }
 
     @Override
@@ -36,6 +38,11 @@ public class SubtractiveFilterView extends FilterView {
         	PathAttribute pathAttribute = (PathAttribute) attribute;
         	BufferedImage image = ImageLoader.getInstance().getImage(pathAttribute.getPath());
         	subtractiveFilter.setMask(new BufferedImageSource(image));
+        	resetFilter();
+        } else if (attribute.getId() == 1) {
+        	SliderAttribute slider = (SliderAttribute) attribute;
+        	subtractiveFilter.setTolerance(slider.getCurrentValue());
+        	resetFilter();
         }
     }
     

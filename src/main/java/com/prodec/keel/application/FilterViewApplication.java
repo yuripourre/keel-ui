@@ -15,6 +15,7 @@ import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
+import com.prodec.keel.ui.filter.SubtractiveFilterView;
 import com.prodec.keel.ui.modifier.DummyModifierView;
 import com.prodec.keel.ui.source.ImageSourceView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
@@ -51,6 +52,7 @@ public class FilterViewApplication extends Application {
         pipeline.add(new SquareClassifierView(20, 540));
         pipeline.add(new DummyModifierView(20, 650));
         pipeline.add(new CenterDrawerView(275, 650));
+        pipeline.add(new SubtractiveFilterView(610, 650));
     }
 
     private void setupUI() {
