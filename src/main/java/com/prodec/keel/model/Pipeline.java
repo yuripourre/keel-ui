@@ -26,7 +26,24 @@ public class Pipeline {
     
     int index = 0;
     
-    public void add(PipelineComponent component) {
+    int x, y;
+    int mx, my;
+    private int lastX = 0;
+	private int lastY = 0;
+    int dragX, dragY;
+    boolean drag = false;
+    boolean move = false;
+    
+    public Pipeline() {
+    	this(0, 0);
+    }
+    
+    public Pipeline(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public void add(PipelineComponent component) {
     	component.setIndex(index);
         components.add(component);
         index++;
@@ -53,6 +70,10 @@ public class Pipeline {
     }
     
     public void updateMouse(PointerEvent event) {
+    	
+    	mx = event.getX();
+    	my = event.getY();
+    	
         for (PipelineComponent component : getComponents()) {
             component.updateMouse(event);
 
@@ -77,9 +98,34 @@ public class Pipeline {
             }
         }
 
+        if (!drag && mode != Mode.SELECTION && event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
+        	drag = true;
+        	lastX = x;
+        	lastY = y;
+        	dragX = mx;
+        	dragY = my;
+        	
+        	if (mode != Mode.SELECTION) {
+        		move = true;
+        		mode = Mode.SELECTION;
+        	}
+        	
+        }
+        
         if (event.isButtonUp(MouseEvent.MOUSE_BUTTON_LEFT)) {
             linkComponents();
             resetLink();
+            drag = false;
+            move = false;
+            mode = Mode.NORMAL;
+        }
+        
+        if (move) {
+        	x = lastX + mx - dragX;
+        	y = lastY + my - dragY;
+        	for (PipelineComponent component : components) {
+                component.setOffset(x, y);
+            }	
         }
     }
 
@@ -153,6 +199,14 @@ public class Pipeline {
 			}
 		}
 		return null;
+	}
+
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
     
 }

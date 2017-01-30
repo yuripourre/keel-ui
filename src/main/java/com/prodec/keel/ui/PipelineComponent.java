@@ -50,6 +50,8 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	protected static final Color COLOR_CLASSIFIER = new Color(0xe8, 0xe8, 0x45, 0xe5);
 	protected static final Color COLOR_SOURCE = new Color(0x65, 0x28, 0xb6, 0xe5);
 	
+	private int offsetX = 0;
+	private int offsetY = 0;
 	//Drag Event
 	private int lastX = 0;
 	private int lastY = 0;
@@ -96,14 +98,14 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		Color background = buildBackgroundColor();
 		g.setColor(background);
 		
-		g.fillRoundRect(x, y, w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
+		g.fillRoundRect(getX(), getY(), w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
 	}
 	
 	protected void drawBorder(Graphics g) {
 		Color background = Color.BLACK;
 		g.setColor(background);
 		
-		g.drawRoundRect(x, y, w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
+		g.drawRoundRect(getX(), getY(), w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
 	}
 
 	protected Color buildBackgroundColor() {
@@ -114,15 +116,15 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		//Draw Title Bar
 		g.setColor(COLOR_TITLE);
 		int halfBorder = BORDER_ROUNDNESS/2;
-		g.fillArc(x, y, BORDER_ROUNDNESS, BORDER_ROUNDNESS, 180, -90);
-		g.fillArc(x + w - BORDER_ROUNDNESS, y, BORDER_ROUNDNESS, BORDER_ROUNDNESS, 0, 90);
-		g.fillRect(x + halfBorder, y, w - BORDER_ROUNDNESS, halfBorder);
-		g.fillRect(x, y + halfBorder, w + 1, TITLE_BAR - halfBorder);
+		g.fillArc(getX(), getY(), BORDER_ROUNDNESS, BORDER_ROUNDNESS, 180, -90);
+		g.fillArc(getX() + w - BORDER_ROUNDNESS, getY(), BORDER_ROUNDNESS, BORDER_ROUNDNESS, 0, 90);
+		g.fillRect(getX() + halfBorder, getY(), w - BORDER_ROUNDNESS, halfBorder);
+		g.fillRect(getX(), getY() + halfBorder, w + 1, TITLE_BAR - halfBorder);
 
 		//Draw Title
 		g.setColor(fontColor());
-		g.drawLine(x, y + TITLE_BAR, x + w - 1, y + TITLE_BAR);
-		g.drawString(title, x + PADDING_TITLE_BAR, y + PADDING_TITLE_BAR + TITLE_BAR/2);
+		g.drawLine(getX(), getY() + TITLE_BAR, getX() + w - 1, getY() + TITLE_BAR);
+		g.drawString(title, getX() + PADDING_TITLE_BAR, getY() + PADDING_TITLE_BAR + TITLE_BAR/2);
 	}
 
 	protected void drawCommonAttributes(Graphics g) {
@@ -155,7 +157,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 			count++;
 		}
 
-		g.drawLine(x, sepY, x + w - 1, sepY);
+		g.drawLine(getX(), sepY, getX() + w - 1, sepY);
 	}
 
 	private void drawInItemText(Graphics g, int ty, int count, String item, int ix) {
@@ -185,9 +187,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	
 	public int itemSocketX(int index, boolean inItem) {
 		if (inItem) {
-			return x + 2;
+			return getX() + 2;
 		} else {
-			return x + w - SOCKET_SIZE - 2;
+			return getX() + w - SOCKET_SIZE - 2;
 		}
 	}
 	
@@ -196,7 +198,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	}
 	
 	public int itemSocketY(int item, boolean inItem) {
-		int fy = y + TITLE_BAR + 6;
+		int fy = getY() + TITLE_BAR + 6;
 		return fy + ITEM_SPACING * item;
 	}
 	
@@ -221,8 +223,8 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 				dragged = true;
 				dragX = event.getX();
 				dragY = event.getY();
-				lastX = x;
-				lastY = y;
+				lastX = getX() - offsetX;
+				lastY = getY() - offsetY;
 			}
 
 		} else if (event.isButtonUp(MouseEvent.MOUSE_BUTTON_LEFT)) {
@@ -286,11 +288,11 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 			return false;
 		}
 		
-		return CollisionDetector.colideRectPoint(x,  y,  w,  TITLE_BAR, event.getX(),  event.getY());
+		return CollisionDetector.colideRectPoint(x,  getY(),  w,  TITLE_BAR, event.getX(),  event.getY());
 	}
 
 	protected int commonAttributesStart() {
-		return y + 18 + TITLE_BAR;
+		return getY() + 18 + TITLE_BAR;
 	}
 
 	public int commonAttributesEnd() {
@@ -298,7 +300,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		if (outputs.size() > inputs.size()) {
 			size = outputs.size(); 
 		}
-		return y + TITLE_BAR + size * 20;
+		return getY() + TITLE_BAR + size * 20;
 	}
 
 	public PipelineComponentItem getMouseOnItem() {
@@ -353,40 +355,40 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	//Draw Attributes Method
 	protected void drawColorPickerAttribute(Graphics g, String label, int order, int color) {
 		int sepY = commonAttributesEnd();
-		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
 		g.setColor(color);
-		g.fillRect(x + w - 14, sepY + 6, 12, 12);
+		g.fillRect(getX() + w - 14, sepY + 6, 12, 12);
 		
 		g.setColor(fontColor());
 	}
 	
 	protected void drawColorPickerAttribute(Graphics g, String label, int order, Color color) {
 		int sepY = commonAttributesEnd();
-		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
 		g.setColor(color);
-		g.fillRect(x + w - 14, sepY + 6, 12, 12);
+		g.fillRect(getX() + w - 14, sepY + 6, 12, 12);
 		
 		g.setColor(fontColor());
 	}
 	
 	protected void drawSliderAttribute(Graphics g, String label, int order, int value) {
 		int sepY = commonAttributesEnd();
-		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
-		g.drawString(Integer.toString(value), x + 154, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(Integer.toString(value), getX() + 154, sepY + ITEM_SPACING * (order + 1));
 	}
 
 	protected void drawRegionAttribute(Graphics g, String label, int order, Component region) {
 		int sepY = commonAttributesEnd();
-		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
 
 		String regionText = region.getX()+", "+region.getY()+", "+region.getW()+", "+region.getH();
-		g.drawString(regionText, x + 154, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(regionText, getX() + 154, sepY + ITEM_SPACING * (order + 1));
 	}
 
 	protected void drawFileDialogAttribute(Graphics g, String label, int order, String path) {
 		int sepY = commonAttributesEnd();
-		g.drawString(label, x + 14, sepY + ITEM_SPACING * (order + 1));
-		g.drawString(path, x + 154, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
+		g.drawString(path, getX() + 154, sepY + ITEM_SPACING * (order + 1));
 	}
 	
 	public Color fontColor() {
@@ -438,6 +440,21 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public void setOffset(int offsetX, int offsetY) {
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+	}
+	
+	@Override
+	public int getX() {
+		return x + offsetX;
+	}
+	
+	@Override
+	public int getY() {
+		return y + offsetY;
 	}
 		
 }

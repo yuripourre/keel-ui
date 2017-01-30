@@ -25,6 +25,8 @@ public class PipelineSerializer implements JsonSerializer<Pipeline>, JsonDeseria
 	private static final String JSON_COMPONENTS = "components";
 	private static final String JSON_LINKS = "links";
 	private static final String JSON_VERSION = "version";
+	private static final String JSON_X = "x";
+	private static final String JSON_Y = "y";
 
 	@Override
 	public JsonElement serialize(Pipeline pipeline, Type type,
@@ -33,6 +35,8 @@ public class PipelineSerializer implements JsonSerializer<Pipeline>, JsonDeseria
 		JsonObject element = new JsonObject();
 		
 		element.add(JSON_VERSION, new JsonPrimitive(VERSION));
+		element.add(JSON_X, new JsonPrimitive(pipeline.getX()));
+		element.add(JSON_Y, new JsonPrimitive(pipeline.getY()));
 		serializeComponents(pipeline, context, element);
 		serializeLinks(pipeline, context, element);
 		
@@ -71,7 +75,10 @@ public class PipelineSerializer implements JsonSerializer<Pipeline>, JsonDeseria
 		Type t = new TypeToken<List<PipelineComponent>>() {}.getType();
 		List<PipelineComponent> components = context.deserialize(node.get(JSON_COMPONENTS), t);
 		
-		Pipeline pipeline = new Pipeline();
+		int x = node.get(JSON_X).getAsInt();
+		int y = node.get(JSON_Y).getAsInt();
+		
+		Pipeline pipeline = new Pipeline(x, y);
 		pipeline.setComponents(components);
 		
 		JsonArray linksNode = node.get(JSON_LINKS).getAsJsonArray();
