@@ -15,6 +15,8 @@ public class Attribute implements UIComponent {
     AttributeType type = AttributeType.UNKNOWN;
     AttributeListener listener;
     PipelineComponent component;
+    
+    protected boolean mousePressed = false;
 
     public Attribute(String label, AttributeType type) {
         super();
@@ -76,5 +78,9 @@ public class Attribute implements UIComponent {
 	public void setComponent(PipelineComponent pipelineComponent) {
 		this.listener = pipelineComponent;
 		this.component = pipelineComponent;
+	}
+	
+    public boolean isMousePressed() {
+		return mousePressed;
 	}
 }

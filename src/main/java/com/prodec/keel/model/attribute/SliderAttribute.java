@@ -20,7 +20,6 @@ public class SliderAttribute extends Attribute {
 	int minValue;
 
 	//Mouse Stuff
-	private boolean dragged = false;
 	private boolean mouseOnButton = false;
 
 	public SliderAttribute(String label) {
@@ -93,11 +92,11 @@ public class SliderAttribute extends Attribute {
 		int ay = component.commonAttributesEnd() + PipelineComponent.ITEM_SPACING * (index + 1);
 		int sx = sliderX();
 		
-		if (dragged) {
+		if (mousePressed) {
 			mouseOnButton = true;
 		
 			if(event.isButtonUp(MouseEvent.MOUSE_BUTTON_LEFT)) {
-				dragged = false;
+				mousePressed = false;
 				//Update component on mouseUp
 				component.onValueChange(index);
 				return;
@@ -115,16 +114,16 @@ public class SliderAttribute extends Attribute {
 			if (CollisionDetector.colideCirclePoint(sx+currentAsPoint(), ay, RADIUS, mx, my)) {
 				mouseOnButton = true;
 				if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
-					dragged = true;
+					mousePressed = true;
 				}
 			} else {
 				mouseOnButton = false;
 			}
 		}
-		
 	}
 
 	private int sliderX() {
 		return component.getX() + component.getW() - 120;
 	}
+	
 }

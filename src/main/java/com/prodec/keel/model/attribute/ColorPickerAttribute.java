@@ -14,7 +14,6 @@ public class ColorPickerAttribute extends Attribute {
 	int mx, my;
 	private boolean onMouse = false;
 	private boolean waitingColor = false;
-	private boolean mousePressed = false;
 	private boolean shouldPickColor = false;
 	
 	private static final int SIZE = 12;
@@ -95,4 +94,5 @@ public class ColorPickerAttribute extends Attribute {
     private int rectY() {
     	return component.commonAttributesEnd() + 6;
     }
+    
 }

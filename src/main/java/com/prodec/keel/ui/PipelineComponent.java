@@ -288,7 +288,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 			return false;
 		}
 		
-		return CollisionDetector.colideRectPoint(x,  getY(),  w,  TITLE_BAR, event.getX(),  event.getY());
+		return CollisionDetector.colideRectPoint(getX(),  getY(),  w,  TITLE_BAR, event.getX(),  event.getY());
 	}
 
 	protected int commonAttributesStart() {
@@ -337,6 +337,11 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	}
 	
 	public boolean isMoving() {
+		for (Attribute attribute : attributes.values()) {
+			if (attribute.isMousePressed()) {
+				return true;
+			}
+		}
 		return move;
 	}
 	
