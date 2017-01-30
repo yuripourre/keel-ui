@@ -127,7 +127,6 @@ public class ValidationView extends PipelineComponent {
 		}
 	}
 
-
 	@Override
 	public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 
