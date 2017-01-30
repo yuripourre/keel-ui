@@ -48,7 +48,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	protected static final Color COLOR_MODIFIER = new Color(0xe8, 0x45, 0x45, 0xe5);
 	protected static final Color COLOR_DRAWER = new Color(0x45, 0x45, 0x45, 0xe5);
 	protected static final Color COLOR_CLASSIFIER = new Color(0xe8, 0xe8, 0x45, 0xe5);
-	protected static final Color COLOR_SOURCE = new Color(0x45, 0x08, 0x96, 0xe5);
+	protected static final Color COLOR_SOURCE = new Color(0x65, 0x28, 0xb6, 0xe5);
 	
 	//Drag Event
 	private int lastX = 0;
