@@ -41,6 +41,8 @@ public class ImageSourceView extends SourceView {
         source = new BufferedImageSource(image);
 
         regionAttribute.getRegion().setBounds(0, 0, image.getWidth(), image.getHeight());
+        
+        updateFilter();
     }
 
     @Override
