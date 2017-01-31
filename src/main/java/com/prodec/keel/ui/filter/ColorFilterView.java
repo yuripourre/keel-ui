@@ -22,23 +22,24 @@ public class ColorFilterView extends FilterView {
         this.className = ColorFilterView.class.getName();
         
         this.title = "Color Filter";
-        this.colorFilter = new ColorFilter(w, h, Color.YELLOW, 100);
+        this.colorFilter = new ColorFilter(w, h, Color.BLACK, 100);
         this.filter = colorFilter;
 
         ColorPickerAttribute colorPickerAttribute = new ColorPickerAttribute("Color");
         colorPickerAttribute.setColor(colorFilter.getColor());
 
         addAttribute(colorPickerAttribute);
-        addAttribute(new SliderAttribute("Tolerance", colorFilter.getTolerance(), 0, 255));
+        addAttribute(new SliderAttribute("Tolerance", colorFilter.getTolerance(), 1, 255));
     }
 
     @Override
     public void onValueChange(int attributeId) {
         Attribute attribute = getAttribute(attributeId);
         if (attribute.getId() == 0) {
-            colorFilter.setColor(colorFilter.getColor());
+        	ColorPickerAttribute colorPicker = (ColorPickerAttribute) attribute;
+            colorFilter.setColor(colorPicker.getColor());
             resetFilter();
-        }else if (attribute.getId() == 1) {
+        } else if (attribute.getId() == 1) {
         	SliderAttribute slider = (SliderAttribute) attribute;
             colorFilter.setTolerance(slider.getCurrentValue());
             resetFilter();
