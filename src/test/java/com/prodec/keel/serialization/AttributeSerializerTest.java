@@ -12,6 +12,7 @@ import br.com.etyllica.motion.filter.color.ColorStrategy;
 import br.com.etyllica.util.PathHelper;
 
 import com.google.gson.Gson;
+import com.prodec.keel.helper.JsonSerializerHelper;
 import com.prodec.keel.model.attribute.Attribute;
 import com.prodec.keel.model.attribute.ColorPickerAttribute;
 import com.prodec.keel.model.attribute.SliderAttribute;

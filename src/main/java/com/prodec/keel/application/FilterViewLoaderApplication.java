@@ -14,8 +14,8 @@ import br.com.etyllica.gui.theme.ThemeManager;
 import br.com.etyllica.util.PathHelper;
 
 import com.google.gson.Gson;
+import com.prodec.keel.helper.JsonSerializerHelper;
 import com.prodec.keel.model.Pipeline;
-import com.prodec.keel.serialization.JsonSerializerHelper;
 import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;

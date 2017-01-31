@@ -9,8 +9,9 @@ import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.gui.theme.ThemeManager;
 
 import com.google.gson.Gson;
+import com.prodec.keel.helper.JsonSerializerHelper;
+import com.prodec.keel.helper.StringExporter;
 import com.prodec.keel.model.Pipeline;
-import com.prodec.keel.serialization.JsonSerializerHelper;
 import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.HullDrawerView;
@@ -81,9 +82,7 @@ public class FilterViewApplication extends Application {
     	pipeline.updateKeyboard(event);
     	
     	if(event.isKeyDown(KeyEvent.VK_ENTER)) {
-    		Gson gson = JsonSerializerHelper.create();
-    		String json = gson.toJson(pipeline, Pipeline.class);
-    		System.out.println(json);
+    		StringExporter.export(pipeline);
     	}
     }
 

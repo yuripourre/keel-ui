@@ -13,6 +13,7 @@ import br.com.etyllica.util.PathHelper;
 
 import com.google.gson.Gson;
 import com.prodec.keel.application.FilterViewApplication;
+import com.prodec.keel.helper.JsonSerializerHelper;
 import com.prodec.keel.model.Pipeline;
 import com.prodec.keel.ui.PipelineComponent;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
