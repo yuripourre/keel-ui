@@ -38,6 +38,10 @@ public class ColorFilterView extends FilterView {
         if (attribute.getId() == 0) {
             colorFilter.setColor(colorFilter.getColor());
             resetFilter();
+        }else if (attribute.getId() == 1) {
+        	SliderAttribute slider = (SliderAttribute) attribute;
+            colorFilter.setTolerance(slider.getCurrentValue());
+            resetFilter();
         }
     }
     

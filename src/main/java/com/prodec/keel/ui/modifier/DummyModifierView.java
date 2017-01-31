@@ -6,7 +6,7 @@ import br.com.etyllica.motion.feature.Component;
 
 import com.prodec.keel.ui.ModifierView;
 
-public class DummyModifierView extends ModifierView {
+public class DummyModifierView extends ModifierView<Component, Component> {
 
 	public DummyModifierView() {
 		this(0, 0);

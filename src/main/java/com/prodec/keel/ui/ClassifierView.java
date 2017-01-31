@@ -1,23 +1,22 @@
 package com.prodec.keel.ui;
 
-import br.com.etyllica.motion.feature.Component;
-import com.prodec.keel.model.ComponentType;
-import com.prodec.keel.model.FilterListener;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ClassifierView extends PipelineComponent implements FilterListener {
+import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.FilterListener;
+
+public abstract class ClassifierView<T> extends PipelineDataComponent implements FilterListener<T> {
 
     protected FilterView filterInputView = null;
 
     protected List<String> categories = new ArrayList<>();
-    protected List<Component> results = new ArrayList<>();
-    protected Map<String, List<Component>> classifications = new HashMap<>();
-    protected Map<String, ModifierView> receivers = new HashMap<>();
+    protected List<T> results = new ArrayList<>();
+    protected Map<String, List<T>> classifications = new HashMap<>();
+    protected Map<String, ModifierView<T, ?>> receivers = new HashMap<>();
 
     public ClassifierView(int x, int y, int w, int h) {
         super(x, y, w, h);
@@ -38,7 +37,7 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
                 view.link(this, toItem, fromItem);
                 break;
             case MODIFIER:
-                ModifierView modifierView = (ModifierView) view;
+                ModifierView<T, ?> modifierView = (ModifierView) view;
                 linkModifier(modifierView, fromItem.index);
                 break;
             default:
@@ -55,7 +54,7 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
                 break;
             case MODIFIER:
                 //Remove modifier from filters
-                ModifierView modifierView = (ModifierView) view;
+                ModifierView<T, ?> modifierView = (ModifierView) view;
                 unlinkModifier(modifierView, fromItem.index);
                 break;
             case CLASSIFIER:
@@ -66,15 +65,15 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
         }
     }
 
-    public void linkModifier(ModifierView modifierView, int indexClass) {
+    public void linkModifier(ModifierView<T, ?> modifierView, int indexClass) {
         String classification = categories.get(indexClass);
         receivers.put(classification, modifierView);
 
-        List<Component> classifyResults = classifications.get(classification);
+        List<T> classifyResults = classifications.get(classification);
         modifierView.setResults(classifyResults);
     }
 
-    public void unlinkModifier(ModifierView modifierView, int indexClass) {
+    public void unlinkModifier(ModifierView<T, ?> modifierView, int indexClass) {
         String classification = categories.get(indexClass);
         receivers.remove(classification);
 
@@ -99,12 +98,12 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
 
     protected void addCategory(String category) {
         outputs.add(category);
-        classifications.put(category, new ArrayList<Component>());
+        classifications.put(category, new ArrayList<T>());
         categories.add(category);
     }
 
     @Override
-    public void setResults(List<Component> results) {
+    public void setResults(List<T> results) {
         this.results.clear();
         this.results.addAll(results);
 
@@ -112,12 +111,12 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
         propagate();
     }
 
-    public abstract void classify(List<Component> results);
+    public abstract void classify(List<T> results);
 
     public void propagate() {
         for (String category : categories) {
             if (receivers.containsKey(category)) {
-                ModifierView outFilter = receivers.get(category);
+                ModifierView<T, ?> outFilter = receivers.get(category);
                 outFilter.setResults(classifications.get(category));
             }
         }
@@ -127,7 +126,7 @@ public abstract class ClassifierView extends PipelineComponent implements Filter
         results.clear();
 
         for (String category : categories) {
-            classifications.put(category, new ArrayList<Component>());
+            classifications.put(category, new ArrayList<T>());
         }
 
         propagate();

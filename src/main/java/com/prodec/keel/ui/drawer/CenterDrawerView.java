@@ -7,7 +7,7 @@ import com.prodec.keel.model.attribute.ColorPickerAttribute;
 import com.prodec.keel.model.attribute.SliderAttribute;
 import com.prodec.keel.ui.DrawerView;
 
-public class CenterDrawerView extends DrawerView {
+public class CenterDrawerView extends DrawerView<Component> {
 
     private ColorPickerAttribute colorPickerAttribute;
     private SliderAttribute radiusAttribute;

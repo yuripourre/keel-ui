@@ -6,7 +6,7 @@ import br.com.etyllica.motion.feature.Component;
 
 import com.prodec.keel.ui.ClassifierView;
 
-public class SquareClassifierView extends ClassifierView {
+public class SquareClassifierView extends ClassifierView<Component> {
 
 	public static final String CLASS_SQUARE = "Square";
 	public static final String CLASS_NON_SQUARE = "NonSquare";

@@ -6,7 +6,7 @@ import br.com.etyllica.motion.feature.Component;
 import com.prodec.keel.model.attribute.ColorPickerAttribute;
 import com.prodec.keel.ui.DrawerView;
 
-public class RectDrawerView extends DrawerView {
+public class RectDrawerView extends DrawerView<Component> {
 
     private ColorPickerAttribute colorPickerAttribute;
 

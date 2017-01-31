@@ -1,20 +1,19 @@
 package com.prodec.keel.ui;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.motion.feature.Component;
 
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.FilterListener;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+public abstract class DrawerView<T> extends PipelineDataComponent implements FilterListener<T> {
 
-public abstract class DrawerView extends PipelineComponent implements FilterListener {
-
-    protected DrawerView previous = null;
-    protected DrawerView next = null;
-    protected List<Component> results = new ArrayList<Component>();
+    protected DrawerView<T> previous = null;
+    protected DrawerView<T> next = null;
+    protected List<T> results = new ArrayList<T>();
 
     public DrawerView(int x, int y, int w, int h) {
         super(x, y, w, h);
@@ -57,7 +56,7 @@ public abstract class DrawerView extends PipelineComponent implements FilterList
     }
 
     private void propagateResults() {
-        DrawerView root = root();
+        DrawerView<T> root = root();
         if (!root.results.isEmpty()) {
             if (root.next != null) {
                 root.next.setResults(results);
@@ -79,7 +78,7 @@ public abstract class DrawerView extends PipelineComponent implements FilterList
             case DRAWER:
                 DrawerView it = (DrawerView) view;
 
-                root().next.setResults(new ArrayList<Component>());
+                root().next.setResults(new ArrayList<T>());
                 if (previous == it) {
                     previous = null;
                     it.next = null;
@@ -103,7 +102,7 @@ public abstract class DrawerView extends PipelineComponent implements FilterList
         }
     }
 
-    protected DrawerView root() {
+    protected DrawerView<T> root() {
         if (previous != null) {
             return previous.root();
         } else {
@@ -115,11 +114,15 @@ public abstract class DrawerView extends PipelineComponent implements FilterList
     public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 
         if (to.type == ComponentType.DRAWER) {
-            boolean toNext = toNext(fromItem, toItem);
+        	if (dataType != ((PipelineDataComponent)to).dataType) {
+        		return false;
+        	}
+        	
+        	boolean toNext = toNext(fromItem, toItem);
             boolean fromNext = fromNext(fromItem, toItem);
 
             boolean validRoot = next != to && previous != to;
-
+            
             return validRoot && (toNext || fromNext);
 
         } else if (to.type == ComponentType.FILTER) {
@@ -133,11 +136,11 @@ public abstract class DrawerView extends PipelineComponent implements FilterList
         return false;
     }
 
-    public void setResults(List<Component> results) {
+    public void setResults(List<T> results) {
         this.results.clear();
         this.results.addAll(results);
 
-        DrawerView next = this.next;
+        DrawerView<T> next = this.next;
         while (next != null) {
             next.setResults(results);
             next = next.next;

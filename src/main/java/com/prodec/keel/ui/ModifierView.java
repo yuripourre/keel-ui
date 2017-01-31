@@ -1,26 +1,27 @@
 package com.prodec.keel.ui;
 
-import br.com.etyllica.motion.feature.Component;
-import com.prodec.keel.model.ComponentType;
-import com.prodec.keel.model.FilterListener;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ModifierView extends PipelineComponent implements FilterListener {
+import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.FilterListener;
 
-    DrawerView drawerView;
+public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implements FilterListener<IN> {
 
-    protected List<Component> results = new ArrayList<>();
-    protected List<Object> output = new ArrayList<>();
+	DrawerView<IN> inputDrawerView;
+    DrawerView<OUT> outputDrawerView;
+
+    protected List<IN> results = new ArrayList<>();
+    protected List<OUT> output = new ArrayList<>();
 
     public ModifierView(int x, int y, int w, int h) {
         super(x, y, w, h);
         type = ComponentType.MODIFIER;
-        inputs.add("Input");
+        inputs.add("Component");
         inputs.add("Drawer");
-        outputs.add("Output");
+        outputs.add("Component");
+        outputs.add("Drawer");
     }
 
     @Override
@@ -33,12 +34,12 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
 
         switch (view.type) {
             case CLASSIFIER:
-                ClassifierView classifierView = (ClassifierView) view;
+                ClassifierView<IN> classifierView = (ClassifierView<IN>) view;
                 classifierView.linkModifier(this, toItem.index);
                 break;
             case DRAWER:
-                drawerView = (DrawerView) view;
-                drawerView.setResults(results);
+                outputDrawerView = (DrawerView) view;
+                outputDrawerView.setResults(output);
                 break;
             case FILTER:
                 FilterView filterView = (FilterView) view;
@@ -54,14 +55,22 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
 
         switch (view.type) {
             case CLASSIFIER:
-                ClassifierView classifierView = (ClassifierView) view;
+                ClassifierView<IN> classifierView = (ClassifierView<IN>) view;
                 classifierView.unlinkModifier(this, toItem.index);
                 break;
             case DRAWER:
-                if (drawerView != null) {
-                    drawerView.clear();
-                    drawerView = null;
-                }
+            	if(fromItem.inItem) {
+            		if (inputDrawerView != null) {
+            			inputDrawerView.clear();
+            			inputDrawerView = null;
+                    }
+            	} else {
+            		if (outputDrawerView != null) {
+                        outputDrawerView.clear();
+                        outputDrawerView = null;
+                    }	
+            	}
+                
 
                 break;
             case FILTER:
@@ -76,11 +85,17 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
     @Override
     public boolean isValidLink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
         if (to.type == ComponentType.DRAWER) {
-            if (fromItem.inItem && fromItem.index == 1 && toItem.inItem && toItem.index == 0) {
-                return true;
+        	boolean inputDrawer = (fromItem.inItem && fromItem.index == 1 && toItem.inItem && toItem.index == 0);
+        	boolean outputDrawer = (!fromItem.inItem && fromItem.index == 1 && toItem.inItem && toItem.index == 0);
+            if (inputDrawer || outputDrawer) {
+                return dataType == ((PipelineDataComponent)to).dataType;
             }
         } else if (to.type == ComponentType.CLASSIFIER) {
-            if (fromItem.inItem && fromItem.index == 0 && !toItem.inItem) {
+            if (fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0) {
+                return true;
+            }
+        } else if (to.type == ComponentType.FILTER) {
+            if (fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0) {
                 return true;
             }
         }
@@ -88,25 +103,33 @@ public abstract class ModifierView extends PipelineComponent implements FilterLi
     }
 
     @Override
-    public void setResults(List<Component> results) {
+    public void setResults(List<IN> results) {
         this.results.clear();
         this.results.addAll(results);
 
+        propagateInput(this.results);
         modify(this.results);
-        propagate(this.results);
+        propagateOutput(this.output);
     }
 
-    public abstract void modify(List<Component> results);
+    public abstract void modify(List<IN> results);
 
-    public void propagate(List<Component> results) {
-        if (drawerView != null) {
-            drawerView.setResults(results);
+    public void propagateInput(List<IN> intput) {
+    	if (inputDrawerView != null) {
+        	inputDrawerView.setResults(results);
+        }
+    }
+    
+    public void propagateOutput(List<OUT> output) {
+        if (outputDrawerView != null) {
+            outputDrawerView.setResults(output);
         }
         //TODO If next != null
     }
 
     public void clear() {
         results.clear();
-        propagate(results);
+        propagateInput(results);
+        propagateOutput(output);
     }
 }

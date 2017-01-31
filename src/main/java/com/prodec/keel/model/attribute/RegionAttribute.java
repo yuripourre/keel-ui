@@ -28,6 +28,6 @@ public class RegionAttribute extends Attribute {
 		g.drawString(label, component.getX() + 14, sepY + PipelineComponent.ITEM_SPACING * (index + 1));
 
 		String regionText = region.getX()+", "+region.getY()+", "+region.getW()+", "+region.getH();
-		g.drawString(regionText, component.getX() + 154, sepY + PipelineComponent.ITEM_SPACING * (index + 1));
+		g.drawString(regionText, component.getX() + component.getW() / 2 - 30, sepY + PipelineComponent.ITEM_SPACING * (index + 1));
 	}
 }

@@ -98,6 +98,8 @@ public abstract class FilterView extends PipelineComponent {
 
         if (to.type == ComponentType.SOURCE) {
             return to.isValidLink(this, toItem, fromItem);
+        } else if (to.type == ComponentType.MODIFIER) {
+            return to.isValidLink(this, toItem, fromItem);
         }
 
         if (!fromItem.getInItem() && fromItem.getIndex() == 0) {
