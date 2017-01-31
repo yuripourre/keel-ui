@@ -80,8 +80,11 @@ public class PipelineComponentSerializer implements JsonSerializer<PipelineCompo
 		int y = node.get(JSON_Y).getAsInt();
 		int id = node.get(JSON_ID).getAsInt();
 
+		boolean found = false;
 		for(Class<?> type : registeredTypes) {
+			
 			if (compare(type, className)) {
+				found = true;
 				PipelineComponent component = (PipelineComponent) type.newInstance();
 				component.setIndex(id);
 				component.setX(x);
@@ -99,6 +102,10 @@ public class PipelineComponentSerializer implements JsonSerializer<PipelineCompo
 				
 				return component;
 			}
+		}
+		
+		if (!found) {
+			System.err.println("Unregistered class: "+className);
 		}
 
 		return null;
