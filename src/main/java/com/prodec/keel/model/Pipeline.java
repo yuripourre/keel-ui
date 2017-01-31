@@ -190,6 +190,7 @@ public class Pipeline {
 
 	public void setComponents(List<PipelineComponent> components) {
 		this.components = components;
+		index = components.size();
 	}
 
 	public PipelineComponent getComponent(int index) {
