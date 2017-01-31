@@ -83,4 +83,8 @@ public class Attribute implements UIComponent {
     public boolean isMousePressed() {
 		return mousePressed;
 	}
+    
+    public void notifyChange() {
+    	component.onValueChange(index);
+    }
 }

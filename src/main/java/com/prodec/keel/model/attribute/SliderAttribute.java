@@ -27,7 +27,7 @@ public class SliderAttribute extends Attribute {
 	}
 
 	public SliderAttribute(String label, int currentValue, int minValue, int maxValue) {
-		super(label, AttributeType.SLIDER);
+		this(label);
 		this.currentValue = currentValue;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
@@ -98,7 +98,7 @@ public class SliderAttribute extends Attribute {
 			if(event.isButtonUp(MouseEvent.MOUSE_BUTTON_LEFT)) {
 				mousePressed = false;
 				//Update component on mouseUp
-				component.onValueChange(index);
+				notifyChange();
 				return;
 			}
 			
