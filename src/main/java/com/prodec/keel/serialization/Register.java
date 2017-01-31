@@ -3,6 +3,7 @@ package com.prodec.keel.serialization;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.prodec.keel.ui.classifier.DimensionClassifierView;
 import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.HullDrawerView;
@@ -19,6 +20,7 @@ public class Register {
 
 	public static Set<Class<?>> registeredTypes() {
 		Set<Class<?>> registeredTypes = new HashSet<Class<?>>();
+		registeredTypes.add(DimensionClassifierView.class);
 		registeredTypes.add(SquareClassifierView.class);
 		registeredTypes.add(CenterDrawerView.class);
 		registeredTypes.add(RectDrawerView.class);
