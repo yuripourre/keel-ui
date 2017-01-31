@@ -98,6 +98,7 @@ public class PipelineComponentSerializer implements JsonSerializer<PipelineCompo
 					Attribute attribute = component.getAttributes().get(attributeId);
 					
 					AttributeSerializer.updateAttribute(attribute, attributeNode);
+					component.onValueChange(i);
 				}
 				
 				return component;

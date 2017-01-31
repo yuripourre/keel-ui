@@ -87,7 +87,6 @@ public abstract class ClassifierView<T> extends PipelineDataComponent implements
             if (!fromItem.inItem && toItem.inItem && toItem.index == 0) {
                 return true;
             }
-
             return to.isValidLink(this, toItem, fromItem);
         } else if (to.type == ComponentType.MODIFIER) {
             return to.isValidLink(this, toItem, fromItem);
@@ -104,7 +103,7 @@ public abstract class ClassifierView<T> extends PipelineDataComponent implements
 
     @Override
     public void setResults(List<T> results) {
-        this.results.clear();
+        clear();
         this.results.addAll(results);
 
         classify(this.results);

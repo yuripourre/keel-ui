@@ -38,8 +38,14 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
                 classifierView.linkModifier(this, toItem.index);
                 break;
             case DRAWER:
-                outputDrawerView = (DrawerView) view;
-                outputDrawerView.setResults(output);
+            	if (fromItem.inItem) {
+            		inputDrawerView = (DrawerView) view;
+            		inputDrawerView.setResults(results);
+            	} else {
+            		outputDrawerView = (DrawerView) view;
+                    outputDrawerView.setResults(output);	
+            	}
+                
                 break;
             case FILTER:
                 FilterView filterView = (FilterView) view;
@@ -69,8 +75,7 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
                         outputDrawerView.clear();
                         outputDrawerView = null;
                     }	
-            	}
-                
+            	}                
 
                 break;
             case FILTER:
@@ -91,13 +96,12 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
                 return dataType == ((PipelineDataComponent)to).dataType;
             }
         } else if (to.type == ComponentType.CLASSIFIER) {
-            if (fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0) {
-                return true;
-            }
+        	//Accept any output option
+        	if (fromItem.inItem && fromItem.index == 0 && !toItem.inItem) {
+        		return dataType == ((PipelineDataComponent)to).dataType;	
+        	}
         } else if (to.type == ComponentType.FILTER) {
-            if (fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0) {
-                return true;
-            }
+            return fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0;
         }
         return false;
     }

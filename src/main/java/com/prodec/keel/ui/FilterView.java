@@ -16,12 +16,12 @@ public abstract class FilterView extends PipelineComponent {
     public ImageSource source;
     public Component region;
 
-    private FilterListener listener;
+    private FilterListener<Component> listener;
 
-    private DrawerView drawerView;
+    private DrawerView<Component> drawerView;
     private ValidationView validationView;
     protected TrackingFilter filter;
-    
+        
     protected List<Component> results = new ArrayList<Component>();
     
     public FilterView(int x, int y, int w, int h) {
@@ -53,12 +53,12 @@ public abstract class FilterView extends PipelineComponent {
             drawerView = (DrawerView) view;
             propagate(results);
         } else if (view.type == ComponentType.CLASSIFIER) {
-            ClassifierView classifierView = (ClassifierView) view;
+            ClassifierView<Component> classifierView = (ClassifierView) view;
             listener = classifierView;
             classifierView.filterInputView = this;
-            propagate(results);
+            resetFilter();
         } else if (view.type == ComponentType.MODIFIER) {
-            ModifierView modifierView = (ModifierView) view;
+            ModifierView<Component, ?> modifierView = (ModifierView) view;
             listener = modifierView;
             resetFilter();
         }
@@ -77,7 +77,7 @@ public abstract class FilterView extends PipelineComponent {
             drawerView.clear();
             drawerView = null;
         } else if (view.type == ComponentType.CLASSIFIER) {
-            ClassifierView classifierView = (ClassifierView) view;
+            ClassifierView<Component> classifierView = (ClassifierView) view;
             classifierView.filterInputView = null;
             classifierView.clear();
             listener = null;
@@ -99,11 +99,15 @@ public abstract class FilterView extends PipelineComponent {
         if (to.type == ComponentType.SOURCE) {
             return to.isValidLink(this, toItem, fromItem);
         } else if (to.type == ComponentType.MODIFIER) {
+        	if (listener != null) {
+        		return false;
+        	}
             return to.isValidLink(this, toItem, fromItem);
-        }
-
-        if (!fromItem.getInItem() && fromItem.getIndex() == 0) {
-            return to.type == ComponentType.CLASSIFIER && toItem.getInItem() && toItem.getIndex() == 0;
+        } else if (to.type == ComponentType.CLASSIFIER) {
+        	if (listener != null) {
+        		return false;
+        	}
+        	return !fromItem.getInItem() && fromItem.getIndex() == 0 && toItem.getInItem() && toItem.getIndex() == 0;
         }
 
         if (fromItem.getInItem() && fromItem.getIndex() == 1) {
