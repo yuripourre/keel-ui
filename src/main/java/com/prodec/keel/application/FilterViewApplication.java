@@ -13,9 +13,11 @@ import com.prodec.keel.model.Pipeline;
 import com.prodec.keel.serialization.JsonSerializerHelper;
 import com.prodec.keel.ui.classifier.SquareClassifierView;
 import com.prodec.keel.ui.drawer.CenterDrawerView;
+import com.prodec.keel.ui.drawer.HullDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
 import com.prodec.keel.ui.filter.SubtractiveFilterView;
+import com.prodec.keel.ui.modifier.ConvexHullModifierView;
 import com.prodec.keel.ui.modifier.DummyModifierView;
 import com.prodec.keel.ui.source.ImageSourceView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
@@ -31,8 +33,10 @@ public class FilterViewApplication extends Application {
 
     @Override
     public void load() {
-        ImageSourceView sourceView = new ImageSourceView(575, 310);
-        sourceView.setPath("test1.jpg");
+        ImageSourceView sourceView = new ImageSourceView(575, 410);
+        sourceView.setPath("bonfim.png");
+        sourceView.setPath("bonfim2.png");
+        //sourceView.setPath("test1.jpg");
 
         //CameraSourceView cameraView = new CameraSourceView(575, 410);
         //pipeline.add(cameraView);
@@ -51,8 +55,10 @@ public class FilterViewApplication extends Application {
         pipeline.add(new RectDrawerView(20, 450));
         pipeline.add(new SquareClassifierView(20, 540));
         pipeline.add(new DummyModifierView(20, 650));
+        pipeline.add(new ConvexHullModifierView(610, 540));
+        pipeline.add(new HullDrawerView(610, 650));
         pipeline.add(new CenterDrawerView(275, 650));
-        pipeline.add(new SubtractiveFilterView(610, 650));
+        pipeline.add(new SubtractiveFilterView(-310, 310));
     }
 
     private void setupUI() {
