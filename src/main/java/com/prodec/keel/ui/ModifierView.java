@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.prodec.keel.model.ComponentType;
+import com.prodec.keel.model.DataType;
 import com.prodec.keel.model.FilterListener;
 
 public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implements FilterListener<IN> {
 
 	DrawerView<IN> inputDrawerView;
     DrawerView<OUT> outputDrawerView;
+    
+    protected DataType inputDataType =  DataType.FEATURE;
 
     protected List<IN> results = new ArrayList<>();
     protected List<OUT> output = new ArrayList<>();
@@ -92,7 +95,9 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
         if (to.type == ComponentType.DRAWER) {
         	boolean inputDrawer = (fromItem.inItem && fromItem.index == 1 && toItem.inItem && toItem.index == 0);
         	boolean outputDrawer = (!fromItem.inItem && fromItem.index == 1 && toItem.inItem && toItem.index == 0);
-            if (inputDrawer || outputDrawer) {
+            if (inputDrawer) {
+                return inputDataType == ((PipelineDataComponent)to).dataType;
+            } else if (outputDrawer) {
                 return dataType == ((PipelineDataComponent)to).dataType;
             }
         } else if (to.type == ComponentType.CLASSIFIER) {
