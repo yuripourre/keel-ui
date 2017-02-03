@@ -1,18 +1,21 @@
 package com.prodec.keel.ui;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.motion.core.source.ImageSource;
+
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.attribute.RegionAttribute;
 
-import java.awt.*;
-
-
 public abstract class SourceView extends PipelineComponent {
-
-	protected FilterView filterView;
+	
 	protected ImageSource source;
 	protected RegionAttribute regionAttribute;
+	
+	protected List<FilterView> outputViews = new ArrayList<FilterView>();
 
 	public SourceView(int x, int y, int w, int h) {
 		super(x, y, w, h);
@@ -32,7 +35,7 @@ public abstract class SourceView extends PipelineComponent {
 	public void link(PipelineComponent view, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 		switch (view.type) {
 		case FILTER:
-			filterView = ((FilterView) view);
+			outputViews.add((FilterView) view);
 			updateFilter();
 			break;
 		default:
@@ -48,6 +51,7 @@ public abstract class SourceView extends PipelineComponent {
 			filterView.source = null;
 			filterView.region = null;
 			filterView.resetFilter();
+			outputViews.remove(view);
 			break;
 		default:
 			break;
@@ -68,12 +72,14 @@ public abstract class SourceView extends PipelineComponent {
 	public abstract void drawSource(Graphics g);
 
 	protected void updateFilter() {
-		if (filterView == null) {
+		if (outputViews.isEmpty()) {
 			return;
 		}
 		
-		filterView.source = source;
-		filterView.region = regionAttribute.getRegion();
-		filterView.resetFilter();
+		for (FilterView outputView : outputViews) {
+			outputView.source = source;
+			outputView.region = regionAttribute.getRegion();
+			outputView.resetFilter();	
+		}
 	}
 }

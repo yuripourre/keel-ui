@@ -46,13 +46,14 @@ public class CameraSourceView extends SourceView {
         addAttribute(pathAttribute);
     }
 
+    @Override
     public void update(long now) {
         image = cam.getBufferedImage();
         ((BufferedImageSource) source).setImage(image);
-        filterView.resetFilter();
+        updateFilter();
     }
 
-    @Override
+	@Override
     public void draw(Graphics g) {
         if (!cameraFound) {
            g.setAlpha(20);
