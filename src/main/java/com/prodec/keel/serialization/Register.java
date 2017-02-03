@@ -9,6 +9,7 @@ import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.HullDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
+import com.prodec.keel.ui.filter.MaskFilterView;
 import com.prodec.keel.ui.modifier.ConvexHullModifierView;
 import com.prodec.keel.ui.modifier.DummyModifierView;
 import com.prodec.keel.ui.source.CameraSourceView;
@@ -32,6 +33,7 @@ public class Register {
 		registeredTypes.add(ImageSourceView.class);
 		registeredTypes.add(MaxDimensionValidationView.class);
 		registeredTypes.add(MinDimensionValidationView.class);
+		registeredTypes.add(MaskFilterView.class);
 		
 		return registeredTypes;
 	}
