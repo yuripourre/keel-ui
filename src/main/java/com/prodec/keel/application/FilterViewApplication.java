@@ -17,7 +17,7 @@ import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.HullDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
-import com.prodec.keel.ui.filter.SubtractiveFilterView;
+import com.prodec.keel.ui.filter.MaskFilterView;
 import com.prodec.keel.ui.modifier.ConvexHullModifierView;
 import com.prodec.keel.ui.modifier.DummyModifierView;
 import com.prodec.keel.ui.source.ImageSourceView;
@@ -59,7 +59,7 @@ public class FilterViewApplication extends Application {
         pipeline.add(new ConvexHullModifierView(610, 540));
         pipeline.add(new HullDrawerView(610, 650));
         pipeline.add(new CenterDrawerView(275, 650));
-        pipeline.add(new SubtractiveFilterView(-310, 310));
+        pipeline.add(new MaskFilterView(-310, 310));
     }
 
     private void setupUI() {
