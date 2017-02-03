@@ -85,6 +85,7 @@ public class ColorPickerAttribute extends Attribute {
     	color = g.getBimg().getRGB(mx, my);
     	shouldPickColor = false;
     	waitingColor = false;
+    	notifyChange();
 	}
 
 	private int rectX() {
