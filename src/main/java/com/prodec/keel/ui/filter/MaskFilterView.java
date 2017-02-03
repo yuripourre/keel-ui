@@ -4,27 +4,27 @@ import java.awt.image.BufferedImage;
 
 import br.com.etyllica.loader.image.ImageLoader;
 import br.com.etyllica.motion.core.source.BufferedImageSource;
-import br.com.etyllica.motion.filter.SubtractiveFilter;
+import br.com.etyllica.motion.filter.MaskFilter;
 
 import com.prodec.keel.model.attribute.Attribute;
 import com.prodec.keel.model.attribute.PathAttribute;
 import com.prodec.keel.model.attribute.SliderAttribute;
 import com.prodec.keel.ui.FilterView;
 
-public class SubtractiveFilterView extends FilterView {
+public class MaskFilterView extends FilterView {
 
-    private SubtractiveFilter subtractiveFilter;
+    private MaskFilter subtractiveFilter;
 
-    public SubtractiveFilterView() {
+    public MaskFilterView() {
 		this(0, 0);
 	}
     
-    public SubtractiveFilterView(int x, int y) {
+    public MaskFilterView(int x, int y) {
         super(x, y, VIEW_WIDTH, 130);
-        this.className = SubtractiveFilterView.class.getName();
+        this.className = MaskFilterView.class.getName();
         
-        this.title = "Subtractive Filter";
-        this.subtractiveFilter = new SubtractiveFilter(w, h);
+        this.title = "Mask Filter";
+        this.subtractiveFilter = new MaskFilter(w, h);
         this.filter = subtractiveFilter;
 
         addAttribute(new PathAttribute("Mask"));
