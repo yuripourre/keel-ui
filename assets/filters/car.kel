@@ -1,0 +1,272 @@
+{
+  "version": "1.0",
+  "x": 9,
+  "y": 107,
+  "components": [
+    {
+      "id": 0,
+      "title": "Image Source",
+      "class": "com.prodec.keel.ui.source.ImageSourceView",
+      "x": 487,
+      "y": 151,
+      "params": [
+        {
+          "id": 0,
+          "region": "(0, 0, 288, 263)"
+        },
+        {
+          "id": 1,
+          "path": ""
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "title": "Color Filter",
+      "class": "com.prodec.keel.ui.filter.ColorFilterView",
+      "x": 283,
+      "y": 282,
+      "params": [
+        {
+          "id": 0,
+          "color": "#1E1F21"
+        },
+        {
+          "id": 1,
+          "value": 90,
+          "min": 1,
+          "max": 255
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Max Dimension Validation",
+      "class": "com.prodec.keel.ui.validation.MaxDimensionValidationView",
+      "x": 35,
+      "y": 513,
+      "params": [
+        {
+          "id": 0,
+          "value": 80,
+          "min": 1,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Min Dimension Validation",
+      "class": "com.prodec.keel.ui.validation.MinDimensionValidationView",
+      "x": 240,
+      "y": 421,
+      "params": [
+        {
+          "id": 0,
+          "value": 1,
+          "min": 1,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Rectangular Drawer",
+      "class": "com.prodec.keel.ui.drawer.RectDrawerView",
+      "x": 28,
+      "y": 316,
+      "params": [
+        {
+          "id": 0,
+          "color": "#000000"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Square Classifier",
+      "class": "com.prodec.keel.ui.classifier.SquareClassifierView",
+      "x": 48,
+      "y": 614,
+      "params": []
+    },
+    {
+      "id": 6,
+      "title": "Dummy Modifier",
+      "class": "com.prodec.keel.ui.modifier.DummyModifierView",
+      "x": 66,
+      "y": 727,
+      "params": []
+    },
+    {
+      "id": 7,
+      "title": "Hull Modifier",
+      "class": "com.prodec.keel.ui.modifier.ConvexHullModifierView",
+      "x": 527,
+      "y": 613,
+      "params": []
+    },
+    {
+      "id": 8,
+      "title": "Hull Drawer",
+      "class": "com.prodec.keel.ui.drawer.HullDrawerView",
+      "x": 451,
+      "y": 701,
+      "params": [
+        {
+          "id": 0,
+          "color": "#EBEB58"
+        },
+        {
+          "id": 1,
+          "value": 2,
+          "min": 1,
+          "max": 20
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Center Drawer",
+      "class": "com.prodec.keel.ui.drawer.CenterDrawerView",
+      "x": 535,
+      "y": 511,
+      "params": [
+        {
+          "id": 0,
+          "color": "#EB5858"
+        },
+        {
+          "id": 1,
+          "value": 23,
+          "min": 1,
+          "max": 100
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Mask Filter",
+      "class": "com.prodec.keel.ui.filter.MaskFilterView",
+      "x": -301,
+      "y": 417,
+      "params": [
+        {
+          "id": 0,
+          "path": ""
+        },
+        {
+          "id": 1,
+          "value": 64,
+          "min": 0,
+          "max": 255
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Color Filter",
+      "class": "com.prodec.keel.ui.filter.ColorFilterView",
+      "x": 535,
+      "y": 366,
+      "params": [
+        {
+          "id": 0,
+          "color": "#000000"
+        },
+        {
+          "id": 1,
+          "value": 255,
+          "min": 1,
+          "max": 255
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "id": 0,
+        "direction": "out",
+        "option": 0
+      },
+      "to": {
+        "id": 1,
+        "direction": "in",
+        "option": 0
+      }
+    },
+    {
+      "from": {
+        "id": 0,
+        "direction": "out",
+        "option": 0
+      },
+      "to": {
+        "id": 11,
+        "direction": "in",
+        "option": 0
+      }
+    },
+    {
+      "from": {
+        "id": 1,
+        "direction": "in",
+        "option": 2
+      },
+      "to": {
+        "id": 4,
+        "direction": "in",
+        "option": 0
+      }
+    },
+    {
+      "from": {
+        "id": 11,
+        "direction": "in",
+        "option": 2
+      },
+      "to": {
+        "id": 9,
+        "direction": "in",
+        "option": 0
+      }
+    },
+    {
+      "from": {
+        "id": 1,
+        "direction": "in",
+        "option": 1
+      },
+      "to": {
+        "id": 3,
+        "direction": "in",
+        "option": 0
+      }
+    },
+    {
+      "from": {
+        "id": 8,
+        "direction": "in",
+        "option": 0
+      },
+      "to": {
+        "id": 7,
+        "direction": "out",
+        "option": 1
+      }
+    },
+    {
+      "from": {
+        "id": 1,
+        "direction": "out",
+        "option": 0
+      },
+      "to": {
+        "id": 7,
+        "direction": "in",
+        "option": 0
+      }
+    }
+  ]
+}
