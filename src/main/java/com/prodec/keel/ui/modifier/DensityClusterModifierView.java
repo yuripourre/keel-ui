@@ -19,16 +19,15 @@ public class DensityClusterModifierView extends ModifierView<Component, Cluster>
 	}
 	
     public DensityClusterModifierView(int x, int y) {
-        super(x, y, VIEW_WIDTH, 80);
+        super(x, y, VIEW_WIDTH, 114);
         this.className = DensityClusterModifierView.class.getName();
-        inputDataType = DataType.LIST;
-        dataType = DataType.CLUSTER_LIST;
+        dataType = DataType.CLUSTER;
         title = "Cluster Modifier";
         
         int maxDistance = 20;
         int minPoints = 5;
         clusterer = new DBScan(maxDistance, minPoints);
-        
+                
         outputs.remove(0);
         outputs.add(0, "List of Clusters");
         
@@ -38,9 +37,11 @@ public class DensityClusterModifierView extends ModifierView<Component, Cluster>
 
     @Override
     public void modify(List<Component> results) {
-        List<Cluster> clusters = clusterer.cluster(results.get(0).getPoints());        
-        for (Cluster cluster : clusters) {
-        	output.add(cluster);
-        }
+    	for (Component component : results) {
+    		List<Cluster> clusters = clusterer.cluster(component.getPoints());        
+            for (Cluster cluster : clusters) {
+            	output.add(cluster);
+            }	
+    	}
     }
 }

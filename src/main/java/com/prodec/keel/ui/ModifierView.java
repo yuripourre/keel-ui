@@ -10,6 +10,8 @@ import com.prodec.keel.model.FilterListener;
 
 public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implements FilterListener<IN> {
 
+	ModifierView<OUT, ?> next;
+	
 	DrawerView<IN> inputDrawerView;
     DrawerView<OUT> outputDrawerView;
     
@@ -54,6 +56,17 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
                 FilterView filterView = (FilterView) view;
                 filterView.link(view, toItem, fromItem);
                 break;
+            case MODIFIER:
+            	if (fromItem.inItem) {
+            		view.link(this, toItem, fromItem);
+            	} else {
+            		next = (ModifierView<OUT, ?>) view;
+            		if (output != null && !output.isEmpty()) {
+            			propagateOutput(output);
+            		}
+            	}
+                
+                break;
             default:
                 break;
         }
@@ -82,7 +95,13 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
 
                 break;
             case FILTER:
-
+                break;
+            case MODIFIER:
+            	if (next == view) {
+            		next = null;
+            	} else {
+            		((ModifierView<?, ?>)view).next = null;
+            	}
                 break;
             default:
                 break;
@@ -107,6 +126,14 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
         	}
         } else if (to.type == ComponentType.FILTER) {
             return fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0;
+        } else if (to.type == ComponentType.MODIFIER) {
+        	boolean inputModifier = (fromItem.inItem && fromItem.index == 0 && !toItem.inItem && toItem.index == 0);
+        	boolean outputModifier = (!fromItem.inItem && fromItem.index == 0 && toItem.inItem && toItem.index == 0);
+        	if (inputModifier) {
+                return inputDataType == ((ModifierView<?,?>)to).dataType;
+            } else if (outputModifier) {
+                return dataType == ((ModifierView<?,?>)to).inputDataType;
+            }
         }
         return false;
     }
@@ -133,7 +160,9 @@ public abstract class ModifierView<IN, OUT> extends PipelineDataComponent implem
         if (outputDrawerView != null) {
             outputDrawerView.setResults(output);
         }
-        //TODO If next != null
+        if (next != null) {
+        	next.setResults(output);
+        }
     }
 
     public void clear() {

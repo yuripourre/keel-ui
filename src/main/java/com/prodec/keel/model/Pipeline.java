@@ -70,7 +70,6 @@ public class Pipeline {
     }
     
     public void updateMouse(PointerEvent event) {
-    	
     	mx = event.getX();
     	my = event.getY();
     	

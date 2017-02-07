@@ -1,5 +1,5 @@
 package com.prodec.keel.model;
 
 public enum DataType {
-	FEATURE, HULL, LIST 
+	CLUSTER, FEATURE, HULL, LIST;
 }
