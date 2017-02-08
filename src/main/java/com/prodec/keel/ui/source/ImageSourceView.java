@@ -10,7 +10,7 @@ import com.prodec.keel.model.attribute.PathAttribute;
 import com.prodec.keel.ui.SourceView;
 
 public class ImageSourceView extends SourceView {
-
+	
     PathAttribute pathAttribute;
 
     private BufferedImage image;
@@ -48,6 +48,7 @@ public class ImageSourceView extends SourceView {
     @Override
     public void drawSource(Graphics g) {
         //g.drawImage(image, image.getWidth()/2, image.getHeight()/2);
-    	g.drawImage(image, 0, 0);
+    	g.drawImage(image, drawX, drawY);
     }
+    
 }

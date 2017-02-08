@@ -1,6 +1,8 @@
 package com.prodec.keel.ui.drawer;
 
 import br.com.etyllica.core.graphics.Graphics;
+import br.com.etyllica.layer.GeometricLayer;
+import br.com.etyllica.layer.Layer;
 import br.com.etyllica.motion.feature.Component;
 
 import com.prodec.keel.model.attribute.ColorPickerAttribute;
@@ -27,7 +29,8 @@ public class RectDrawerView extends DrawerView<Component> {
     public void drawResults(Graphics g) {
         g.setColor(colorPickerAttribute.getColor());
         for (Component component : results) {
-            g.drawRect(component.getRectangle());
+        	GeometricLayer rectangle = component.getRectangle();
+            g.drawRect(rectangle.getX() + drawX, rectangle.getY() + drawY, rectangle.getW(), rectangle.getH());
         }
     }
 

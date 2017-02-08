@@ -44,8 +44,8 @@ public class HullDrawerView extends DrawerView<HullComponent> {
         		next %= points.size();
         		Point2D nextPoint = points.get(next); 
         		
-        		g.drawLine(point, nextPoint);
-        		g.fillCircle(point, radiusAttribute.getCurrentValue());
+        		g.drawLine((int)point.getX() + drawX,(int) point.getY() + drawY,(int) nextPoint.getX() + drawX,(int) nextPoint.getY() + drawY);
+        		g.fillCircle(point.getX() + drawX, point.getY() + drawY, radiusAttribute.getCurrentValue());
         	}
         }
     }

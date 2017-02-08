@@ -162,7 +162,7 @@ public class Pipeline {
                 ((SourceView) component).drawSource(g);
             }
             if (ComponentType.DRAWER == component.getType()) {
-                ((DrawerView) component).drawResults(g);
+                ((DrawerView<?>) component).drawResults(g);
             }
         }
 
@@ -207,6 +207,12 @@ public class Pipeline {
 	
 	public int getY() {
 		return y;
+	}
+
+	public void setDrawPosition(int drawX, int drawY) {
+		for (PipelineComponent component : components) {
+			component.setDrawPosition(drawX, drawY);
+		}
 	}
     
 }

@@ -52,6 +52,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	
 	private int offsetX = 0;
 	private int offsetY = 0;
+	
 	//Drag Event
 	private int lastX = 0;
 	private int lastY = 0;
@@ -71,6 +72,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
     private int attributeCount = 0;
     
     protected String className;
+    
+    protected int drawX = 0;
+    protected int drawY = 0;
 
 	public PipelineComponent(int x, int y, int w, int h) {
 		super(x, y, w, h);
@@ -461,5 +465,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	public int getY() {
 		return y + offsetY;
 	}
-		
+
+	public void setDrawPosition(int drawX, int drawY) {
+    	this.drawX = drawX;
+    	this.drawY = drawY;
+    }
 }
