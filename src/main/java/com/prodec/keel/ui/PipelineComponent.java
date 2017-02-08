@@ -8,6 +8,7 @@ import java.util.Map;
 
 import br.com.etyllica.awt.SVGColor;
 import br.com.etyllica.core.collision.CollisionDetector;
+import br.com.etyllica.core.event.GUIEvent;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
@@ -210,14 +211,15 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		return itemSocketY(item.index, item.inItem);
 	}
 
-	public void update(long now) {
+	public void update(long now) {}
 
-	}
+	public void updateKeyboard(KeyEvent event) {}
 
-	public void updateKeyboard(KeyEvent event) {
-		// TODO Auto-generated method stub
+	@Override
+	public void update(GUIEvent event) {}
 
-	}
+	@Override
+	public void resize(int w, int h) {}
 
 	public void updateMouse(PointerEvent event) {
 		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {

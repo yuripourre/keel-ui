@@ -89,6 +89,6 @@ public class CameraSourceView extends SourceView {
 
     @Override
     public void drawSource(Graphics g) {
-        g.drawImage(image, 0, 0);
+        g.drawImage(image, drawX, drawY);
     }
 }
