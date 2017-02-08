@@ -22,10 +22,9 @@ public class CarViewApplication extends Application {
 
     @Override
     public void load() {
-    	//String carPath = "cars/1485968690020.jpg";
-    	String carPath = "cars/1234567.jpg";
+    	String carPath = "cars/1485968690020.jpg";
     	        
-        pipeline = JsonLoaderHelper.load(PathHelper.currentDirectory()+"../assets/filters/car.kel");
+        pipeline = JsonLoaderHelper.load(PathHelper.currentDirectory()+"assets/filters/car.kel");
         
         ImageSourceView source = (ImageSourceView) pipeline.getComponent(0);
         source.setPath(carPath);
