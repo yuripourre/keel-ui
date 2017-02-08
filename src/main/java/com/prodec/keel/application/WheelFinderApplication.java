@@ -37,13 +37,18 @@ public class WheelFinderApplication extends Application {
 
 	@Override
 	public void load() {
+		//Silver Wheels
 		//image = ImageLoader.getInstance().getImage("cars/1485968690020.jpg");
 		
-		image = ImageLoader.getInstance().getImage("cars/1485968917194.jpg");
-		//image = ImageLoader.getInstance().getImage("cars/1485968917194_edit.jpg");
-		
+		//Bus
 		//image = ImageLoader.getInstance().getImage("cars/1485969625131.jpg");
 		
+		//Black Wheels
+		//image = ImageLoader.getInstance().getImage("cars/1485968917194.jpg");
+		//image = ImageLoader.getInstance().getImage("cars/1485968917194_edit.jpg");
+		image = ImageLoader.getInstance().getImage("cars/1485969694374.jpg");
+		//image = ImageLoader.getInstance().getImage("cars/1485969859969.jpg");
+				
 		int w = image.getWidth();
 		int h = image.getHeight();
 		
@@ -51,6 +56,8 @@ public class WheelFinderApplication extends Application {
 		Line2D currentLine = null;
 		Point2D destination = new Point2D();
 		
+		//int minY = 60;
+		int minY = 0;
 		int minSize = 18;
 		int size;
 		int step = 2;
@@ -72,10 +79,13 @@ public class WheelFinderApplication extends Application {
 						destination.setY(i);
 					}
 				} else if(found) {
+					found = false;
+					if (i < minY) {
+						continue;
+					}
 					if (size > minSize) {
 						addLine(currentLine);
 					}
-					found = false;
 				}
 			}
 		}
