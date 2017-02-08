@@ -8,6 +8,7 @@ import java.util.Map;
 
 import br.com.etyllica.awt.SVGColor;
 import br.com.etyllica.core.collision.CollisionDetector;
+import br.com.etyllica.core.event.GUIEvent;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
@@ -52,6 +53,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	
 	private int offsetX = 0;
 	private int offsetY = 0;
+	
 	//Drag Event
 	private int lastX = 0;
 	private int lastY = 0;
@@ -71,6 +73,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
     private int attributeCount = 0;
     
     protected String className;
+    
+    protected int drawX = 0;
+    protected int drawY = 0;
 
 	public PipelineComponent(int x, int y, int w, int h) {
 		super(x, y, w, h);
@@ -206,14 +211,15 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		return itemSocketY(item.index, item.inItem);
 	}
 
-	public void update(long now) {
+	public void update(long now) {}
 
-	}
+	public void updateKeyboard(KeyEvent event) {}
 
-	public void updateKeyboard(KeyEvent event) {
-		// TODO Auto-generated method stub
+	@Override
+	public void update(GUIEvent event) {}
 
-	}
+	@Override
+	public void resize(int w, int h) {}
 
 	public void updateMouse(PointerEvent event) {
 		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
@@ -461,5 +467,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	public int getY() {
 		return y + offsetY;
 	}
-		
+
+	public void setDrawPosition(int drawX, int drawY) {
+    	this.drawX = drawX;
+    	this.drawY = drawY;
+    }
 }

@@ -36,7 +36,7 @@ public class CenterDrawerView extends DrawerView<Component> {
             int cx = component.getX() + component.getW() / 2;
             int cy = component.getY() + component.getH() / 2;
 
-            g.fillCircle(cx, cy, radiusAttribute.getCurrentValue());
+            g.fillCircle(cx + drawX, cy + drawY, radiusAttribute.getCurrentValue());
         }
     }
 
