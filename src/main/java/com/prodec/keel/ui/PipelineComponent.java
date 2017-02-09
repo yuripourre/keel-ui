@@ -28,8 +28,8 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 
 	protected ComponentType type = ComponentType.UNKNOWN;
 	public static final int NONE = -1;
-		
-	public static final PipelineComponentItem INVALID_ITEM = new PipelineComponentItem(NONE, false);  
+
+	public static final PipelineComponentItem INVALID_ITEM = new PipelineComponentItem(NONE, false);
 	PipelineComponentItem selectedItem = INVALID_ITEM;
 	PipelineComponentItem mouseOnItem = INVALID_ITEM;
 
@@ -50,10 +50,10 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	protected static final Color COLOR_DRAWER = new Color(0x45, 0x45, 0x45, 0xe5);
 	protected static final Color COLOR_CLASSIFIER = new Color(0xe8, 0xe8, 0x45, 0xe5);
 	protected static final Color COLOR_SOURCE = new Color(0x65, 0x28, 0xb6, 0xe5);
-	
+
 	private int offsetX = 0;
 	private int offsetY = 0;
-	
+
 	//Drag Event
 	private int lastX = 0;
 	private int lastY = 0;
@@ -61,19 +61,19 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	private int dragY = 0;
 	private boolean move = false;
 	protected boolean dragged = false;
-	
+
 	private boolean removeLink = false;
 
 	protected List<String> inputs = new ArrayList<String>();
 	protected List<String> outputs = new ArrayList<String>();
 
     private Map<Integer, Attribute> attributes = new HashMap<>();
-    
+
     private int index;
     private int attributeCount = 0;
-    
+
     protected String className;
-    
+
     protected int drawX = 0;
     protected int drawY = 0;
 
@@ -102,14 +102,14 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
     protected void drawBrackground(Graphics g) {
 		Color background = buildBackgroundColor();
 		g.setColor(background);
-		
+
 		g.fillRoundRect(getX(), getY(), w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
 	}
-	
+
 	protected void drawBorder(Graphics g) {
 		Color background = Color.BLACK;
 		g.setColor(background);
-		
+
 		g.drawRoundRect(getX(), getY(), w, h, BORDER_ROUNDNESS, BORDER_ROUNDNESS);
 	}
 
@@ -140,25 +140,25 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		for (String item : inputs) {
 			int ix = itemSocketX(count, true);
 			int iy = itemSocketY(count, true);
-			
+
 			g.setColor(buildItemColor(count, true));
 			drawSocket(g, ty, item, ix, iy);
 			g.setColor(fontColor());
 			drawInItemText(g, ty, count, item, ix);
-			
+
 			count++;
 		}
-		
+
 		count = 0;
 		for (String item : outputs) {
 			int ix = itemSocketX(count, false);
 			int iy = itemSocketY(count, false);
-			
+
 			g.setColor(buildItemColor(count, false));
 			drawSocket(g, ty, item, ix, iy);
 			g.setColor(fontColor());
 			drawOutItemText(g, ty, count, item, ix);
-			
+
 			count++;
 		}
 
@@ -168,7 +168,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	private void drawInItemText(Graphics g, int ty, int count, String item, int ix) {
 		g.drawString(item, ix + 12, ty + ITEM_SPACING * count);
 	}
-	
+
 	private void drawOutItemText(Graphics g, int ty, int count, String item, int ix) {
 		int width = g.getFontMetrics().stringWidth(item);
 		g.drawString(item, ix - width - 2, ty + ITEM_SPACING * count);
@@ -179,7 +179,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		g.setColor(SVGColor.GRAY);
 		g.drawOval(ix, iy, SOCKET_SIZE, SOCKET_SIZE);
 	}
-	
+
 	private Color buildItemColor(int count, boolean inItem) {
 		if (mouseOnItem.inItem == inItem && mouseOnItem.index == count) {
 			return SVGColor.CADET_BLUE;
@@ -189,7 +189,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 			return SVGColor.GHOST_WHITE;
 		}
 	}
-	
+
 	public int itemSocketX(int index, boolean inItem) {
 		if (inItem) {
 			return getX() + 2;
@@ -197,16 +197,16 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 			return getX() + w - SOCKET_SIZE - 2;
 		}
 	}
-	
+
 	public int itemSocketX(PipelineComponentItem item) {
 		return itemSocketX(item.index, item.inItem);
 	}
-	
+
 	public int itemSocketY(int item, boolean inItem) {
 		int fy = getY() + TITLE_BAR + 6;
 		return fy + ITEM_SPACING * item;
 	}
-	
+
 	public int itemSocketY(PipelineComponentItem item) {
 		return itemSocketY(item.index, item.inItem);
 	}
@@ -214,12 +214,6 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	public void update(long now) {}
 
 	public void updateKeyboard(KeyEvent event) {}
-
-	@Override
-	public void update(GUIEvent event) {}
-
-	@Override
-	public void resize(int w, int h) {}
 
 	public void updateMouse(PointerEvent event) {
 		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
@@ -238,7 +232,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 			move = false;
 			selectedItem = INVALID_ITEM;
 		}
-		
+
 		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_RIGHT) && mouseOnItem != INVALID_ITEM) {
 			removeLink = true;
 		}
@@ -256,7 +250,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		if (!dragged) {
 			checkMouseOnItem(event);
 		}
-		
+
 		for (Attribute attribute : attributes.values()) {
         	attribute.updateMouse(event);
         }
@@ -270,13 +264,13 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		for (int i = 0; i < inputs.size(); i++) {
 			int sx = itemSocketX(i, true);
 			int sy = itemSocketY(i, true);
-			
+
 			if (mx > sx && mx < sx + SOCKET_SIZE && my > sy && my < sy + SOCKET_SIZE) {
 				mouseOnItem = new PipelineComponentItem(i, true);
 				return;
 			}
 		}
-		
+
 		for (int i = 0; i < outputs.size(); i++) {
 			int sx = itemSocketX(i, false);
 			int sy = itemSocketY(i, false);
@@ -293,7 +287,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		if (Pipeline.getMode() == Mode.SELECTION) {
 			return false;
 		}
-		
+
 		return CollisionDetector.colideRectPoint(getX(),  getY(),  w,  TITLE_BAR, event.getX(),  event.getY());
 	}
 
@@ -304,7 +298,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	public int commonAttributesEnd() {
 		int size = inputs.size();
 		if (outputs.size() > inputs.size()) {
-			size = outputs.size(); 
+			size = outputs.size();
 		}
 		return getY() + TITLE_BAR + size * 20;
 	}
@@ -315,9 +309,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 
 	public String getItemLabel(PipelineComponentItem item) {
 		int index = item.index;
-		
+
 		if(item.inItem) {
-			return inputs.get(index);	
+			return inputs.get(index);
 		} else {
 			return outputs.get(index);
 		}
@@ -325,9 +319,9 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 
 	public void unlink(PipelineComponent to, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void link(PipelineComponent from, PipelineComponentItem fromItem, PipelineComponentItem toItem) {
 		// TODO Auto-generated method stub
 	}
@@ -341,7 +335,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		// TODO Auto-generated method stub
 		return selectedItem;
 	}
-	
+
 	public boolean isMoving() {
 		for (Attribute attribute : attributes.values()) {
 			if (attribute.isMousePressed()) {
@@ -350,11 +344,11 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		}
 		return move;
 	}
-	
+
 	public boolean isRemoveLink() {
 		return removeLink;
 	}
-	
+
 	public void linkRemoved() {
 		removeLink = false;
 	}
@@ -369,19 +363,19 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
 		g.setColor(color);
 		g.fillRect(getX() + w - 14, sepY + 6, 12, 12);
-		
+
 		g.setColor(fontColor());
 	}
-	
+
 	protected void drawColorPickerAttribute(Graphics g, String label, int order, Color color) {
 		int sepY = commonAttributesEnd();
 		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
 		g.setColor(color);
 		g.fillRect(getX() + w - 14, sepY + 6, 12, 12);
-		
+
 		g.setColor(fontColor());
 	}
-	
+
 	protected void drawSliderAttribute(Graphics g, String label, int order, int value) {
 		int sepY = commonAttributesEnd();
 		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
@@ -401,7 +395,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		g.drawString(label, getX() + 14, sepY + ITEM_SPACING * (order + 1));
 		g.drawString(path, getX() + 154, sepY + ITEM_SPACING * (order + 1));
 	}
-	
+
 	public Color fontColor() {
 		return ThemeManager.getInstance().getTheme().getTextColor();
 	}
@@ -412,7 +406,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
         int attributeId = attributeCount;
         attribute.setId(attributeId);
         attributes.put(attributeId, attribute);
-        
+
         attributeCount++;
     }
 
@@ -424,7 +418,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
     public void onValueChange(int attributeId) {
 
     }
-    
+
 	public String getTitle() {
 		return title;
 	}
@@ -440,7 +434,7 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 	public Map<Integer, Attribute> getAttributes() {
 		return attributes;
 	}
-	
+
 	public String getClassName() {
 		return className;
 	}
@@ -457,12 +451,12 @@ public abstract class PipelineComponent extends Layer implements UIComponent, At
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 	}
-	
+
 	@Override
 	public int getX() {
 		return x + offsetX;
 	}
-	
+
 	@Override
 	public int getY() {
 		return y + offsetY;
