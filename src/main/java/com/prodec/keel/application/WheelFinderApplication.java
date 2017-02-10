@@ -16,24 +16,21 @@ import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.core.linear.Line2D;
 import br.com.etyllica.core.linear.Point2D;
 import br.com.etyllica.loader.image.ImageLoader;
-import br.com.etyllica.motion.classifier.cluster.Cluster;
-import br.com.etyllica.motion.classifier.cluster.DBScan;
 import br.com.etyllica.motion.filter.color.ColorStrategy;
-import br.com.etyllica.motion.filter.image.BlackAndWhiteAverageFilter;
 import br.com.etyllica.motion.filter.image.BlackAndWhiteLuminosityFilter;
 
 public class WheelFinderApplication extends Application {
 
 	private BufferedImage image;
 
+	private int currentImage = 0;
+	private List<String> images = new ArrayList<String>();
+	
 	private Set<Point2D> edges = new HashSet<Point2D>();
 	private List<Line2D> lines = new ArrayList<Line2D>();
 	private List<Line2D> projections = new ArrayList<Line2D>();
 
 	private boolean drawImage = false;
-
-	private DBScan clusterer;
-	private List<Cluster> clusters = new ArrayList<Cluster>();
 
 	boolean startLine = true;
 
@@ -59,20 +56,33 @@ public class WheelFinderApplication extends Application {
 		//image = ImageLoader.getInstance().getImage("cars/1485969625131.jpg");
 
 		//Black Wheels
-		//image = ImageLoader.getInstance().getImage("cars/1485968917194.jpg");
-		//image = ImageLoader.getInstance().getImage("cars/1485968917194_edit.jpg");
-		image = ImageLoader.getInstance().getImage("cars/1485969694374.jpg");
-		//image = ImageLoader.getInstance().getImage("cars/1485969859969.jpg");
+		images.add("cars/1485968917194.jpg");
+		images.add("cars/1485969694374.jpg");
+		images.add("cars/1485969859969.jpg");
+		
+		applyFilter();
+	}
+	
+	private void applyFilter() {
+		image = ImageLoader.getInstance().getImage(images.get(currentImage));
 
+		edges.clear();
+		lines.clear();
+		projections.clear();
+		
+		findEdges();
+		projectLines();
+		spectrogram = generateSpectrogram();
+	}
+
+	private void findEdges() {
 		int w = image.getWidth();
 		int h = image.getHeight();
-
+		
 		boolean found = false;
 		Line2D currentLine = null;
 		Point2D destination = new Point2D();
 
-		//int minY = 60;
-		int minY = 0;
 		int minSize = 18;
 		int size;
 		int step = 2;
@@ -95,20 +105,13 @@ public class WheelFinderApplication extends Application {
 					}
 				} else if(found) {
 					found = false;
-					if (i < minY) {
-						continue;
-					}
+					
 					if (size > minSize) {
 						addLine(currentLine);
 					}
 				}
 			}
 		}
-
-		clusterer = new DBScan(7, 21);
-		//applyModifier();
-		projectLines();
-		spectrogram = generateSpectrogram();
 	}
 
 	private void projectLines() {
@@ -220,10 +223,6 @@ public class WheelFinderApplication extends Application {
 		}
 	}
 
-	private void applyModifier() {
-		clusters = clusterer.cluster(edges);
-	}
-
 	private void addLine(Line2D currentLine) {
 		lines.add(currentLine);
 		int ox = (int) currentLine.getP1().getX();
@@ -240,7 +239,6 @@ public class WheelFinderApplication extends Application {
 		int blue = ColorStrategy.getBlue(rgb);
 
 		int gray = BlackAndWhiteLuminosityFilter.toBlackAndWhite(rgb);
-		//int gray = BlackAndWhiteAverageFilter.toBlackAndWhite(rgb);
 
 		int maxColor = 0x92;
 		int minColor = 0x12;
@@ -260,6 +258,17 @@ public class WheelFinderApplication extends Application {
 	public void updateKeyboard(KeyEvent event) {
 		if (event.isKeyDown(KeyEvent.VK_SPACE)) {
 			drawImage = !drawImage;
+		}
+		if (event.isKeyDown(KeyEvent.VK_RIGHT)) {
+			currentImage++;
+			currentImage %= images.size();
+			
+			applyFilter();
+		} else if (event.isKeyDown(KeyEvent.VK_LEFT)) {
+			currentImage += images.size() - 1;
+			currentImage %= images.size();
+			
+			applyFilter();
 		}
 	}
 
@@ -301,14 +310,6 @@ public class WheelFinderApplication extends Application {
 		g.drawLine(startPoint, endPoint);
 
 		drawSpectrogram(g, spectrogram);
-
-		g.setColor(Color.WHITE);
-		for (Cluster cluster: clusters) {
-			g.drawCircle(cluster.centroid, 12);
-			/*for (Point2D point: cluster.getPoints()) {
-				g.fillRect((int)point.getX(), (int)point.getY(), 1, 1);	
-			}*/
-		}
 	}
 
 	private void drawSpectrogram(Graphics g, boolean[] spectrogram) {
