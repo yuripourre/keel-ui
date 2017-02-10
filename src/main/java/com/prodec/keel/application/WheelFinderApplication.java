@@ -20,31 +20,32 @@ import br.com.etyllica.motion.classifier.cluster.Cluster;
 import br.com.etyllica.motion.classifier.cluster.DBScan;
 import br.com.etyllica.motion.filter.color.ColorStrategy;
 import br.com.etyllica.motion.filter.image.BlackAndWhiteAverageFilter;
+import br.com.etyllica.motion.filter.image.BlackAndWhiteLuminosityFilter;
 
 public class WheelFinderApplication extends Application {
 
 	private BufferedImage image;
-	
+
 	private Set<Point2D> edges = new HashSet<Point2D>();
 	private List<Line2D> lines = new ArrayList<Line2D>();
 	private List<Line2D> projections = new ArrayList<Line2D>();
-	
+
 	private boolean drawImage = false;
-	
+
 	private DBScan clusterer;
 	private List<Cluster> clusters = new ArrayList<Cluster>();
-	
+
 	boolean startLine = true;
-	
+
 	Point2D startPoint = new Point2D(189, 262);
 	Point2D endPoint = new Point2D(288, 108.0);
 	Line2D base = new Line2D(startPoint, endPoint);
-	
-	int maxLineDist = 16;
+
+	int maxLineDist = 10;
 	int size = 256;
-	
+
 	boolean[] spectrogram;
-	
+
 	public WheelFinderApplication(int w, int h) {
 		super(w, h);
 	}
@@ -53,35 +54,35 @@ public class WheelFinderApplication extends Application {
 	public void load() {
 		//Silver Wheels
 		//image = ImageLoader.getInstance().getImage("cars/1485968690020.jpg");
-		
+
 		//Bus
 		//image = ImageLoader.getInstance().getImage("cars/1485969625131.jpg");
-		
+
 		//Black Wheels
 		//image = ImageLoader.getInstance().getImage("cars/1485968917194.jpg");
 		//image = ImageLoader.getInstance().getImage("cars/1485968917194_edit.jpg");
 		image = ImageLoader.getInstance().getImage("cars/1485969694374.jpg");
 		//image = ImageLoader.getInstance().getImage("cars/1485969859969.jpg");
-				
+
 		int w = image.getWidth();
 		int h = image.getHeight();
-		
+
 		boolean found = false;
 		Line2D currentLine = null;
 		Point2D destination = new Point2D();
-		
+
 		//int minY = 60;
 		int minY = 0;
 		int minSize = 18;
 		int size;
 		int step = 2;
-		
+
 		for (int j = 0; j < w; j++) {
 			found = false;
 			size = 0;
 			for (int i = h - 1; i >= 0; i-=step) {
 				int rgb = image.getRGB(j, i);
-				
+
 				if (validateColor(rgb)) {
 					if (!found) {
 						size = 0;
@@ -103,38 +104,69 @@ public class WheelFinderApplication extends Application {
 				}
 			}
 		}
-		
+
 		clusterer = new DBScan(7, 21);
 		//applyModifier();
 		projectLines();
 		spectrogram = generateSpectrogram();
 	}
-	
+
 	private void projectLines() {
 		projections.clear();
-				
+
+		Double minDist = Double.MAX_VALUE;
+		
 		for (Line2D line: lines) {
 			Point2D q = line.getP1();
-			
-			if (base.distance(q) < maxLineDist) {
+
+			double dist = base.distance(q); 
+			if (dist < minDist) {
+				minDist = dist;
+			}
+		}
+		
+		//TODO Normalize image dimensions
+		int magicOffset = 10;
+		double maxDist = minDist + magicOffset;
+		
+		for (Line2D line: lines) {
+			Point2D q = line.getP1();
+
+			if (base.distance(q) < maxDist) {
 				Point2D projected = base.nearestPoint(q);
 				projections.add(new Line2D(q, projected));
 			}
 		}
 	}
-	
+
 	private boolean[] generateSpectrogram() {
-		
+
 		boolean[] spectrogram = new boolean[size];
-		
+
 		double total = base.getP1().distance(base.getP2());
-		
-		for (Line2D line: projections) {
+
+
+		for (int i = 0; i < projections.size()-1; i++) {
+			Line2D line = projections.get(i);
+			Line2D nextLine = projections.get(i+1);
+
+			double lx = line.getP2().getX();
+			double ly = line.getP2().getY();
+			double nx = nextLine.getP2().getX();
+			double ny = nextLine.getP2().getY();
+
+			//Add more datails to spectrogram
+			if (nx < lx + 2 && ny < ly) {
+				double dist = base.getP1().distance(lx, ny);
+				int ix = (int)(dist * size / total);
+				spectrogram[ix] = true;
+			}
+
 			double dist = base.getP1().distance(line.getP2());
-			int i = (int)(dist * size / total);
-			spectrogram[i] = true;
+			int ix = (int)(dist * size / total);
+			spectrogram[ix] = true;
 		}
-		
+
 		return spectrogram;
 	}
 
@@ -151,26 +183,26 @@ public class WheelFinderApplication extends Application {
 			edges.add(new Point2D(ox, oy + i));
 		}
 	}
-	
+
 	private boolean validateColor(int rgb) {
 		int red = ColorStrategy.getRed(rgb);
 		int green = ColorStrategy.getGreen(rgb);
 		int blue = ColorStrategy.getBlue(rgb);
-		
-		//int gray = BlackAndWhiteLuminosityFilter.toBlackAndWhite(rgb);
-		int gray = BlackAndWhiteAverageFilter.toBlackAndWhite(rgb);
-		
+
+		int gray = BlackAndWhiteLuminosityFilter.toBlackAndWhite(rgb);
+		//int gray = BlackAndWhiteAverageFilter.toBlackAndWhite(rgb);
+
 		int maxColor = 0x92;
 		int minColor = 0x12;
-		
+
 		boolean checkGray = gray > minColor + 30;
-		
+
 		boolean checkRed = red < maxColor && red >= minColor;
 		boolean checkGreen = green < maxColor && green >= minColor;
 		boolean checkBlue = blue < maxColor && blue >= minColor;
- 
+
 		boolean isLeaf = green > gray;
-		
+
 		return checkGray && checkRed && checkGreen && checkBlue && !isLeaf;
 	}
 
@@ -180,7 +212,7 @@ public class WheelFinderApplication extends Application {
 			drawImage = !drawImage;
 		}
 	}
-		
+
 	@Override
 	public void updateMouse(PointerEvent event) {
 		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
@@ -195,7 +227,7 @@ public class WheelFinderApplication extends Application {
 			}*/
 		}
 	}
-	
+
 	@Override
 	public void draw(Graphics g) {
 		g.setColor(Color.BLACK);
@@ -214,12 +246,12 @@ public class WheelFinderApplication extends Application {
 		for (Line2D line: projections) {
 			g.drawLine(line);
 		}
-		
+
 		g.setColor(Color.YELLOW);
 		g.drawLine(startPoint, endPoint);
-		
+
 		drawSpectrogram(g, spectrogram);
-				
+
 		g.setColor(Color.WHITE);
 		for (Cluster cluster: clusters) {
 			g.drawCircle(cluster.centroid, 12);
@@ -234,12 +266,12 @@ public class WheelFinderApplication extends Application {
 		int ey = 300;
 		int ew = 256;
 		int eh = 20;
-		
+
 		g.setColor(Color.YELLOW);
 		g.drawLine(ex, ey, ex, ey + eh);
 		g.drawLine(ex + ew, ey, ex + ew, ey + eh);
 		g.drawLine(ex, ey + eh, ex+ew, ey + eh);
-				
+
 		g.setColor(Color.BLUE);
 		for (int i = 0; i < spectrogram.length; i++) {
 			if (!spectrogram[i]) {
