@@ -37,8 +37,8 @@ public class WheelFinderApplication extends Application {
 
 	boolean startLine = true;
 
-	Point2D startPoint = new Point2D(189, 262);
-	Point2D endPoint = new Point2D(288, 108.0);
+	Point2D startPoint = new Point2D(198, 262);
+	Point2D endPoint = new Point2D(298, 108.0);
 	Line2D base = new Line2D(startPoint, endPoint);
 
 	int maxLineDist = 10;
@@ -126,7 +126,7 @@ public class WheelFinderApplication extends Application {
 		}
 		
 		//TODO Normalize image dimensions
-		int magicOffset = 10;
+		int magicOffset = 14;
 		double maxDist = minDist + magicOffset;
 		
 		for (Line2D line: lines) {
@@ -140,11 +140,8 @@ public class WheelFinderApplication extends Application {
 	}
 
 	private boolean[] generateSpectrogram() {
-
 		boolean[] spectrogram = new boolean[size];
-
-		double total = base.getP1().distance(base.getP2());
-
+		double lineLength = base.length();
 
 		for (int i = 0; i < projections.size()-1; i++) {
 			Line2D line = projections.get(i);
@@ -158,16 +155,69 @@ public class WheelFinderApplication extends Application {
 			//Add more datails to spectrogram
 			if (nx < lx + 2 && ny < ly) {
 				double dist = base.getP1().distance(lx, ny);
-				int ix = (int)(dist * size / total);
+				int ix = (int)(dist * size / lineLength);
 				spectrogram[ix] = true;
 			}
 
 			double dist = base.getP1().distance(line.getP2());
-			int ix = (int)(dist * size / total);
+			int ix = (int)(dist * size / lineLength);
 			spectrogram[ix] = true;
 		}
 
+		groupSpectrogram(spectrogram);
+		clearSpectrogram(spectrogram);
+		
 		return spectrogram;
+	}
+	
+	private void groupSpectrogram(boolean[] spectrogram) {
+		int maxDistance = 6;
+		
+		for (int i = 0; i < spectrogram.length; i++) {
+			if (!spectrogram[i]) {
+				continue;
+			} else {
+				int distance = 0;
+				for (int j = i + 1; j < spectrogram.length-1; j++) {
+					if (spectrogram[j]) {
+						break;
+					}
+					distance++;
+				}
+				
+				if (distance > 0 && distance < maxDistance) {
+					for (int k = 0; k < distance; k++) {
+						spectrogram[i + 1 + k] = true; 
+					}
+				}
+			}
+		}
+	}
+	
+	private void clearSpectrogram(boolean[] spectrogram) {
+		int minDistance = 3;
+		
+		for (int i = 0; i < spectrogram.length - 1; i++) {
+			if (!spectrogram[i]) {
+				continue;
+			} else {
+				int distance = 1;
+				for (int j = i + 1; j < spectrogram.length - 1; j++) {
+					if (!spectrogram[j]) {
+						break;
+					}
+					distance++;
+				}
+				
+				if (distance < minDistance) {
+					for (int k = 0; k < distance; k++) {
+						spectrogram[i + k] = false; 
+					}
+				}
+				
+				i += distance-1;
+			}
+		}
 	}
 
 	private void applyModifier() {
@@ -268,9 +318,9 @@ public class WheelFinderApplication extends Application {
 		int eh = 20;
 
 		g.setColor(Color.YELLOW);
-		g.drawLine(ex, ey, ex, ey + eh);
-		g.drawLine(ex + ew, ey, ex + ew, ey + eh);
-		g.drawLine(ex, ey + eh, ex+ew, ey + eh);
+		g.drawLine(ex - 1, ey, ex - 1, ey + eh + 1);
+		g.drawLine(ex + ew + 1, ey, ex + ew + 1, ey + eh + 1);
+		g.drawLine(ex, ey + eh + 1, ex + ew, ey + eh + 1);
 
 		g.setColor(Color.BLUE);
 		for (int i = 0; i < spectrogram.length; i++) {
