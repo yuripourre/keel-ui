@@ -1,9 +1,7 @@
 package com.prodec.keel.tools.wheel;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import br.com.etyllica.core.linear.Line2D;
 import br.com.etyllica.core.linear.Point2D;
@@ -14,7 +12,6 @@ import br.com.etyllica.motion.filter.image.BlackAndWhiteLuminosityFilter;
 
 public class WheelFilter {
 
-	private Set<Point2D> edges = new HashSet<Point2D>();
 	private List<Line2D> lines = new ArrayList<Line2D>();
 	private List<Line2D> projections = new ArrayList<Line2D>();
 	
@@ -31,7 +28,6 @@ public class WheelFilter {
 	}
 	
 	public int[] filter(ImageSource source, Component component) {
-		edges.clear();
 		lines.clear();
 		projections.clear();
 		
@@ -47,7 +43,7 @@ public class WheelFilter {
 		
 		boolean found = false;
 		Line2D currentLine = null;
-		Point2D destination = new Point2D();
+		Point2D origin = new Point2D();
 
 		int minSize = 18;
 		int length = 0;
@@ -64,17 +60,20 @@ public class WheelFilter {
 					if (!found) {
 						length = 0;
 						found = true;
-						destination = new Point2D(j, i);
-						currentLine = new Line2D(new Point2D(j, i), destination);
+						//Define origin as destination
+						origin = new Point2D(j, i);
+						currentLine = new Line2D(origin, new Point2D(j, i));
 					} else {
+						//Update origin
 						length += step;
-						destination.setY(i);
+						origin.setY(i);
 					}
 				} else if(found) {
 					found = false;
 					
+					//If line has a valid size
 					if (length > minSize) {
-						addLine(currentLine);
+						lines.add(currentLine);
 					}
 				}
 			}
@@ -85,9 +84,9 @@ public class WheelFilter {
 		Double minDist = Double.MAX_VALUE;
 		
 		for (Line2D line: lines) {
-			Point2D q = line.getP1();
+			Point2D end = line.getP2();
 
-			double dist = base.distance(q); 
+			double dist = base.distance(end);
 			if (dist < minDist) {
 				minDist = dist;
 			}
@@ -98,11 +97,11 @@ public class WheelFilter {
 		double maxDist = minDist + magicOffset;
 		
 		for (Line2D line: lines) {
-			Point2D q = line.getP1();
+			Point2D end = line.getP2();
 
-			if (base.distance(q) < maxDist) {
-				Point2D projected = base.nearestPoint(q);
-				projections.add(new Line2D(q, projected));
+			if (base.distance(end) < maxDist) {
+				Point2D projected = base.nearestPoint(end);
+				projections.add(new Line2D(end, projected));
 			}
 		}
 	}
@@ -111,16 +110,16 @@ public class WheelFilter {
 		int[] spectrogram = new int[size];
 		double lineLength = base.length();
 
-		for (int i = 0; i < projections.size()-1; i++) {
+		for (int i = 0; i < projections.size() - 1; i++) {
 			Line2D line = projections.get(i);
-			Line2D nextLine = projections.get(i+1);
+			Line2D nextLine = projections.get(i + 1);
 
 			double lx = line.getP2().getX();
 			double ly = line.getP2().getY();
 			double nx = nextLine.getP2().getX();
 			double ny = nextLine.getP2().getY();
 
-			//Add more datails to spectrogram
+			//Add more details to spectrogram
 			if (nx < lx + 2 && ny < ly) {
 				double dist = base.getP1().distance(lx, ny);
 				int ix = (int)(dist * size / lineLength);
@@ -133,13 +132,13 @@ public class WheelFilter {
 		}
 
 		groupSpectrogram(spectrogram);
-		clearSpectrogram(spectrogram);
+		clearSpectrogram(spectrogram, 3);
 		
 		return spectrogram;
 	}
 	
 	private void groupSpectrogram(int[] spectrogram) {
-		int maxDistance = 7;
+		int maxDistance = 8;
 		
 		for (int i = 0; i < spectrogram.length; i++) {
 			if (spectrogram[i] <= 0) {
@@ -162,9 +161,8 @@ public class WheelFilter {
 		}
 	}
 	
-	private void clearSpectrogram(int[] spectrogram) {
-		int minDistance = 3;
-		
+	private void clearSpectrogram(int[] spectrogram, int minDistance) {
+				
 		for (int i = 0; i < spectrogram.length - 1; i++) {
 			if (spectrogram[i] <= 0) {
 				continue;
@@ -187,17 +185,7 @@ public class WheelFilter {
 			}
 		}
 	}
-
-	private void addLine(Line2D currentLine) {
-		lines.add(currentLine);
-		int ox = (int) currentLine.getP1().getX();
-		int oy = (int) currentLine.getP1().getY();
-		int delta = (int)(oy - currentLine.getP2().getY());
-		for (int i = 0; i < delta; i++) {
-			edges.add(new Point2D(ox, oy + i));
-		}
-	}
-
+	
 	private boolean validateColor(int rgb) {
 		int red = ColorStrategy.getRed(rgb);
 		int green = ColorStrategy.getGreen(rgb);

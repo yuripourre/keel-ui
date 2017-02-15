@@ -1,6 +1,5 @@
 package com.prodec.keel.tools.wheel;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import org.junit.Assert;
@@ -22,8 +21,8 @@ public class WheelFilterTest {
 	
 	@Before
 	public void setUp() {
-		Point2D startPoint = new Point2D(198, 262);
-		Point2D endPoint = new Point2D(298, 108.0);
+		Point2D startPoint = new Point2D(200, 284);
+		Point2D endPoint = new Point2D(300, 130);
 		
 		filter = new WheelFilter(startPoint, endPoint);
 		source = new BufferedImageSource();
@@ -48,11 +47,11 @@ public class WheelFilterTest {
 		Assert.assertEquals(3, countIntervals(filter.filter(source, screen)));
 	}
 	
-	private int countIntervals(boolean[] spectrogram) {
+	private int countIntervals(int[] spectrogram) {
 		int count = 0;
 		boolean valid = false;
 		for (int i = 0; i < spectrogram.length; i++) {
-			if (spectrogram[i]) {
+			if (spectrogram[i] > 0) {
 				
 				if (!valid) {
 					count++;
