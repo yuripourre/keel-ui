@@ -21,7 +21,8 @@ public class WheelFilter {
 	int maxLineDist = 10;
 	int size = 256;
 
-	boolean[] spectrogram;
+	int[] spectrogram;
+	int resolution = 255;
 	
 	Line2D base;
 	
@@ -29,7 +30,7 @@ public class WheelFilter {
 		this.base = new Line2D(start, end);
 	}
 	
-	public boolean[] filter(ImageSource source, Component component) {
+	public int[] filter(ImageSource source, Component component) {
 		edges.clear();
 		lines.clear();
 		projections.clear();
@@ -106,8 +107,8 @@ public class WheelFilter {
 		}
 	}
 
-	private boolean[] generateSpectrogram() {
-		boolean[] spectrogram = new boolean[size];
+	private int[] generateSpectrogram() {
+		int[] spectrogram = new int[size];
 		double lineLength = base.length();
 
 		for (int i = 0; i < projections.size()-1; i++) {
@@ -123,12 +124,12 @@ public class WheelFilter {
 			if (nx < lx + 2 && ny < ly) {
 				double dist = base.getP1().distance(lx, ny);
 				int ix = (int)(dist * size / lineLength);
-				spectrogram[ix] = true;
+				spectrogram[ix] = resolution;
 			}
 
 			double dist = base.getP1().distance(line.getP2());
 			int ix = (int)(dist * size / lineLength);
-			spectrogram[ix] = true;
+			spectrogram[ix] = resolution;
 		}
 
 		groupSpectrogram(spectrogram);
@@ -137,16 +138,16 @@ public class WheelFilter {
 		return spectrogram;
 	}
 	
-	private void groupSpectrogram(boolean[] spectrogram) {
+	private void groupSpectrogram(int[] spectrogram) {
 		int maxDistance = 7;
 		
 		for (int i = 0; i < spectrogram.length; i++) {
-			if (!spectrogram[i]) {
+			if (spectrogram[i] <= 0) {
 				continue;
 			} else {
 				int distance = 0;
 				for (int j = i + 1; j < spectrogram.length-1; j++) {
-					if (spectrogram[j]) {
+					if (spectrogram[j] > 0) {
 						break;
 					}
 					distance++;
@@ -154,23 +155,23 @@ public class WheelFilter {
 				
 				if (distance > 0 && distance < maxDistance) {
 					for (int k = 0; k < distance; k++) {
-						spectrogram[i + 1 + k] = true; 
+						spectrogram[i + 1 + k] = resolution; 
 					}
 				}
 			}
 		}
 	}
 	
-	private void clearSpectrogram(boolean[] spectrogram) {
+	private void clearSpectrogram(int[] spectrogram) {
 		int minDistance = 3;
 		
 		for (int i = 0; i < spectrogram.length - 1; i++) {
-			if (!spectrogram[i]) {
+			if (spectrogram[i] <= 0) {
 				continue;
 			} else {
 				int distance = 1;
 				for (int j = i + 1; j < spectrogram.length - 1; j++) {
-					if (!spectrogram[j]) {
+					if (spectrogram[j] <= 0) {
 						break;
 					}
 					distance++;
@@ -178,7 +179,7 @@ public class WheelFilter {
 				
 				if (distance < minDistance) {
 					for (int k = 0; k < distance; k++) {
-						spectrogram[i + k] = false; 
+						spectrogram[i + k] = 0; 
 					}
 				}
 				

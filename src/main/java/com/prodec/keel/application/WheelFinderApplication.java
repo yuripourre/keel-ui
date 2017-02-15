@@ -35,7 +35,7 @@ public class WheelFinderApplication extends Application {
 	Point2D endPoint = new Point2D(300, 110);
 	Line2D base = new Line2D(startPoint, endPoint);
 	
-	boolean[] spectrogram;
+	int[] spectrogram;
 	WheelFilter filter;
 
 	public WheelFinderApplication(int w, int h) {
@@ -131,7 +131,7 @@ public class WheelFinderApplication extends Application {
 		drawSpectrogram(g, spectrogram);
 	}
 
-	private void drawSpectrogram(Graphics g, boolean[] spectrogram) {
+	private void drawSpectrogram(Graphics g, int[] spectrogram) {
 		int ex = 10;
 		int ey = 300;
 		int ew = 256;
@@ -142,11 +142,12 @@ public class WheelFinderApplication extends Application {
 		g.drawLine(ex + ew + 1, ey, ex + ew + 1, ey + eh + 1);
 		g.drawLine(ex, ey + eh + 1, ex + ew, ey + eh + 1);
 
-		g.setColor(Color.BLUE);
 		for (int i = 0; i < spectrogram.length; i++) {
-			if (!spectrogram[i]) {
+			if (spectrogram[i] <= 0) {
 				continue;
 			}
+			System.out.println(spectrogram[i]);
+			g.setColor(new Color(0, 0, spectrogram[i]));
 			g.drawLine(ex + i, ey, ex + i, ey + eh);
 		}
 	}
