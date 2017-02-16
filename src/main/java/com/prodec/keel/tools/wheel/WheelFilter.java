@@ -23,6 +23,8 @@ public class WheelFilter {
 	
 	Line2D base;
 	
+	int meanLength;
+	
 	public WheelFilter(Point2D start, Point2D end) {
 		this.base = new Line2D(start, end);
 	}
@@ -45,11 +47,13 @@ public class WheelFilter {
 		Line2D currentLine = null;
 		Point2D origin = new Point2D();
 
-		int minSize = 18;
+		int minSize = h / 16;//Related to image.Height
 		int length = 0;
-		int step = 2;
+		int step = 2; //Step is necessary to avoid problems with slow capture rates camera
 		int horizontalStep = 1;
 
+		int lengthSum = 1;
+		
 		for (int j = component.getX(); j < w; j += horizontalStep) {
 			found = false;
 			length = 0;
@@ -70,6 +74,7 @@ public class WheelFilter {
 					}
 				} else if(found) {
 					found = false;
+					lengthSum += length;
 					
 					//If line has a valid size
 					if (length > minSize) {
@@ -78,6 +83,9 @@ public class WheelFilter {
 				}
 			}
 		}
+		
+		meanLength = lengthSum / lines.size();
+		//System.out.println("Mean: "+meanLength);
 	}
 	
 	private void projectLines() {
@@ -93,7 +101,7 @@ public class WheelFilter {
 		}
 		
 		//TODO Normalize image dimensions
-		int magicOffset = 14;
+		int magicOffset = meanLength/6;
 		double maxDist = minDist + magicOffset;
 		
 		for (Line2D line: lines) {
@@ -112,50 +120,93 @@ public class WheelFilter {
 
 		for (int i = 0; i < projections.size() - 1; i++) {
 			Line2D line = projections.get(i);
-			Line2D nextLine = projections.get(i + 1);
-
-			double lx = line.getP2().getX();
-			double ly = line.getP2().getY();
-			double nx = nextLine.getP2().getX();
-			double ny = nextLine.getP2().getY();
-
-			//Add more details to spectrogram
-			if (nx < lx + 2 && ny < ly) {
-				double dist = base.getP1().distance(lx, ny);
-				int ix = (int)(dist * size / lineLength);
-				spectrogram[ix] = resolution;
-			}
-
+			
 			double dist = base.getP1().distance(line.getP2());
 			int ix = (int)(dist * size / lineLength);
 			spectrogram[ix] = resolution;
 		}
 
-		groupSpectrogram(spectrogram);
-		clearSpectrogram(spectrogram, 3);
+		log = false;
+		//clearSpectrogram(spectrogram, 1);
+		//reinforceSpectrogram(spectrogram, 2);
+		groupSpectrogram(spectrogram, 1, 0);
+		reinforceSpectrogram(spectrogram, 2);
+		//groupSpectrogram(spectrogram, 8, 0);
+		
+		//reinforceSpectrogram(spectrogram, 1);
+		/*groupSpectrogram(spectrogram, 12, 3);
+		
+		log = true;
+		groupSpectrogram(spectrogram, 4, 0);*/
+		//clearSpectrogram(spectrogram, 2);
+		//groupSpectrogram(spectrogram, 4);
+		//clearSpectrogram(spectrogram, 3);
 		
 		return spectrogram;
 	}
 	
-	private void groupSpectrogram(int[] spectrogram) {
-		int maxDistance = 8;
+	private void reinforceSpectrogram(int[] spectrogram, int minDistance) {
+		int width = 0;
 		
 		for (int i = 0; i < spectrogram.length; i++) {
 			if (spectrogram[i] <= 0) {
+				if (width >= minDistance) {
+					int before = i-width-1; 
+					if (before > 0) {
+						spectrogram[before] = spectrogram[i-width];	
+					}
+					
+					if(i < spectrogram.length-1) {
+						spectrogram[i+1] = spectrogram[i];	
+					}
+						
+				}
+				width = 0;
 				continue;
 			} else {
+				width++;
+			}
+		}
+	}
+
+	public boolean log = false;
+	
+	private void groupSpectrogram(int[] spectrogram, int maxDistance) {
+		groupSpectrogram(spectrogram, maxDistance, 1);
+	}
+	
+	private void groupSpectrogram(int[] spectrogram, int maxDistance, int minWidth) {
+		
+		int width = 0;
+		
+		for (int i = 0; i < spectrogram.length; i++) {
+			if (spectrogram[i] <= 0) {
+				width = 0;
+				continue;
+			} else {
+				if (width < minWidth) {
+					width++;
+					continue;
+				}
+				width++;
+				
 				int distance = 0;
-				for (int j = i + 1; j < spectrogram.length-1; j++) {
+				for (int j = i + 1; j < spectrogram.length - 1; j++) {
 					if (spectrogram[j] > 0) {
 						break;
 					}
 					distance++;
 				}
 				
-				if (distance > 0 && distance < maxDistance) {
-					for (int k = 0; k < distance; k++) {
+				if(log)
+					System.out.println("Distance: "+distance);
+				
+				if (distance <= maxDistance) {
+					int k = 0;
+					for (; k < distance; k++) {
 						spectrogram[i + 1 + k] = resolution; 
 					}
+					i = i + k;
 				}
 			}
 		}
@@ -193,14 +244,18 @@ public class WheelFilter {
 
 		int gray = BlackAndWhiteLuminosityFilter.toBlackAndWhite(rgb);
 
-		int maxColor = 0x92;
-		int minColor = 0x12;
+		int maxR = 0x92;
+		int minR = 0x12;
+		int maxG = 0x90;
+		int minG = 0x12;
+		int maxB = 0x92;
+		int minB = 0x12;
 
-		boolean checkGray = gray > minColor + 30;
+		boolean checkGray = gray > minB + 30;
 
-		boolean checkRed = red < maxColor && red >= minColor;
-		boolean checkGreen = green < maxColor && green >= minColor;
-		boolean checkBlue = blue < maxColor && blue >= minColor;
+		boolean checkRed = red < maxR && red >= minR;
+		boolean checkGreen = green < maxG && green >= minG;
+		boolean checkBlue = blue < maxB && blue >= minB;
 
 		boolean isLeaf = green > gray;
 
