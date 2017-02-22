@@ -7,6 +7,7 @@ import br.com.etyllica.core.linear.Line2D;
 import br.com.etyllica.core.linear.Point2D;
 import br.com.etyllica.motion.core.source.ImageSource;
 import br.com.etyllica.motion.feature.Component;
+import br.com.etyllica.motion.feature.Interval;
 import br.com.etyllica.motion.filter.color.ColorStrategy;
 import br.com.etyllica.motion.filter.image.BlackAndWhiteLuminosityFilter;
 
@@ -14,7 +15,7 @@ public class WheelFilter {
 
 	private List<Line2D> lines = new ArrayList<Line2D>();
 	private List<Line2D> projections = new ArrayList<Line2D>();
-	
+		
 	int maxLineDist = 10;
 	int size = 256;
 
@@ -125,7 +126,10 @@ public class WheelFilter {
 			int ix = (int)(dist * size / lineLength);
 			spectrogram[ix] = resolution;
 		}
-
+		
+		List<Interval> intervals = buildIntervals(spectrogram);
+		
+		
 		log = false;
 		//clearSpectrogram(spectrogram, 1);
 		//reinforceSpectrogram(spectrogram, 2);
@@ -145,6 +149,24 @@ public class WheelFilter {
 		return spectrogram;
 	}
 	
+	private List<Interval> buildIntervals(int[] spectrogram) {
+		List<Interval> intervals = new ArrayList<Interval>();
+		
+		final int UNDEFINED = -1;
+		int start = UNDEFINED;
+		
+		for (int i = 0; i < spectrogram.length; i++) {
+			if (spectrogram[i] > 0) {
+				start = i;
+			} else if (start != UNDEFINED) {
+				int end = i;
+				intervals.add(new Interval(start, end));
+			}
+		}
+		
+		return intervals;
+	}
+
 	private void reinforceSpectrogram(int[] spectrogram, int minDistance) {
 		int width = 0;
 		

@@ -94,6 +94,18 @@ public class WheelFinderApplication extends Application {
 	@Override
 	public void updateMouse(PointerEvent event) {
 		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
+			
+			int mx = event.getX();
+			int my = event.getY();
+			
+			if (mx < source.getWidth() && my < source.getHeight()) {
+				int rgb = source.getRGB(event.getX(), event.getY());
+				Color color = new Color(rgb);
+				System.out.println("0x"+Integer.toString(color.getRed(), 16));
+				System.out.println("0x"+Integer.toString(color.getGreen(), 16));
+				System.out.println("0x"+Integer.toString(color.getBlue(), 16));	
+			}
+
 			/*if (startLine) {
 				startPoint.setLocation(event.getX(), event.getY());
 				System.out.println(startPoint.getX()+" "+startPoint.getY());
