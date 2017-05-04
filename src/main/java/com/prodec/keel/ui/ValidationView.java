@@ -2,7 +2,7 @@ package com.prodec.keel.ui;
 
 import java.awt.Color;
 
-import br.com.etyllica.motion.core.strategy.ComponentValidationStrategy;
+import br.com.etyllica.keel.core.strategy.ComponentValidationStrategy;
 
 import com.prodec.keel.model.ComponentType;
 

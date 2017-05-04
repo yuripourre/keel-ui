@@ -8,15 +8,14 @@ import java.util.Map;
 
 import br.com.etyllica.awt.SVGColor;
 import br.com.etyllica.core.collision.CollisionDetector;
-import br.com.etyllica.core.event.GUIEvent;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.core.ui.UIComponent;
 import br.com.etyllica.gui.theme.ThemeManager;
+import br.com.etyllica.keel.feature.Component;
 import br.com.etyllica.layer.Layer;
-import br.com.etyllica.motion.feature.Component;
 
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.Mode;

@@ -2,10 +2,9 @@ package com.prodec.keel.ui.source;
 
 import java.awt.image.BufferedImage;
 
-import br.com.etyllica.core.event.GUIEvent;
 import br.com.etyllica.core.graphics.Graphics;
+import br.com.etyllica.keel.awt.source.BufferedImageSource;
 import br.com.etyllica.loader.image.ImageLoader;
-import br.com.etyllica.motion.core.source.BufferedImageSource;
 
 import com.prodec.keel.model.attribute.PathAttribute;
 import com.prodec.keel.ui.SourceView;

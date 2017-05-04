@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.motion.core.source.ImageSource;
+import br.com.etyllica.keel.core.source.ImageSource;
 
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.attribute.RegionAttribute;

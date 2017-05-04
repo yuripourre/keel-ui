@@ -2,9 +2,9 @@ package com.prodec.keel.ui.filter;
 
 import java.awt.image.BufferedImage;
 
+import br.com.etyllica.keel.awt.source.BufferedImageSource;
+import br.com.etyllica.keel.filter.MaskFilter;
 import br.com.etyllica.loader.image.ImageLoader;
-import br.com.etyllica.motion.core.source.BufferedImageSource;
-import br.com.etyllica.motion.filter.MaskFilter;
 
 import com.prodec.keel.model.attribute.Attribute;
 import com.prodec.keel.model.attribute.PathAttribute;

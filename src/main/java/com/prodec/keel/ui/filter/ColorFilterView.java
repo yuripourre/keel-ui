@@ -2,7 +2,7 @@ package com.prodec.keel.ui.filter;
 
 import java.awt.Color;
 
-import br.com.etyllica.motion.filter.ColorFilter;
+import br.com.etyllica.keel.filter.ColorFilter;
 
 import com.prodec.keel.model.attribute.Attribute;
 import com.prodec.keel.model.attribute.ColorPickerAttribute;

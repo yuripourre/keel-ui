@@ -3,7 +3,7 @@ package com.prodec.keel.ui.modifier;
 import java.util.List;
 
 import br.com.etyllica.core.linear.Point2D;
-import br.com.etyllica.motion.feature.Component;
+import br.com.etyllica.keel.feature.Component;
 
 import com.prodec.keel.model.DataType;
 import com.prodec.keel.ui.ModifierView;

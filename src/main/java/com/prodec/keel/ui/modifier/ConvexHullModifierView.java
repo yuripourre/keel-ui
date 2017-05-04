@@ -2,10 +2,10 @@ package com.prodec.keel.ui.modifier;
 
 import java.util.List;
 
-import br.com.etyllica.motion.feature.Component;
-import br.com.etyllica.motion.feature.hull.HullComponent;
-import br.com.etyllica.motion.modifier.hull.FastConvexHullModifier;
-import br.com.etyllica.motion.modifier.hull.HullModifier;
+import br.com.etyllica.keel.feature.Component;
+import br.com.etyllica.keel.feature.hull.HullComponent;
+import br.com.etyllica.keel.modifier.hull.FastConvexHullModifier;
+import br.com.etyllica.keel.modifier.hull.HullModifier;
 
 import com.prodec.keel.model.DataType;
 import com.prodec.keel.ui.ModifierView;

@@ -2,7 +2,8 @@ package com.prodec.keel.tools.video.helper;
 
 import java.awt.image.BufferedImage;
 
-import br.com.etyllica.motion.filter.color.ColorStrategy;
+import br.com.etyllica.keel.core.helper.ColorHelper;
+import br.com.etyllica.keel.filter.color.ColorStrategy;
 import br.com.etyllica.util.math.EtyllicaMath;
 
 public class ScreenComparator {
@@ -66,13 +67,13 @@ public class ScreenComparator {
 	}
 
 	private static boolean validColor(int color, int compareColor, int tolerance) {
-		int or = ColorStrategy.getRed(color);
-		int og = ColorStrategy.getGreen(color);
-		int ob = ColorStrategy.getBlue(color);
+		int or = ColorHelper.getRed(color);
+		int og = ColorHelper.getGreen(color);
+		int ob = ColorHelper.getBlue(color);
 
-		int cr = ColorStrategy.getRed(compareColor);
-		int cg = ColorStrategy.getGreen(compareColor);
-		int cb = ColorStrategy.getBlue(compareColor);
+		int cr = ColorHelper.getRed(compareColor);
+		int cg = ColorHelper.getGreen(compareColor);
+		int cb = ColorHelper.getBlue(compareColor);
 
 		return EtyllicaMath.diffMod(or, cr) < tolerance && EtyllicaMath.diffMod(og, cg) < tolerance && EtyllicaMath.diffMod(ob, cb) < tolerance;
 	}

@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.etyllica.motion.filter.color.ColorStrategy;
+import br.com.etyllica.keel.core.helper.ColorHelper;
 import br.com.etyllica.util.PathHelper;
 
 import com.google.gson.Gson;
@@ -53,9 +53,9 @@ public class AttributeSerializerTest {
 		ColorPickerAttribute colorPicker = (ColorPickerAttribute) attribute;
 		Assert.assertEquals("Color", colorPicker.getLabel());
 		Assert.assertEquals(16776960, colorPicker.getColor());
-		Assert.assertEquals(0xFF, ColorStrategy.getRed(colorPicker.getColor()));
-		Assert.assertEquals(0xFF, ColorStrategy.getGreen(colorPicker.getColor()));
-		Assert.assertEquals(0x00, ColorStrategy.getBlue(colorPicker.getColor()));
+		Assert.assertEquals(0xFF, ColorHelper.getRed(colorPicker.getColor()));
+		Assert.assertEquals(0xFF, ColorHelper.getGreen(colorPicker.getColor()));
+		Assert.assertEquals(0x00, ColorHelper.getBlue(colorPicker.getColor()));
 	}
 	
 }

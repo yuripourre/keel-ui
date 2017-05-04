@@ -2,8 +2,9 @@ package com.prodec.keel.serialization;
 
 import java.lang.reflect.Type;
 
-import br.com.etyllica.motion.feature.Component;
-import br.com.etyllica.motion.filter.color.ColorStrategy;
+import br.com.etyllica.keel.core.helper.ColorHelper;
+import br.com.etyllica.keel.feature.Component;
+import br.com.etyllica.keel.filter.color.ColorStrategy;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -68,9 +69,9 @@ public class AttributeSerializer implements JsonSerializer<Attribute>, JsonDeser
 			
 			int rgb = colorPicker.getColor();
 			
-			String r = String.format(HEX_FORMAT, ColorStrategy.getRed(rgb));
-			String g = String.format(HEX_FORMAT, ColorStrategy.getGreen(rgb));
-			String b = String.format(HEX_FORMAT, ColorStrategy.getBlue(rgb));
+			String r = String.format(HEX_FORMAT, ColorHelper.getRed(rgb));
+			String g = String.format(HEX_FORMAT, ColorHelper.getGreen(rgb));
+			String b = String.format(HEX_FORMAT, ColorHelper.getBlue(rgb));
 			
 			String color = "#" + r + g + b;
 			

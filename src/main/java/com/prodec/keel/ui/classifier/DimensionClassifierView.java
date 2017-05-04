@@ -2,7 +2,7 @@ package com.prodec.keel.ui.classifier;
 
 import java.util.List;
 
-import br.com.etyllica.motion.feature.Component;
+import br.com.etyllica.keel.feature.Component;
 
 import com.prodec.keel.ui.ClassifierView;
 

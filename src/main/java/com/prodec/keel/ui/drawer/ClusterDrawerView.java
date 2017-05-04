@@ -1,7 +1,7 @@
 package com.prodec.keel.ui.drawer;
 
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.motion.classifier.cluster.Cluster;
+import br.com.etyllica.keel.classifier.cluster.Cluster;
 
 import com.prodec.keel.model.DataType;
 import com.prodec.keel.model.attribute.ColorPickerAttribute;

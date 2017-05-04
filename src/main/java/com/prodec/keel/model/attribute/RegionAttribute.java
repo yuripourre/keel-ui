@@ -1,9 +1,9 @@
 package com.prodec.keel.model.attribute;
 
-import com.prodec.keel.ui.PipelineComponent;
-
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.motion.feature.Component;
+import br.com.etyllica.keel.feature.Component;
+
+import com.prodec.keel.ui.PipelineComponent;
 
 public class RegionAttribute extends Attribute {
 

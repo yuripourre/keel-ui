@@ -2,9 +2,9 @@ package com.prodec.keel.ui.modifier;
 
 import java.util.List;
 
-import br.com.etyllica.motion.classifier.cluster.Cluster;
-import br.com.etyllica.motion.classifier.cluster.DBScan;
-import br.com.etyllica.motion.feature.Component;
+import br.com.etyllica.keel.classifier.cluster.Cluster;
+import br.com.etyllica.keel.classifier.cluster.DBScan;
+import br.com.etyllica.keel.feature.Component;
 
 import com.prodec.keel.model.DataType;
 import com.prodec.keel.model.attribute.SliderAttribute;

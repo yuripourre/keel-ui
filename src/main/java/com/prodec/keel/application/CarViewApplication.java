@@ -4,7 +4,6 @@ import br.com.etyllica.core.context.Application;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.motion.core.source.ImageSource;
 import br.com.etyllica.util.PathHelper;
 
 import com.prodec.keel.helper.JsonLoaderHelper;

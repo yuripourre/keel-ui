@@ -7,9 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.etyllica.core.linear.Point2D;
+import br.com.etyllica.keel.awt.source.BufferedImageSource;
+import br.com.etyllica.keel.feature.Component;
 import br.com.etyllica.loader.image.ImageLoader;
-import br.com.etyllica.motion.core.source.BufferedImageSource;
-import br.com.etyllica.motion.feature.Component;
 import br.com.etyllica.util.PathHelper;
 
 public class WheelFilterTest {

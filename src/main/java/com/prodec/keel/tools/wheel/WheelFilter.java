@@ -5,10 +5,10 @@ import java.util.List;
 
 import br.com.etyllica.core.linear.Line2D;
 import br.com.etyllica.core.linear.Point2D;
-import br.com.etyllica.motion.core.source.ImageSource;
-import br.com.etyllica.motion.feature.Component;
-import br.com.etyllica.motion.filter.color.ColorStrategy;
-import br.com.etyllica.motion.filter.image.BlackAndWhiteLuminosityFilter;
+import br.com.etyllica.keel.core.helper.ColorHelper;
+import br.com.etyllica.keel.core.source.ImageSource;
+import br.com.etyllica.keel.feature.Component;
+import br.com.etyllica.keel.image.filter.BlackAndWhiteLuminosityFilter;
 
 public class WheelFilter {
 
@@ -187,9 +187,9 @@ public class WheelFilter {
 	}
 	
 	private boolean validateColor(int rgb) {
-		int red = ColorStrategy.getRed(rgb);
-		int green = ColorStrategy.getGreen(rgb);
-		int blue = ColorStrategy.getBlue(rgb);
+		int red = ColorHelper.getRed(rgb);
+		int green = ColorHelper.getGreen(rgb);
+		int blue = ColorHelper.getBlue(rgb);
 
 		int gray = BlackAndWhiteLuminosityFilter.toBlackAndWhite(rgb);
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.core.linear.Point2D;
-import br.com.etyllica.motion.feature.hull.HullComponent;
+import br.com.etyllica.keel.feature.hull.HullComponent;
 
 import com.prodec.keel.model.DataType;
 import com.prodec.keel.model.attribute.ColorPickerAttribute;

@@ -1,9 +1,8 @@
 package com.prodec.keel.ui.drawer;
 
 import br.com.etyllica.core.graphics.Graphics;
+import br.com.etyllica.keel.feature.Component;
 import br.com.etyllica.layer.GeometricLayer;
-import br.com.etyllica.layer.Layer;
-import br.com.etyllica.motion.feature.Component;
 
 import com.prodec.keel.model.attribute.ColorPickerAttribute;
 import com.prodec.keel.ui.DrawerView;

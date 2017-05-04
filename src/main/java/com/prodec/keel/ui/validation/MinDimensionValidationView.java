@@ -1,6 +1,6 @@
 package com.prodec.keel.ui.validation;
 
-import br.com.etyllica.motion.filter.validation.MinDimensionValidation;
+import br.com.etyllica.keel.filter.validation.MinDimensionValidation;
 
 import com.prodec.keel.model.attribute.Attribute;
 import com.prodec.keel.model.attribute.SliderAttribute;

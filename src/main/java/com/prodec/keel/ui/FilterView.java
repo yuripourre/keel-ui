@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.etyllica.motion.core.source.ImageSource;
-import br.com.etyllica.motion.feature.Component;
-import br.com.etyllica.motion.filter.TrackingFilter;
+import br.com.etyllica.keel.core.source.ImageSource;
+import br.com.etyllica.keel.feature.Component;
+import br.com.etyllica.keel.filter.TrackingFilter;
 
 import com.prodec.keel.model.ComponentType;
 import com.prodec.keel.model.FilterListener;
