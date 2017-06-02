@@ -6,10 +6,8 @@ import br.com.etyllica.core.context.Application;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.gui.theme.ThemeManager;
+import br.com.etyllica.ui.theme.ThemeManager;
 
-import com.google.gson.Gson;
-import com.prodec.keel.helper.JsonSerializerHelper;
 import com.prodec.keel.helper.StringExporter;
 import com.prodec.keel.model.Pipeline;
 import com.prodec.keel.ui.classifier.SquareClassifierView;

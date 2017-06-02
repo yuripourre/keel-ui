@@ -13,7 +13,7 @@ import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.core.ui.UIComponent;
-import br.com.etyllica.gui.theme.ThemeManager;
+import br.com.etyllica.ui.theme.ThemeManager;
 import br.com.etyllica.keel.feature.Component;
 import br.com.etyllica.layer.Layer;
 

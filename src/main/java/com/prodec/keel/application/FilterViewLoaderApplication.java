@@ -10,8 +10,7 @@ import br.com.etyllica.core.context.Application;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.gui.theme.ThemeManager;
-import br.com.etyllica.util.PathHelper;
+import br.com.etyllica.ui.theme.ThemeManager;
 
 import com.google.gson.Gson;
 import com.prodec.keel.helper.JsonSerializerHelper;
@@ -21,7 +20,6 @@ import com.prodec.keel.ui.drawer.CenterDrawerView;
 import com.prodec.keel.ui.drawer.RectDrawerView;
 import com.prodec.keel.ui.filter.ColorFilterView;
 import com.prodec.keel.ui.modifier.DummyModifierView;
-import com.prodec.keel.ui.source.ImageSourceView;
 import com.prodec.keel.ui.validation.MaxDimensionValidationView;
 import com.prodec.keel.ui.validation.MinDimensionValidationView;
 

@@ -5,7 +5,7 @@ import java.awt.Color;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.gui.theme.ThemeManager;
+import br.com.etyllica.ui.theme.ThemeManager;
 
 import com.prodec.keel.ui.PipelineComponent;
 
@@ -68,7 +68,7 @@ public class ColorPickerAttribute extends Attribute {
         g.fillRect(rx, ry, SIZE, SIZE);
         
         if (onMouse || waitingColor) {
-        	g.setColor(ThemeManager.getInstance().getTheme().getActiveSelectionColor());
+        	g.setColor(ThemeManager.getInstance().getTheme().getActiveColor());
         } else {
         	g.setColor(ThemeManager.getInstance().getTheme().getBorderColor());
         }

@@ -8,8 +8,9 @@ import br.com.etyllica.core.context.Application;
 import br.com.etyllica.core.event.KeyEvent;
 import br.com.etyllica.core.graphics.Graphics;
 import br.com.etyllica.core.linear.Point2D;
-import br.com.etyllica.gui.listener.ValueListener;
-import br.com.etyllica.gui.spinner.IntegerSpinner;
+import br.com.etyllica.ui.UI;
+import br.com.etyllica.ui.listener.ValueListener;
+import br.com.etyllica.ui.spinner.IntegerSpinner;
 import br.com.etyllica.keel.awt.source.BufferedImageSource;
 import br.com.etyllica.keel.classifier.cluster.Cluster;
 import br.com.etyllica.keel.classifier.cluster.DBScan;
@@ -88,8 +89,8 @@ public class CannyEdgeApplication extends Application {
 			}
 		});
 		
-		addView(radiusSpinner);
-		addView(minPointsSpinner);
+		UI.add(radiusSpinner);
+		UI.add(minPointsSpinner);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import br.com.etyllica.core.collision.CollisionDetector;
 import br.com.etyllica.core.event.MouseEvent;
 import br.com.etyllica.core.event.PointerEvent;
 import br.com.etyllica.core.graphics.Graphics;
-import br.com.etyllica.gui.theme.ThemeManager;
+import br.com.etyllica.ui.theme.ThemeManager;
 
 public class SliderAttribute extends Attribute {
 
@@ -70,7 +70,7 @@ public class SliderAttribute extends Attribute {
 		g.fillRect(sliderX, ay - 6, sc, 4);
 
 		if (mouseOnButton) {
-			g.setColor(ThemeManager.getInstance().getTheme().getActiveSelectionColor());
+			g.setColor(ThemeManager.getInstance().getTheme().getActiveColor());
 		}
 		g.fillCircle(sliderX+sc, ay-4, RADIUS);
 
